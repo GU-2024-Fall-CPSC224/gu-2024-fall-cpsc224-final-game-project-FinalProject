@@ -32,6 +32,9 @@ public class Player {
     }
     void playerMoveSpaces(Board board){
         space = board.findNextSpace(hand, space);
+        if(space==board.spaces.size()-1){
+            winner = true;
+        }
     }
     public Player(){
 
