@@ -6,6 +6,15 @@ public class Player {
     Card hand;
     boolean winner = false;
     int space;
+    public void setCard(Card cards){
+        hand = cards;
+    }
+    public void setLocation(Location index){
+        loc = index;
+    }
+    public void setCharacter(String name){
+        character = name;
+    }
     public String getCharacter(){
         return character;
     }
