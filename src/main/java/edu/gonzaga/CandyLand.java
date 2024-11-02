@@ -31,8 +31,8 @@ public class CandyLand {
         boolean winner = false;
         while(!winner){
             for(int i = 0; i < players.size(); i++){
-                players(i).playturn;
-                if(players(i).getwinner){
+                players.get(i).playTurn(board);
+                if(players.get(i).checkWinner()){
                     winner = true;
                     break;
                 }
