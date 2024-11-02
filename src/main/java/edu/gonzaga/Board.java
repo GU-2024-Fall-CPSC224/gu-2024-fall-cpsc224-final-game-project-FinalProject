@@ -1,7 +1,7 @@
 package edu.gonzaga;
 import java.util.ArrayList;
 import java.util.Random;
-
+//test
 public class Board {
     ArrayList <Card> deck;
     ArrayList <String> spaces;
