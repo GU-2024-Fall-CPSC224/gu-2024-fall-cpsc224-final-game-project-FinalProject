@@ -16,7 +16,7 @@ public class Card {
    public String getSquare2(){
     return square2;
    }
-   public boolean getIsSpeicalCard(){
+   public boolean getIsSpecialCard(){
     return specialCard;
    }
    public void setSquare1(String square){
