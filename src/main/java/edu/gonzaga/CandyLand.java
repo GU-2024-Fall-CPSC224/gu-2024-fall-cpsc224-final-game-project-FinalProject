@@ -12,13 +12,28 @@
  */
 package edu.gonzaga;
 
-
+import java.io.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /** Main program class for launching your team's program. */
 public class CandyLand {
     public static void main(String[] args) {
+
+        JFrame frame = new JFrame();
+
+        JButton button = new JButton("Click here");
+        button.setBounds(150, 200, 220, 50);
+
+        frame.add(button);
+        JLabel label1 = new JLabel("Test text");
+        label1.setBounds(10, 10, 200, 50);
+        frame.add(label1);
+        frame.setSize(800, 600);
+        frame.setLayout(null);
+        frame.setVisible(true);
+
         System.out.println("Hello Candy Land!");
 
         int numberOfPlayers = getPlayerInput();
