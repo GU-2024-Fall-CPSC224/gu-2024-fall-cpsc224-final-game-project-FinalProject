@@ -38,7 +38,7 @@ public class CandyLand {
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Button 4!");
+                    
                     numberOfPlayers = 2;
                 }
             });
@@ -49,7 +49,7 @@ public class CandyLand {
             button2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Button 4!");
+                    
                     numberOfPlayers = 3;
                 }
             });
@@ -61,7 +61,7 @@ public class CandyLand {
             button3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Button 4!");
+                    
                     numberOfPlayers = 4;
                 }
             });
@@ -71,7 +71,8 @@ public class CandyLand {
             button4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Enter!");
+                   
+
                 }
             });
 
