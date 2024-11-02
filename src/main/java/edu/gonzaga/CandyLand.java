@@ -48,8 +48,7 @@ public class CandyLand {
             button2.setBounds(200, 200, 50, 50);
             button2.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    
+                public void actionPerformed(ActionEvent e) {                    
                     numberOfPlayers = 3;
                 }
             });
@@ -60,8 +59,7 @@ public class CandyLand {
             button3.setBounds(300, 200, 50, 50);
             button3.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    
+                public void actionPerformed(ActionEvent e) {                    
                     numberOfPlayers = 4;
                 }
             });
@@ -70,8 +68,7 @@ public class CandyLand {
             button4.setBounds(650, 500, 100, 50);
             button4.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                   
+                public void actionPerformed(ActionEvent e) {                   
 
                 }
             });
