@@ -22,6 +22,16 @@ public class Board {
         initializePlayerNames();
     }
 
+    public ArrayList <String> getPlayerNames()
+    {
+        return playerNames;
+    }
+
+    public void updatePlayer(ArrayList <Player> newPlayers)
+    {
+        players = newPlayers;
+    }
+    
     public void initializePlayerNames()
     {
         playerNames.add("Mally Mallo");
