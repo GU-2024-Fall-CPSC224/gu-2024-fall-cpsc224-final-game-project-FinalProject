@@ -49,3 +49,27 @@ public class CandyLand {
         return numberOfPlayers;
     }
 }
+
+Scanner sc = new Scanner(System.in);
+        System.out.println("How many points would you like to play in this game?");
+        String pointsInput = sc.nextLine();
+        int targetPoints;
+        if (pointsInput.equals("")) {
+            targetPoints = 10000;
+        } else {
+            targetPoints = Integer.parseInt(pointsInput);
+        }
+        System.out.println("How many players are going to play in this game?");
+        String playersInput = sc.nextLine();
+        int numPlayers = Integer.parseInt(playersInput);
+        boolean continueGame = true;
+        boolean endGameFlag = false;
+        ArrayList<Player> players = new ArrayList<Player>();
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player());
+            for (int j = 0; j < players.size() - 1; j++) {
+                if (players.get(i).getPlayerName().equals(players.get(j).getPlayerName())) {
+                    players.get(i).setPlayerName(players.get(i).getPlayerName() + players.get(i).getPlayerID());
+                }
+            }
+        }
