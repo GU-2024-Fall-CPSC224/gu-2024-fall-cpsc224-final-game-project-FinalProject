@@ -100,7 +100,7 @@ public class CandyLand {
             frame2.setVisible(false);
 
             JButton characterA = new JButton("Mally Mallo");
-            characterA.setBounds(300, 200, 50, 50);
+            characterA.setBounds(100, 50, 200, 200);
             characterA.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -112,7 +112,7 @@ public class CandyLand {
             });
 
             JButton characterB = new JButton("Twirly Girl");
-            characterB.setBounds(300, 200, 50, 50);
+            characterB.setBounds(100, 300, 200, 200);
             characterB.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -124,7 +124,7 @@ public class CandyLand {
             });
 
             JButton characterC = new JButton("Cutie Cone");
-            characterC.setBounds(300, 200, 50, 50);
+            characterC.setBounds(450, 50, 200, 200);
             characterC.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -136,7 +136,7 @@ public class CandyLand {
             });
 
             JButton characterD = new JButton("Giggly Gumdrop");
-            characterD.setBounds(300, 200, 50, 50);
+            characterD.setBounds(450, 300, 200, 200);
             characterD.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
