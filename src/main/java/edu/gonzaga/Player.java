@@ -6,6 +6,9 @@ public class Player {
     Card hand;
     boolean winner = false;
     int space;
+    public String getCharacter(){
+        return character;
+    }
     public Card getCard(){
         return hand;
     }
