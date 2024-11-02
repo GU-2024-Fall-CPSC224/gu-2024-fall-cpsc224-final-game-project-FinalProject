@@ -15,11 +15,8 @@ public class Player {
     public void setLocation(Location index){
         loc = index;
     }
-    public void setCharacter(ArrayList<String> names){
-        Board board = new Board();
-        for (String name : names) {
-            character = name;
-        }
+    public void setCharacter(String name){
+        character = name;
     }
     public String getCharacter(){
         return character;
