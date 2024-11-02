@@ -7,6 +7,7 @@ public class Board {
     ArrayList <String> spaces;
     ArrayList <Player> players;
     ArrayList <Card> potentialCards;
+    ArrayList <String> playerNames;
 
     public Board(ArrayList <Player> playerList)
     {   
@@ -17,8 +18,18 @@ public class Board {
         spaces = new ArrayList<String>();
         initiateSpaces();
         players = playerList;
+        playerNames = new ArrayList<String>();
+        initializePlayerNames();
     }
 
+    public void initializePlayerNames()
+    {
+        playerNames.add("Mally Mallo");
+        playerNames.add("Twirly Girl");
+        playerNames.add("Cutie Cone");
+        playerNames.add("Giggly Gumdrop");
+    }
+    
     public void makeNewDeck(ArrayList <Card> deck)
     {
         Random rand = new Random();
