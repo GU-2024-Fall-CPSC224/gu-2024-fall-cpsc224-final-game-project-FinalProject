@@ -29,6 +29,15 @@ public class CandyLand {
             JFrame frame1 = new JFrame();
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+            JFrame frame2 = new JFrame();
+            frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            JFrame frame3 = new JFrame();
+            frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            JFrame frame4 = new JFrame();
+            frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
             JLabel label1 = new JLabel("Choose number of players:");
             label1.setBounds(10, 10, 200, 50);
             frame1.add(label1);
@@ -71,18 +80,29 @@ public class CandyLand {
             button4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                   
-
+                   frame1.setVisible(false);
+                   frame2.setVisible(true);
                 }
             });
 
             frame1.add(button3);
             frame1.add(button4);
 
-
             frame1.setSize(800, 600);
             frame1.setLayout(null);
             frame1.setVisible(true);
+
+            frame2.setSize(800, 600);
+            frame2.setLayout(null);
+            frame2.setVisible(false);
+            
+            frame3.setSize(800, 600);
+            frame3.setLayout(null);
+            frame3.setVisible(false);
+
+            frame4.setSize(800, 600);
+            frame4.setLayout(null);
+            frame4.setVisible(false);
 
             System.out.println("Hello Candy Land!");
 
