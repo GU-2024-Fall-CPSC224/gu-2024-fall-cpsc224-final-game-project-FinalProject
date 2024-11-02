@@ -21,44 +21,59 @@ import java.util.Scanner;
 public class CandyLand {
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame();
+        boolean done = false;
+        while(!done) {
+            JFrame frame1 = new JFrame();
+            frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JButton button = new JButton("Click here");
-        button.setBounds(150, 200, 220, 50);
+            JLabel label1 = new JLabel("Choose number of players:");
+            label1.setBounds(10, 10, 200, 50);
+            frame1.add(label1);
 
-        frame.add(button);
-        JLabel label1 = new JLabel("Test text");
-        label1.setBounds(10, 10, 200, 50);
-        frame.add(label1);
-        frame.setSize(800, 600);
-        frame.setLayout(null);
-        frame.setVisible(true);
+            JButton button1 = new JButton("2");
+            button1.setBounds(100, 200, 50, 50);
+            frame1.add(button1);
 
-        System.out.println("Hello Candy Land!");
+            JButton button2 = new JButton("3");
+            button2.setBounds(200, 200, 50, 50);
+            frame1.add(button2);
 
-        int numberOfPlayers = getPlayerInput();
-        ArrayList <Player> players = new ArrayList<>();
-        Board board = new Board(players);
-        Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < numberOfPlayers; i++) {
-            System.out.println("Pick character 1-4!"); //the gui will fix this logic
-            int character = sc.nextInt();
-            players.add(new Player());
-            players.get(i).setCharacter(board.playerNames.get(character));
-            board.removePlayerName(character);
+            JButton button3 = new JButton("4");
+            button3.setBounds(300, 200, 50, 50);
+            frame1.add(button3);
+
+
+            frame1.setSize(800, 600);
+            frame1.setLayout(null);
+            frame1.setVisible(true);
+
+            System.out.println("Hello Candy Land!");
+
+            int numberOfPlayers = getPlayerInput();
+            ArrayList <Player> players = new ArrayList<>();
+            Board board = new Board(players);
+            Scanner sc = new Scanner(System.in);
+            for (int i = 0; i < numberOfPlayers; i++) {
+                System.out.println("Pick character 1-4!"); //the gui will fix this logic
+                int character = sc.nextInt();
+                players.add(new Player());
+                players.get(i).setCharacter(board.playerNames.get(character));
+                board.removePlayerName(character);
+            }
+
+
+            boolean continueGame = true;
+            while(continueGame){
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).playTurn(board);
+                    if(players.get(i).checkWinner()){
+                        System.out.println(players.get(i).getCharacter() + " is the Winner");
+                        continueGame = false;
+                        break;
+                    }
+                }
         }
 
-       
-        boolean continueGame = true;
-        while(continueGame){
-            for(int i = 0; i < players.size(); i++){
-                players.get(i).playTurn(board);
-                if(players.get(i).checkWinner()){
-                    System.out.println(players.get(i).getCharacter() + " is the Winner");
-                    continueGame = false;
-                    break;
-                }
-            }
         }
 
     }
