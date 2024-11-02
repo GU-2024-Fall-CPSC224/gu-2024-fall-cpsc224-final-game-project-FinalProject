@@ -41,6 +41,7 @@ public class CandyLand {
             JFrame frame4 = new JFrame();
             frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+//            frame 1 **************************************
             JLabel label1 = new JLabel("Choose number of players:");
             label1.setBounds(10, 10, 200, 50);
             frame1.add(label1);
@@ -54,7 +55,6 @@ public class CandyLand {
                     numberOfPlayers = 2;
                 }
             });
-            frame1.add(button1);
 
             JButton button2 = new JButton("3");
             button2.setBounds(200, 200, 50, 50);
@@ -64,8 +64,6 @@ public class CandyLand {
                     numberOfPlayers = 3;
                 }
             });
-
-            frame1.add(button2);
 
             JButton button3 = new JButton("4");
             button3.setBounds(300, 200, 50, 50);
@@ -86,6 +84,8 @@ public class CandyLand {
                 }
             });
 
+            frame1.add(button1);
+            frame1.add(button2);
             frame1.add(button3);
             frame1.add(button4);
 
@@ -93,21 +93,83 @@ public class CandyLand {
             frame1.setLayout(null);
             frame1.setVisible(true);
 
+//            frame 2 **************************************
             frame2.setSize(800, 600);
             frame2.setLayout(null);
             frame2.setVisible(false);
-            
+
+            JButton characterA = new JButton("Mally Mallo");
+            characterA.setBounds(300, 200, 50, 50);
+            characterA.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    players.add(new Player());
+                    players.get(i).setCharacter(board.playerNames.get(character));
+                    board.removePlayerName(character);
+                }
+            });
+
+            JButton characterB = new JButton("Twirly Girl");
+            characterB.setBounds(300, 200, 50, 50);
+            characterB.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    players.add(new Player());
+                    players.get(i).setCharacter(board.playerNames.get(character));
+                    board.removePlayerName(character);
+                }
+            });
+
+            JButton characterC = new JButton("Cutie Cone");
+            characterC.setBounds(300, 200, 50, 50);
+            characterC.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    players.add(new Player());
+                    players.get(i).setCharacter(board.playerNames.get(character));
+                    board.removePlayerName(character);
+                }
+            });
+
+            JButton characterD = new JButton("Giggly Gumdrop");
+            characterD.setBounds(300, 200, 50, 50);
+            characterD.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    players.add(new Player());
+                    players.get(i).setCharacter(board.playerNames.get(character));
+                    board.removePlayerName(character);
+                }
+            });
+
+            JButton button4 = new JButton("Enter");
+            button4.setBounds(650, 500, 100, 50);
+            button4.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame2.setVisible(false);
+                    frame3.setVisible(true);
+                }
+            });
+
+            frame2.add(characterA);
+            frame2.add(characterB);
+            frame2.add(characterC);
+            frame2.add(characterD);
+
+//            frame 3 **************************************
             frame3.setSize(800, 600);
             frame3.setLayout(null);
             frame3.setVisible(false);
 
+//            frame 4 **************************************
             frame4.setSize(800, 600);
             frame4.setLayout(null);
             frame4.setVisible(false);
 
             System.out.println("Hello Candy Land!");
 
-            int numberOfPlayers = getPlayerInput();
+//            int numberOfPlayers = getPlayerInput();
             ArrayList <Player> players = new ArrayList<>();
             Board board = new Board(players);
             Scanner sc = new Scanner(System.in);
