@@ -26,6 +26,9 @@ public class CandyLand {
 
         boolean done = false;
         while(!done) {
+
+//             image icon class for images
+            ImageIcon imageIcon = new ImageIcon("path/to/your/image.jpg");
             JFrame frame1 = new JFrame();
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
