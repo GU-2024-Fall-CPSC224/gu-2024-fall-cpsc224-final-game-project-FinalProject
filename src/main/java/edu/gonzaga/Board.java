@@ -84,4 +84,47 @@ public class Board {
         Random rand = new Random();
         return deck.get(rand.nextInt(deck.size()));
     }
+
+    public int findNextSpace(Card hand, int start)
+    {
+        int index = 0;
+        if(hand.getIsSpecialCard())
+        {
+            for(int i = 0; i < spaces.size(); i++)
+            {
+                if(hand.getSquare1().equals(spaces.get(i)))
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for(int i = start; i < spaces.size(); i++)
+            {
+                if(hand.getSquare1().equals(spaces.get(i)))
+                {
+                    if(hand.getSquare2().equals(""))
+                    {
+                        for(int j = i; j < spaces.size(); j++)
+                        {
+                            if(hand.getSquare2().equals(spaces.get(j)))
+                            {
+                                index = j;
+                                break;
+                            }   
+                        }
+                    }
+                    index = i;
+                    break;
+                }
+                if(i == spaces.size() - 1)
+                {
+                    index = i;
+                }
+            }
+        }
+        return index;
+    }
 }
