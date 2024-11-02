@@ -22,11 +22,14 @@ public class Player {
             return false;
         }
     }
-    public void playTurn(){
+    public void playTurn(Board board){
+        drawCardPlayer(board);
     }
-    public Card drawCard(){
+    public Card drawCardPlayer(Board board){
+        hand = board.drawCard();
     }
     void playerMove(){
+
     }
     public Player(){
 

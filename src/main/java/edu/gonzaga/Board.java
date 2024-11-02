@@ -78,4 +78,10 @@ public class Board {
         potentialCards.add(new Card("iceCream", "", true));
     
     }
+
+    public Card drawCard()
+    {
+        Random rand = new Random();
+        return deck.get(rand.nextInt(deck.size()));
+    }
 }
