@@ -31,7 +31,7 @@ public class Player {
         hand = board.drawCard();
     }
     void playerMoveSpaces(Board board){
-        space = board.findNextSpace(hand);
+        space = board.findNextSpace(hand, space);
     }
     public Player(){
 
