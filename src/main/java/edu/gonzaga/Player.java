@@ -5,6 +5,7 @@ public class Player {
     String character;
     Card hand;
     boolean winner = false;
+    int space;
     public Card getCard(){
         return hand;
     }
@@ -24,12 +25,13 @@ public class Player {
     }
     public void playTurn(Board board){
         drawCardPlayer(board);
+        playerMoveSpaces(board);
     }
     public void drawCardPlayer(Board board){
         hand = board.drawCard();
     }
-    void playerMove(){
-        
+    void playerMoveSpaces(Board board){
+        space = board.findNextSpace(hand);
     }
     public Player(){
 
