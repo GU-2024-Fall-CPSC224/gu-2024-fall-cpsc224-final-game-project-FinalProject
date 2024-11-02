@@ -23,17 +23,16 @@ public class CandyLand {
 
         int numberOfPlayers = getPlayerInput();
         ArrayList <Player> players = new ArrayList<>();
-
+        Board board = new Board(players);
+        Scanner sc = new Scanner(System.in);
         for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("Pick character 1-4!");
+            int character = sc.nextInt();
             players.add(new Player());
-            for (int j = 0; j < players.size() - 1; j++) {
-                if (players.get(i).getCharacter().equals(players.get(j).getCharacter())) {
-                    players.get(i).setCharacter(players.get(i).getCharacter());
-                }
-            }
+            players.get(i).setCharacter(board.players.get(character));
         }
 
-        Board board = new Board(players);
+       
         boolean continueGame = true;
         while(continueGame){
             for(int i = 0; i < players.size(); i++){
