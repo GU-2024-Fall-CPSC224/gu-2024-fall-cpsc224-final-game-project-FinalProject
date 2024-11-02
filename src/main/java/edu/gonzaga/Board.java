@@ -39,6 +39,11 @@ public class Board {
         playerNames.add("Cutie Cone");
         playerNames.add("Giggly Gumdrop");
     }
+
+    public void removePlayerName(int index)
+    {
+        playerNames.remove(index);
+    }
     
     public void makeNewDeck(ArrayList <Card> deck)
     {
