@@ -22,9 +22,15 @@ public class Player {
             return false;
         }
     }
-    public void playTurn(){}
-    public Card drawCard(){}
-    void playerMove(){}
+    public void playTurn(Board board){
+        drawCardPlayer(board);
+    }
+    public Card drawCardPlayer(Board board){
+        hand = board.drawCard();
+    }
+    void playerMove(){
+
+    }
     public Player(){
 
     }
