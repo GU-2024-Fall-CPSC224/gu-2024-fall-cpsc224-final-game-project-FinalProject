@@ -12,6 +12,8 @@
  */
 package edu.gonzaga;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -40,7 +42,24 @@ public class CandyLand {
 
             JButton button3 = new JButton("4");
             button3.setBounds(300, 200, 50, 50);
+            button3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Button 4!");
+                }
+            });
+
+            JButton button4 = new JButton("Enter");
+            button4.setBounds(700, 500, 100, 50);
+            button4.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Enter!");
+                }
+            });
+
             frame1.add(button3);
+            frame1.add(button4);
 
 
             frame1.setSize(800, 600);
