@@ -10,8 +10,11 @@ public class Board {
 
     public Board(ArrayList <Player> playerList)
     {   
+        potentialCards = new ArrayList<Card>();
         initializePotentialCards();
+        deck = new ArrayList<Card>();
         makeNewDeck(deck);
+        spaces = new ArrayList<String>();
         initiateSpaces();
         players = playerList;
     }
