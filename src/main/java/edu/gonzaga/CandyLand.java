@@ -22,7 +22,7 @@ public class CandyLand {
         System.out.println("Hello Candy Land!");
 
         int numberOfPlayers = getPlayerInput();
-        ArrayList <Player> players = new ArrayList<Player>();
+        ArrayList <Player> players = new ArrayList<>();
 
         for (int i = 0; i < numberOfPlayers; i++) {
             players.add(new Player());

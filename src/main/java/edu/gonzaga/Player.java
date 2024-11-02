@@ -1,5 +1,8 @@
 package edu.gonzaga;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Player {
     Location loc;
     String character;
@@ -12,8 +15,11 @@ public class Player {
     public void setLocation(Location index){
         loc = index;
     }
-    public void setCharacter(String name){
-        character = name;
+    public void setCharacter(ArrayList<String> names){
+        Board board = new Board();
+        for (String name : names) {
+            character = name;
+        }
     }
     public String getCharacter(){
         return character;
@@ -36,10 +42,14 @@ public class Player {
         }
     }
     public void playTurn(Board board){
+        System.out.println(this.getCharacter() + "'s turn!");
         drawCardPlayer(board);
         playerMoveSpaces(board);
     }
     public void drawCardPlayer(Board board){
+        System.out.println("Enter to draw card!! ");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
         hand = board.drawCard();
     }
     void playerMoveSpaces(Board board){
