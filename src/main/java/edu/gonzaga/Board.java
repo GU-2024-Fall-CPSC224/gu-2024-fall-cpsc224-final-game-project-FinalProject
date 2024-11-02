@@ -9,7 +9,7 @@ public class Board {
     ArrayList <Card> potentialCards;
     ArrayList <String> playerNames;
 
-    public Board(ArrayList <Player> playerList)
+    public Board()
     {   
         potentialCards = new ArrayList<Card>();
         initializePotentialCards();
@@ -17,7 +17,7 @@ public class Board {
         makeNewDeck(deck);
         spaces = new ArrayList<String>();
         initiateSpaces();
-        players = playerList;
+        players = new ArrayList<Player>();
         playerNames = new ArrayList<String>();
         initializePlayerNames();
     }
@@ -27,9 +27,12 @@ public class Board {
         return playerNames;
     }
 
-    public void updatePlayer(ArrayList <Player> newPlayers)
+    public void addPlayers(ArrayList <Player> newPlayers)
     {
-        players = newPlayers;
+        for(int i = 0; i < newPlayers.size(); i++)
+        {
+            players.add(newPlayers.get(i));
+        }
     }
     
     public void initializePlayerNames()
@@ -40,7 +43,12 @@ public class Board {
         playerNames.add("Giggly Gumdrop");
     }
 
-    public void removePlayerName(int index)
+    public void removePlayerName(String name)
+    {
+        playerNames.remove(name);
+    }
+
+    public void removePlayerNameIndex(int index)
     {
         playerNames.remove(index);
     }

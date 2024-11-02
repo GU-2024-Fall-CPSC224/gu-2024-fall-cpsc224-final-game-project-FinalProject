@@ -23,7 +23,8 @@ import java.util.Scanner;
 public class CandyLand {
     static int numberOfPlayers;
     public static void main(String[] args) {
-
+        Board board = new Board();
+        ArrayList <Player> players = new ArrayList<>();
         boolean done = false;
         while(!done) {
 
@@ -104,8 +105,9 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
-                    players.get(i).setCharacter(board.playerNames.get(character));
-                    board.removePlayerName(character);
+                    players.get(players.size() - 1).setCharacter("Mally Mallo");
+                    board.removePlayerName("Mally Mallo");
+                    characterA.setVisible(false);
                 }
             });
 
@@ -115,8 +117,9 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
-                    players.get(i).setCharacter(board.playerNames.get(character));
-                    board.removePlayerName(character);
+                    players.get(players.size() - 1).setCharacter("Twirly Girl");
+                    board.removePlayerName("Twirly Girl");
+                    characterB.setVisible(false);
                 }
             });
 
@@ -126,8 +129,9 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
-                    players.get(i).setCharacter(board.playerNames.get(character));
-                    board.removePlayerName(character);
+                    players.get(players.size() - 1).setCharacter("Cutie Cone");
+                    board.removePlayerName("Cutie Cone");
+                    characterC.setVisible(false);
                 }
             });
 
@@ -137,14 +141,15 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
-                    players.get(i).setCharacter(board.playerNames.get(character));
-                    board.removePlayerName(character);
+                    players.get(players.size() - 1).setCharacter("Giggly Gumdrop");
+                    board.removePlayerName("Giggly Gumdrop");
+                    characterD.setVisible(false);
                 }
             });
 
-            JButton button4 = new JButton("Enter");
-            button4.setBounds(650, 500, 100, 50);
-            button4.addActionListener(new ActionListener() {
+            JButton button5 = new JButton("Enter");
+            button5.setBounds(650, 500, 100, 50);
+            button5.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame2.setVisible(false);
@@ -153,9 +158,13 @@ public class CandyLand {
             });
 
             frame2.add(characterA);
+            characterA.setVisible(true);
             frame2.add(characterB);
+            characterB.setVisible(true);
             frame2.add(characterC);
+            characterC.setVisible(true);
             frame2.add(characterD);
+            characterD.setVisible(true);
 
 //            frame 3 **************************************
             frame3.setSize(800, 600);
@@ -170,16 +179,16 @@ public class CandyLand {
             System.out.println("Hello Candy Land!");
 
 //            int numberOfPlayers = getPlayerInput();
-            ArrayList <Player> players = new ArrayList<>();
-            Board board = new Board(players);
+            
             Scanner sc = new Scanner(System.in);
             for (int i = 0; i < numberOfPlayers; i++) {
                 System.out.println("Pick character 1-4!"); //the gui will fix this logic
                 int character = sc.nextInt();
                 players.add(new Player());
                 players.get(i).setCharacter(board.playerNames.get(character));
-                board.removePlayerName(character);
+                board.removePlayerNameIndex(character);
             }
+            board.addPlayers(players);
 
 
             boolean continueGame = true;
