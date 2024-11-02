@@ -29,7 +29,7 @@ public class Player {
         hand = board.drawCard();
     }
     void playerMove(){
-
+        
     }
     public Player(){
 
