@@ -38,7 +38,7 @@ public class CandyLand {
             for(int i = 0; i < players.size(); i++){
                 players.get(i).playTurn(board);
                 if(players.get(i).checkWinner()){
-                    System.out.println(players.get(i).toString() + " is the Winner");
+                    System.out.println(players.get(i).getCharacter() + " is the Winner");
                     continueGame = false;
                     break;
                 }
