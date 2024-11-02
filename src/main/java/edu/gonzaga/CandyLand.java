@@ -2,13 +2,13 @@
  * Final project main driver class
  *
  *
- * Project Description:
+ * Project Description: Candy Land board game - following rules as according to game rules
  *
  *
- * Contributors:
+ * Contributors: Alexa Williams, Mia Procel, Eva Ulrichsen
  *
  *
- * Copyright: 2023
+ * Copyright: 2024
  */
 package edu.gonzaga;
 
@@ -38,7 +38,6 @@ public class CandyLand {
                 }
             }
         }
-        // Your code here. Good luck!
     }
 
     public static int getPlayerInput(){
