@@ -21,6 +21,7 @@ import java.util.Scanner;
 
 /** Main program class for launching your team's program. */
 public class CandyLand {
+    static int numberOfPlayers;
     public static void main(String[] args) {
 
         boolean done = false;
@@ -34,10 +35,25 @@ public class CandyLand {
 
             JButton button1 = new JButton("2");
             button1.setBounds(100, 200, 50, 50);
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Button 4!");
+                    numberOfPlayers = 2;
+                }
+            });
             frame1.add(button1);
 
             JButton button2 = new JButton("3");
             button2.setBounds(200, 200, 50, 50);
+            button2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Button 4!");
+                    numberOfPlayers = 3;
+                }
+            });
+
             frame1.add(button2);
 
             JButton button3 = new JButton("4");
@@ -46,11 +62,12 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Button 4!");
+                    numberOfPlayers = 4;
                 }
             });
 
             JButton button4 = new JButton("Enter");
-            button4.setBounds(700, 500, 100, 50);
+            button4.setBounds(650, 500, 100, 50);
             button4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
