@@ -90,12 +90,12 @@ public class CandyLand {
             frame1.add(button3);
             frame1.add(button4);
 
-            frame1.setSize(800, 600);
+            frame1.setSize(1100, 650);
             frame1.setLayout(null);
             frame1.setVisible(true);
 
 //            frame 2 **************************************
-            frame2.setSize(800, 600);
+            frame2.setSize(1100, 650);
             frame2.setLayout(null);
             frame2.setVisible(false);
 
