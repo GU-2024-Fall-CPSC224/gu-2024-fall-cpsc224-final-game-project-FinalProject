@@ -26,10 +26,11 @@ public class CandyLand {
         Board board = new Board(players);
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < numberOfPlayers; i++) {
-            System.out.println("Pick character 1-4!");
+            System.out.println("Pick character 1-4!"); //the gui will fix this logic
             int character = sc.nextInt();
             players.add(new Player());
             players.get(i).setCharacter(board.playerNames.get(character));
+            board.removePlayerName(character);
         }
 
        
