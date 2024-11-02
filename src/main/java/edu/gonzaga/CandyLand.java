@@ -29,7 +29,7 @@ public class CandyLand {
             System.out.println("Pick character 1-4!");
             int character = sc.nextInt();
             players.add(new Player());
-            players.get(i).setCharacter(board.players.get(character));
+            players.get(i).setCharacter(board.playerNames.get(character));
         }
 
        
@@ -43,6 +43,7 @@ public class CandyLand {
                 }
             }
         }
+
     }
 
     public static int getPlayerInput(){
@@ -50,7 +51,7 @@ public class CandyLand {
         System.out.println("Please enter the number of players playing (2-4): ");
         int numberOfPlayers = scanner.nextInt();
 //        instantiate the number of players
-        scanner.close();
+        //scanner.close();
         return numberOfPlayers;
     }
 }
