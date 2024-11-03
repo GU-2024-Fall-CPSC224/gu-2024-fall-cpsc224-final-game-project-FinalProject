@@ -98,6 +98,7 @@ public class CandyLand {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        frame3.add(board);
         frame3.setVisible(false);
 
         // frame 4 **************************************
