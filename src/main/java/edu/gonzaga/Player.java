@@ -49,7 +49,7 @@ public class Player {
         scanner.nextLine();
         hand = board.drawCard();
     }
-    void playerMoveSpaces(Board board){
+    public void playerMoveSpaces(Board board){
         space = board.findNextSpace(hand, space);
         if(space==board.spaces.size()-1){
             winner = true;

@@ -1,13 +1,17 @@
 package edu.gonzaga;
+import java.awt.*;
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 //test
-public class Board {
+public class Board extends JPanel {
     ArrayList <Card> deck;
     ArrayList <String> spaces;
     ArrayList <Player> players;
     ArrayList <Card> potentialCards;
     ArrayList <String> playerNames;
+    List<Point> candyPath = new ArrayList<>();
 
     public Board()
     {   
@@ -17,9 +21,12 @@ public class Board {
         makeNewDeck(deck);
         spaces = new ArrayList<String>();
         initiateSpaces();
+        candyPath = candyPath();
         players = new ArrayList<Player>();
         playerNames = new ArrayList<String>();
         initializePlayerNames();
+
+        repaint();
     }
 
     public ArrayList <String> getPlayerNames()
@@ -116,6 +123,26 @@ public class Board {
     
     }
 
+    public List<Point> candyPath(){
+        candyPath.add(new Point(50, 50));
+        candyPath.add(new Point(100, 50));
+        candyPath.add(new Point(150, 50));
+        candyPath.add(new Point(150, 100));
+        candyPath.add(new Point(150, 150));
+        return candyPath;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        System.out.println("Drawing board...");
+
+        g.setColor(Color.BLUE);
+        for (Point space : candyPath) {
+            g.fillOval(space.x - 5, space.y - 5, 10, 10);
+        }
+    }
+
     public Card drawCard()
     {
         Random rand = new Random();
@@ -164,4 +191,13 @@ public class Board {
         }
         return index;
     }
+
+
+//    JFrame frame = new JFrame("Candy Land Game Board");
+//        frame.add(board);
+//
+//        frame.setSize(1000, 700);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+    
 }
