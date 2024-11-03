@@ -21,9 +21,9 @@ public class MainGameTest {
 
     public static void main(String[] args) {
         JFrame f = new JFrame();
-        f.setSize(1100, 650);
+        f.setSize(1100, 700);
         try {
-            f.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/candyLandBoard.jpeg")))));
+            f.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
         } catch (IOException e) {
             e.printStackTrace();
         }
