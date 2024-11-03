@@ -1,6 +1,9 @@
 package edu.gonzaga;
 import java.awt.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,8 +16,7 @@ public class Board extends JPanel {
     ArrayList <String> playerNames;
     List<Point> candyPath = new ArrayList<>();
 
-    public Board()
-    {   
+    public Board() {
         potentialCards = new ArrayList<Card>();
         initializePotentialCards();
         deck = new ArrayList<Card>();
