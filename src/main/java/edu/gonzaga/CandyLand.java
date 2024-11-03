@@ -12,7 +12,7 @@
  */
 package edu.gonzaga;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -155,7 +155,7 @@ public class CandyLand {
             });
 
             JButton button5 = new JButton("Enter");
-            button5.setBounds(650, 500, 100, 50);
+            button5.setBounds(1000, 500, 100, 50);
             button5.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -172,10 +172,10 @@ public class CandyLand {
             characterC.setVisible(true);
             frame2.add(characterD);
             characterD.setVisible(true);
+            frame2.add(button5);
 
 //            frame 3 **************************************
             frame3.setSize(1100, 650);
-            frame3.add(board);
             frame3.setLayout(null);
 //            frame3.setVisible(false);
 
