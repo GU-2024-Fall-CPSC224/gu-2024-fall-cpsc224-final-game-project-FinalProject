@@ -187,8 +187,7 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame2.setVisible(false);
-                    frame3.setVisible(true);   
-                                  
+                    frame3.setVisible(true);                                  
                 }
             });            
              int numberOfPlayers = getPlayerInput();
@@ -198,7 +197,7 @@ public class CandyLand {
               int character = sc.nextInt();
               players.add(new Player());
               players.get(i).setCharacter(board.playerNames.get(character));
-              board.removePlayerNameIndex(character);
+              //board.removePlayerNameIndex(character);
               }
              
             board.addPlayers(players);
