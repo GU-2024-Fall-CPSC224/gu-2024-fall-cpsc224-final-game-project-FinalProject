@@ -129,13 +129,6 @@ public class CandyLand {
                 public void actionPerformed(ActionEvent e) {
                     frame1.setVisible(false);
                     frame2.setVisible(true);
-                    if(numberOfPlayers==2){
-                        characterD.setVisible(false);
-                        characterC.setVisible(false);
-                    }
-                    else if(numberOfPlayers==3){
-                        characterD.setVisible(false);
-                    }
                 }
             });
             characterA.addActionListener(new ActionListener() {
@@ -188,8 +181,7 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame2.setVisible(false);
-                    frame3.setVisible(true);
-                    done = false;      
+                    frame3.setVisible(true);   
                                   
                 }
             });
