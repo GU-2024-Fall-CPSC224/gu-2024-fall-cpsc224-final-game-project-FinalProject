@@ -1,6 +1,5 @@
 package edu.gonzaga;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
@@ -49,6 +48,7 @@ public class Player {
         scanner.nextLine();
         hand = board.drawCard();
     }
+
     public void playerMoveSpaces(Board board){
         space = board.findNextSpace(hand, space);
         if(space==board.spaces.size()-1){
