@@ -1,11 +1,17 @@
 package edu.gonzaga;
 
+import java.awt.*;
+
 public class Location {
     int x;
     int y;
     public Location(){
 
     }
+
+//    public List<Point> candyPath(){
+//
+//    }
     public void setX(int num){
         x = num;
     }
