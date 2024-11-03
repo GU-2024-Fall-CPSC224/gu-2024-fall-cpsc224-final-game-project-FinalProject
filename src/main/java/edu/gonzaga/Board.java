@@ -86,7 +86,7 @@ public class Board extends JPanel {
         colors.add("red");
         colors.add("yellow");
         colors.add("purple");
-        colors.add("pink");
+        colors.add("orange");
 
         for(int i = 0; i < 60; i++)
         {
@@ -111,8 +111,8 @@ public class Board extends JPanel {
         potentialCards.add(new Card("purple", "", false));
         potentialCards.add(new Card("purple", "purple", false));
 
-        potentialCards.add(new Card("pink", "", false));
-        potentialCards.add(new Card("pink", "pink", false));
+        potentialCards.add(new Card("orange", "", false));
+        potentialCards.add(new Card("orange", "orange", false));
 
         potentialCards.add(new Card("gingerbread", "", true));
         potentialCards.add(new Card("peanut", "", true));
@@ -325,6 +325,144 @@ public class Board extends JPanel {
             }
         }
         return index;
+    }
+
+    public void initializeSpaces()
+    {
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("gingerbread");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("candyCane");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("gumdrop");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("peanut");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("lollipop");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("icecream");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("purple");
+        spaces.add("yellow");
+        spaces.add("blue");
+        spaces.add("orange");
+        spaces.add("green");
+        spaces.add("red");
+        spaces.add("any");
     }
 
 

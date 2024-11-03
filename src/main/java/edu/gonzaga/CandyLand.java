@@ -30,10 +30,10 @@ public class CandyLand {
         while(!done) {
 
 //             image icon class for images
-            ImageIcon pinkIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/pinkIcon.jpg");
-            ImageIcon purpleIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/purpleIcon.jpg");
-            ImageIcon redIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/redIcon.jpg");
-            ImageIcon yellowIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/yellowIcon.jpg");
+            ImageIcon pinkIcon = new ImageIcon("project design documents/Picture5.jpg");
+            ImageIcon purpleIcon = new ImageIcon("project design documents/Picture6.jpg");
+            ImageIcon redIcon = new ImageIcon("project design documents/Picture7.jpg");
+            ImageIcon yellowIcon = new ImageIcon("project design documents/Picture8.jpg");
             JFrame frame1 = new JFrame();
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
