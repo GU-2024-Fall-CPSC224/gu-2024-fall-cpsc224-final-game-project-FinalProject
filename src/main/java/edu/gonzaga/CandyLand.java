@@ -190,39 +190,39 @@ public class CandyLand {
                     frame2.setVisible(false);
                     frame3.setVisible(true);
                     done = false;      
-                    System.out.println(done);              
+                                  
                 }
             });
            
 
             
-            // int numberOfPlayers = getPlayerInput();
+             int numberOfPlayers = getPlayerInput();
 
-            /*
-             * Scanner sc = new Scanner(System.in);
-             * for (int i = 0; i < numberOfPlayers; i++) {
-             * System.out.println("Pick character 1-4!"); //the gui will fix this logic
-             * int character = sc.nextInt();
-             * players.add(new Player());
-             * players.get(i).setCharacter(board.playerNames.get(character));
-             * board.removePlayerNameIndex(character);
-             * }
-             */
-            //board.addPlayers(players);
+            
+             Scanner sc = new Scanner(System.in);
+              for (int i = 0; i < numberOfPlayers; i++) {
+              System.out.println("Pick character 1-4!"); //the gui will fix this logic
+              int character = sc.nextInt();
+              players.add(new Player());
+              players.get(i).setCharacter(board.playerNames.get(character));
+              board.removePlayerNameIndex(character);
+              }
+             
+            board.addPlayers(players);
 
-            /*
-             * boolean continueGame = true;
-             * while(continueGame){
-             * for(int i = 0; i < players.size(); i++){
-             * players.get(i).playTurn(board);
-             * if(players.get(i).checkWinner()){
-             * System.out.println(players.get(i).getCharacter() + " is the Winner");
-             * continueGame = false;
-             * break;
-             * }
-             * }
-             * }
-             */
+            
+              boolean continueGame = true;
+              while(continueGame){
+              for(int i = 0; i < players.size(); i++){
+              players.get(i).playTurn(board);
+              if(players.get(i).checkWinner()){
+              System.out.println(players.get(i).getCharacter() + " is the Winner");
+              continueGame = false;
+              break;
+              }
+              }
+              }
+             
         }
 
     }
