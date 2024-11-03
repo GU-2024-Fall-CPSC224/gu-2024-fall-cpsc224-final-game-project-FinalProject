@@ -12,13 +12,14 @@
  */
 package edu.gonzaga;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.awt.font.*;
 /** Main program class for launching your team's program. */
 public class CandyLand {
     static int numberOfPlayers;
@@ -29,7 +30,10 @@ public class CandyLand {
         while(!done) {
 
 //             image icon class for images
-            ImageIcon imageIcon = new ImageIcon("path/to/your/image.jpg");
+            ImageIcon pinkIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/pinkIcon.jpg");
+            ImageIcon purpleIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/purpleIcon.jpg");
+            ImageIcon redIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/redIcon.jpg");
+            ImageIcon yellowIcon = new ImageIcon("C:/Users/miapr/OneDrive/Pictures/Saved Pictures/yellowIcon.jpg");
             JFrame frame1 = new JFrame();
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -98,8 +102,11 @@ public class CandyLand {
             frame2.setSize(1100, 650);
             frame2.setLayout(null);
             frame2.setVisible(false);
-
-            JButton characterA = new JButton("Mally Mallo");
+            JLabel label2 = new JLabel("CHOOSE YOUR CHARACTER!");
+            label2.setBounds(350, 250, 400, 50);
+            label2.setFont(new Font("Courier", Font.BOLD, 30));
+            frame2.add(label2);
+            JButton characterA = new JButton(pinkIcon);
             characterA.setBounds(100, 50, 200, 200);
             characterA.addActionListener(new ActionListener() {
                 @Override
@@ -111,7 +118,7 @@ public class CandyLand {
                 }
             });
 
-            JButton characterB = new JButton("Twirly Girl");
+            JButton characterB = new JButton(purpleIcon);
             characterB.setBounds(100, 300, 200, 200);
             characterB.addActionListener(new ActionListener() {
                 @Override
@@ -123,8 +130,8 @@ public class CandyLand {
                 }
             });
 
-            JButton characterC = new JButton("Cutie Cone");
-            characterC.setBounds(450, 50, 200, 200);
+            JButton characterC = new JButton(yellowIcon);
+            characterC.setBounds(800, 50, 200, 200);
             characterC.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -135,8 +142,8 @@ public class CandyLand {
                 }
             });
 
-            JButton characterD = new JButton("Giggly Gumdrop");
-            characterD.setBounds(450, 300, 200, 200);
+            JButton characterD = new JButton(redIcon);
+            characterD.setBounds(800, 300, 200, 200);
             characterD.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
