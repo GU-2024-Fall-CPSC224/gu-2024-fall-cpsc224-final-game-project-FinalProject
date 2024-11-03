@@ -40,7 +40,7 @@ public class CandyLand {
             JFrame frame2 = new JFrame();
             frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            JFrame frame3 = new JFrame();
+            JFrame frame3 = new JFrame("Candy Land Game Board");
             frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             JFrame frame4 = new JFrame();
@@ -174,12 +174,13 @@ public class CandyLand {
             characterD.setVisible(true);
 
 //            frame 3 **************************************
-            frame3.setSize(800, 600);
+            frame3.setSize(1100, 650);
+            frame3.add(board);
             frame3.setLayout(null);
-            frame3.setVisible(false);
+//            frame3.setVisible(false);
 
 //            frame 4 **************************************
-            frame4.setSize(800, 600);
+            frame4.setSize(1100, 650);
             frame4.setLayout(null);
             frame4.setVisible(false);
 

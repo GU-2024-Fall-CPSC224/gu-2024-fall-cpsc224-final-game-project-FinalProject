@@ -14,7 +14,7 @@ public class Board extends JPanel {
     List<Point> candyPath = new ArrayList<>();
 
     public Board()
-    {   
+    {
         potentialCards = new ArrayList<Card>();
         initializePotentialCards();
         deck = new ArrayList<Card>();
