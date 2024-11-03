@@ -26,11 +26,11 @@ import java.awt.font.*;
 public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
-    static boolean done = false;
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         Board board = new Board();
         ArrayList<Player> players = new ArrayList<>();
-        
+        boolean done = false;
+
         ImageIcon pinkIcon = new ImageIcon("project design documents/Picture5.jpg");
         ImageIcon purpleIcon = new ImageIcon("project design documents/Picture6.jpg");
         ImageIcon redIcon = new ImageIcon("project design documents/Picture7.jpg");
@@ -104,6 +104,7 @@ public class CandyLand {
         frame4.setSize(800, 600);
         frame4.setLayout(null);
         frame4.setVisible(false);
+        
         while (!done) {
             // image icon class for images
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -189,13 +190,8 @@ public class CandyLand {
                     frame3.setVisible(true);   
                                   
                 }
-            });
-           
-
-            
+            });            
              int numberOfPlayers = getPlayerInput();
-
-            
              Scanner sc = new Scanner(System.in);
               for (int i = 0; i < numberOfPlayers; i++) {
               System.out.println("Pick character 1-4!"); //the gui will fix this logic
@@ -209,13 +205,26 @@ public class CandyLand {
 
             
               boolean continueGame = true;
+              
               while(continueGame){
               for(int i = 0; i < players.size(); i++){
               players.get(i).playTurn(board);
               if(players.get(i).checkWinner()){
               System.out.println(players.get(i).getCharacter() + " is the Winner");
+              JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+              JLabel text = new JLabel("Congrtulations!!!");
+              winner.setFont(new Font("Courier", Font.BOLD, 20));
+              text.setFont(new Font("Courier", Font.BOLD, 20));
+              winner.setSize(500, 50);
+              text.setSize(500, 50);
+              text.setLocation(250, 100);
+              winner.setLocation(175, 200);
+              frame4.add(winner);
+              frame4.add(text);
+              frame3.setVisible(false);
+              frame4.setVisible(true);
               continueGame = false;
-              break;
+              break;              
               }
               }
               }
