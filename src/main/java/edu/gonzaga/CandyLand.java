@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -91,8 +92,12 @@ public class CandyLand {
         characterD.setVisible(true);
 
         // frame 3 **************************************
-        frame3.setSize(800, 600);
-        frame3.setLayout(null);
+        frame3.setSize(900, 700);
+        try {
+            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         frame3.setVisible(false);
 
         // frame 4 **************************************
