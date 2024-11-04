@@ -92,7 +92,7 @@ public class CandyLand {
         characterD.setVisible(true);
 
         // frame 3 **************************************
-        frame3.setSize(900, 700);
+        frame3.setSize(1200, 700);//changes width from 900 to 1200!
         try {
             frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
         } catch (IOException e) {
