@@ -93,11 +93,11 @@ public class CandyLand {
 
         // frame 3 **************************************
         frame3.setSize(900, 700);
-        try {
-            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         frame3.add(board);
         frame3.setVisible(false);
 
@@ -212,7 +212,7 @@ public class CandyLand {
               if(players.get(i).checkWinner()){
               System.out.println(players.get(i).getCharacter() + " is the Winner");
               JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
-              JLabel text = new JLabel("Congrtulations!!!");
+              JLabel text = new JLabel("Congratulations!!!");
               winner.setFont(new Font("Courier", Font.BOLD, 20));
               text.setFont(new Font("Courier", Font.BOLD, 20));
               winner.setSize(500, 50);
