@@ -26,7 +26,8 @@ import java.awt.font.*;
 public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Board board = new Board();
         ArrayList<Player> players = new ArrayList<>();
         boolean done = false;
@@ -77,7 +78,7 @@ public class CandyLand {
         JButton characterD = new JButton(redIcon);
         characterD.setBounds(800, 300, 200, 200);
         JButton button5 = new JButton("Enter");
-        JButton  enterButton = new JButton("Enter");
+        JButton enterButton = new JButton("Enter");
         enterButton.setBounds(500, 300, 100, 50);
         frame2.add(enterButton);
         enterButton.setVisible(true);
@@ -92,12 +93,20 @@ public class CandyLand {
         characterD.setVisible(true);
 
         // frame 3 **************************************
+<<<<<<< HEAD
         frame3.setSize(900, 700);
 //        try {
 //            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        frame3.setSize(1200, 700);//changes width from 900 to 1200!
+        try {
+            frame3.setContentPane(
+                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         frame3.add(board);
         frame3.setVisible(false);
 
@@ -105,7 +114,7 @@ public class CandyLand {
         frame4.setSize(800, 600);
         frame4.setLayout(null);
         frame4.setVisible(false);
-        
+
         while (!done) {
             // image icon class for images
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -140,7 +149,7 @@ public class CandyLand {
             });
             characterA.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {                   
+                public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
                     players.get(players.size() - 1).setCharacter("Mally Mallo");
                     board.removePlayerName("Mally Mallo");
@@ -150,7 +159,7 @@ public class CandyLand {
 
             characterB.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {                   
+                public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
                     players.get(players.size() - 1).setCharacter("Twirly Girl");
                     board.removePlayerName("Twirly Girl");
@@ -160,7 +169,7 @@ public class CandyLand {
             characterC.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
+
                     players.add(new Player());
                     players.get(players.size() - 1).setCharacter("Cutie Cone");
                     board.removePlayerName("Cutie Cone");
@@ -170,7 +179,7 @@ public class CandyLand {
 
             characterD.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {                    
+                public void actionPerformed(ActionEvent e) {
                     players.add(new Player());
                     players.get(players.size() - 1).setCharacter("Giggly Gumdrop");
                     board.removePlayerName("Giggly Gumdrop");
@@ -188,21 +197,22 @@ public class CandyLand {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame2.setVisible(false);
-                    frame3.setVisible(true);                                  
+                    frame3.setVisible(true);
                 }
-            });            
-             int numberOfPlayers = getPlayerInput();
-             Scanner sc = new Scanner(System.in);
-              for (int i = 0; i < numberOfPlayers; i++) {
-              System.out.println("Pick character 1-4!"); //the gui will fix this logic
-              int character = sc.nextInt();
-              players.add(new Player());
-              players.get(i).setCharacter(board.playerNames.get(character));
-              //board.removePlayerNameIndex(character);
-              }
-             
+            });
+            int numberOfPlayers = getPlayerInput();
+            Scanner sc = new Scanner(System.in);
+            for (int i = 0; i < numberOfPlayers; i++) {
+                System.out.println("Pick character 1-4!"); // the gui will fix this logic
+                int character = sc.nextInt();
+                players.add(new Player());
+                players.get(i).setCharacter(board.playerNames.get(character));
+                // board.removePlayerNameIndex(character);
+            }
+
             board.addPlayers(players);
 
+<<<<<<< HEAD
             
               boolean continueGame = true;
               
@@ -228,7 +238,30 @@ public class CandyLand {
               }
               }
               }
-             
+              boolean continueGame = true;
+
+            while (continueGame) {
+                for (int i = 0; i < players.size(); i++) {
+                    players.get(i).playTurn(board);
+                    if (players.get(i).checkWinner()) {
+                        System.out.println(players.get(i).getCharacter() + " is the Winner");
+                        JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+                        JLabel text = new JLabel("Congrtulations!!!");
+                        winner.setFont(new Font("Courier", Font.BOLD, 20));
+                        text.setFont(new Font("Courier", Font.BOLD, 20));
+                        winner.setSize(500, 50);
+                        text.setSize(500, 50);
+                        text.setLocation(250, 100);
+                        winner.setLocation(175, 200);
+                        frame4.add(winner);
+                        frame4.add(text);
+                        frame3.setVisible(false);
+                        frame4.setVisible(true);
+                        continueGame = false;
+                        break;
+                    }
+                }
+            }
         }
 
     }
