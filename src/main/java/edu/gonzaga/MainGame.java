@@ -8,7 +8,7 @@
  * Contributors:
  * 
  * 
- * Copyright: 2023
+ * Copyright: 2024
  */
 package edu.gonzaga;
 
@@ -16,8 +16,12 @@ package edu.gonzaga;
 /** Main program class for launching your team's program. */
 public class MainGame {
     public static void main(String[] args) {
-        System.out.println("Hello Team Game");
-
+        Snake snake = new Snake();
+        System.out.println(snake);
+        snake.move();
+        System.out.println(snake);
+        snake.move();
+        System.out.println(snake);
 
         // Your code here. Good luck!
     }
