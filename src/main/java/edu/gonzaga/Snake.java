@@ -66,9 +66,8 @@ public class Snake {
         if (!canTurn(dir)) {
             return;
         }
-        //prev rotation, subtract prev direction, add new dir, set as next rotation
-        int rotation = segments.get(segments.size()-1).getRotation();
-        rotation -= facing;
+        //opposite of prev dir, add new dir, set as next rotation
+        int rotation = facing == 'u' || facing == 'd' ? facing ^ ('u' ^ 'd') : facing ^ ('l' ^ 'r');
         rotation += dir;
         nextRotation = rotation;
         facing = dir;
