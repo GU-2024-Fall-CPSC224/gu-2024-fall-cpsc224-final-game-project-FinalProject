@@ -3,6 +3,7 @@ package edu.gonzaga;
 import java.util.ArrayList;
 
 public class Board {
+    
     public static final int BOARD_SIZE = 10;
 
     private ArrayList<Ship> ships;
@@ -21,6 +22,8 @@ public class Board {
     public boolean isMarked(int x, int y){
         return markers[x][y];
     }
+
+
     /**
      * Does this hit sink the ship?
      * @param attackedShip ship that has part of itself in the tile that was hit
@@ -30,6 +33,8 @@ public class Board {
         //check if all other x and y have been hit for the ship, if so return true
         return false;
     }
+
+
     /**
      * Set the marker of this tile as a hit or miss
      * @param x x-coordinate of attempted shot
@@ -40,9 +45,13 @@ public class Board {
         //if hit: do something in Swing
         markers[x][y] = true;
     }
+
+
     public void addShip(Ship boat){
         //add a boat to the arraylist of active boats
     }
+
+
     /**
      * Is this marker a hit or miss
      * @param x -coordinate of attempted shot
