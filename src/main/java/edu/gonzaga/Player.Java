@@ -5,5 +5,24 @@ import java.util.Scanner;
  */
 
 public class Player {
-    
+    public String name;
+    public int color;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getColor() {
+        return int;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    //still need the takeTurn method that is void with parameter of a Tank
 }
