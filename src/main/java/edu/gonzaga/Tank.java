@@ -5,12 +5,12 @@ import java.util.Scanner;
  * This class holds all the code under main. This is where the stuff under the abstraction happens.
  */
 
-public class Tanks { 
+public class Tank { 
     private Integer xCord;
     private Integer yCord;
     private String color;
 
-    public void Tank() {
+    public Tank() {
         xCord = 0;
         yCord = 0;
         color = "Red";
