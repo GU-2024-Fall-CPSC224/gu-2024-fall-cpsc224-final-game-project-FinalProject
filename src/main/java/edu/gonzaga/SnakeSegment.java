@@ -1,12 +1,14 @@
 package edu.gonzaga;
 
+import java.util.Map;
+
 public class SnakeSegment {
     private int x;
     private int y;
     private int life; 
-    private String rotation; //ud, lr, ul, ur, dl, dr
+    private int rotation; //u+d, l+r, u+l, u+r, d+l, d+r
 
-    public SnakeSegment(int x,int y, int life, String rotation) {
+    public SnakeSegment(int x,int y, int life, int rotation) {
         this.x = x;
         this.y = y;
         this.life = life;
@@ -22,6 +24,14 @@ public class SnakeSegment {
     }
 
     public String toString() {
-        return "(" + x + "," + y + " " + rotation + " " + life + ")";
+        return "(" + x + "," + y + " " + getRotAsStr() + " " + life + ")";
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public String getRotAsStr() {
+        return Map.of(217,"ud",222,"lr",225,"ul",231,"ur",208,"dl",214,"dr").get(rotation);
     }
 }

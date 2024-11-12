@@ -20,6 +20,9 @@ public class MainGame {
         System.out.println(snake);
         snake.move();
         System.out.println(snake);
+        snake.turn('u');
+        snake.move();
+        System.out.println(snake);
         snake.move();
         System.out.println(snake);
 
