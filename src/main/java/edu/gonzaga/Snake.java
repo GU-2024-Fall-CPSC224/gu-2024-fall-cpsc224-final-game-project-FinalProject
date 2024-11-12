@@ -47,7 +47,7 @@ public class Snake {
         nextRotation = facing == 'u' || facing == 'd' ? 'u'+'d' : 'l'+'r';
     }
 
-    public void eat() {
+    public void grow() {
         for (SnakeSegment s : segments) {
             s.subtractLife(-1);
         }
@@ -63,14 +63,11 @@ public class Snake {
     }
 
     public void turn(char dir) {
-        if (!canTurn(dir)) {
-            return;
+        if (canTurn(dir)) {
+            //opposite of prev dir, add new dir, set as next rotation
+            nextRotation = (facing ^ (facing % 6 == 0 ? 30 : 17)) + dir;
+            facing = dir;
         }
-        //opposite of prev dir, add new dir, set as next rotation
-        int rotation = facing == 'u' || facing == 'd' ? facing ^ ('u' ^ 'd') : facing ^ ('l' ^ 'r');
-        rotation += dir;
-        nextRotation = rotation;
-        facing = dir;
     }
 
     private boolean canTurn(char dir) {
@@ -81,5 +78,25 @@ public class Snake {
             return false;
         }
         return true; 
+    }
+
+    public int getX() {
+        return headX;
+    }
+
+    public int getY() {
+        return headY;
+    }
+
+    public char getFacing() {
+        return facing;
+    }
+
+    public ArrayList<SnakeSegment> getSegments() {
+        return segments;
+    }
+
+    public int getLength() {
+        return length;
     }
 }
