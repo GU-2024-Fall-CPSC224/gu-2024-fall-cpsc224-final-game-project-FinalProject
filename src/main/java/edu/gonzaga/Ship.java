@@ -3,6 +3,8 @@ package edu.gonzaga;
 public abstract class Ship {
     private final int x;
     private final int y;
+
+    // Determines if the ship will extend downwards or to the right.
     private final boolean isVertical;
 
     public Ship(int x, int y, boolean isVertical) {
