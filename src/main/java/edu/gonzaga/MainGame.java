@@ -101,8 +101,11 @@ public class MainGame {
         while (!gameWon) { //main gameplay loop
             if (turn1){
                 System.out.println(player1 + " it's your turn!");
+                
                 //Shoot at player 2 (select a tile in swing)
+                
                 //setHit, isHit, 
+                
                 //update board
             }
             else {

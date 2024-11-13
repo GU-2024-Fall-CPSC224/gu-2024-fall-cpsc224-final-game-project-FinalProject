@@ -13,8 +13,8 @@ public class Board {
     // BOARD_SIZE holds the current size of the board in both rows and columns
     private static final int BOARD_SIZE = 10;
 
-    // ships stores all ships placed on the player's board.
-    private ArrayList<Ship> ships;
+    // shipList stores all ships placed on the player's board.
+    private ArrayList<Ship> shipList;
 
     // markers stores all markers placed on the player's board.
     private boolean[][] markers;
@@ -28,7 +28,7 @@ public class Board {
      * Basic constructor of a board.
      */ 
     public Board() {
-        ships = new ArrayList<>();
+        shipList = new ArrayList<>();
         // Generate a new blank list for holding markers
         markers = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
@@ -52,7 +52,7 @@ public class Board {
      * @param hit does that tile have a boat on it
      */
     public void setMarked(int x, int y, boolean hit){
-        //if hit: do something in Swing ()
+
         markers[x][y] = true;
     }
 
@@ -72,18 +72,54 @@ public class Board {
      * addShip() adds a ship to the array list of ships sotred on the board.
      * @param boat
      */
-    public void addShip(Ship boat){
-        //add a boat to the arraylist of active boats
+    public void addShip(Ship newShip ){
+        //add a boat to the arraylist of active boats:
+        shipList.add( newShip );
     }
 
 
     /**
-     * Is this marker a hit or miss
+     * isMarkerHit() determines if the checked space contains a ship by subsiquently
+     * checking every space that is overlapping with a ship.
+     * 
      * @param x -coordinate of attempted shot
      * @param y -coordinate of attempted shot
      * @return is there a ship on that tile
      */
-    public boolean isMarkerHit(int x, int y){
-        return false;
+    public boolean isMarkerHit(int markerX, int markerY){
+        
+        // Stores whether a ship was found while checking ship spaces.
+        Boolean shipDetected = false;
+
+        // Check if the checked space hits a ship:
+        for ( Ship ship : shipList ) {
+            // Get the coordinate of the ship's front / tip, and its dircetion:
+            Integer shipXCoord = ship.getX();
+            Integer shipYCoord = ship.getY();
+            Boolean tempDirection = ship.isVertical();
+            
+            for ( int i = 0; i < ship.getLength(); i++ ) {
+                
+                // Compare marker coordinates against each ship coordinate and see if they overlap:
+                if ( ( shipXCoord == markerX ) && ( shipYCoord == markerY ) ) {
+                    // A ship overlaps with the space checked! YOU'VE HIT A BATTLESHIP!
+                    shipDetected = true;
+                    // Potentially return here, as you don't need to check any other spaces?
+                }
+                // No overlapping ships found. check next section of ship.
+                else {
+                    // If the ship is facing downwards:
+                    if ( tempDirection == true ) {
+                        shipYCoord++;
+                    }
+                    // Else if the ship is facing to the right:
+                    else {
+                        shipXCoord++;
+                    }
+                }
+            } // All sections of a ship checked.
+        } // All ships checked.
+        
+        return shipDetected;
     }
 }
