@@ -1,11 +1,12 @@
 package edu.gonzaga;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 /*
  * This class holds all the code under main. This is where the stuff under the abstraction happens.
  */
 
-public class Tank { 
+public class Tank {
     private Integer xCord;
     private Integer yCord;
     private String color;
@@ -18,6 +19,10 @@ public class Tank {
 
     public String getColor() {
         return color;
+    }
+
+    public void setColor(String str) {
+        color = str;
     }
 
 }
