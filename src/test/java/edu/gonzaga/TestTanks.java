@@ -56,4 +56,46 @@ class TestTanks {
 
         assertEquals(expectedColor, t.getColor());
     }
+
+    @Test 
+    void testConstructorHealth(){
+        Tank t = new Tank(200); 
+        Integer expectedHealth = 200; 
+        Integer expectedX = 0;
+        Integer expectedY = 0; 
+        String expectedColor = "Red"; 
+
+        assertEquals(expectedColor, t.getColor());
+        assertEquals(expectedHealth, t.getHealth());
+        assertEquals(expectedX, t.getXCord());
+        assertEquals(expectedY, t.getYCord());
+    }
+
+    @Test 
+    void testConstructorXAndYCord(){
+        Tank t = new Tank(10, 20); 
+        Integer expectedHealth = 100; 
+        Integer expectedX = 10;
+        Integer expectedY = 20; 
+        String expectedColor = "Red"; 
+
+        assertEquals(expectedColor, t.getColor());
+        assertEquals(expectedHealth, t.getHealth());
+        assertEquals(expectedX, t.getXCord());
+        assertEquals(expectedY, t.getYCord());
+    }
+
+    @Test 
+    void testConstructorColor(){
+        Tank t = new Tank("Green"); 
+        Integer expectedHealth = 100; 
+        Integer expectedX = 0;
+        Integer expectedY = 0; 
+        String expectedColor = "Green"; 
+
+        assertEquals(expectedColor, t.getColor());
+        assertEquals(expectedHealth, t.getHealth());
+        assertEquals(expectedX, t.getXCord());
+        assertEquals(expectedY, t.getYCord());
+    }
 }
