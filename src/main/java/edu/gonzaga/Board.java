@@ -19,7 +19,7 @@ public class Board {
      * @return is there a mark on that tile
      */
     public boolean isMarked(int x, int y){
-        return markers[x][y];
+        return markers[y][x];
     }
     /**
      * Does this hit sink the ship?
@@ -38,7 +38,7 @@ public class Board {
      */
     public void setMarked(int x, int y, boolean hit){
         //if hit: do something in Swing
-        markers[x][y] = true;
+        markers[y][x] = true;
     }
     public void addShip(Ship boat){
         //add a boat to the arraylist of active boats
@@ -51,5 +51,24 @@ public class Board {
      */
     public boolean isMarkerHit(int x, int y){
         return false;
+    }
+    //for testing purposes, no GUI
+    public void printBoard(){
+        for (int i = 0; i < markers.length; i++){
+            for (int j = 0; j < markers[i].length; j++){
+                if (markers[i][j] == true){
+                    if (isMarkerHit(j,i)){
+                        System.out.print(" X ");
+                    }
+                    else {
+                        System.out.print(" O ");
+                    }
+                }
+                else {
+                    System.out.print(" ~ ");
+                }
+            }
+            System.out.println("");
+        }
     }
 }
