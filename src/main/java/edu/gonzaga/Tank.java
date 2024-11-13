@@ -69,7 +69,6 @@ public class Tank {
 
     public void setHealth(Integer healthSet) {
         health = healthSet;
-
     }
 
     public void setXCord(Integer xSet) {
