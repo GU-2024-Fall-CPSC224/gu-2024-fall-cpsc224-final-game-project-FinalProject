@@ -10,6 +10,8 @@ public class Tank {
     private Integer xCord;
     private Integer yCord;
     private String color;
+    private Integer shotCount = 0;
+    private Integer trajectory;
     private Integer health;
 
     public Tank() {
@@ -71,6 +73,10 @@ public class Tank {
         health = healthSet;
     }
 
+    public Integer getTrajectory() {
+        return this.trajectory;
+    }
+
     public void setXCord(Integer xSet) {
         xCord = xSet;
     }
@@ -83,4 +89,26 @@ public class Tank {
         color = colorSet;
     }
 
+    public void setTrajectory(Integer x) {
+        trajectory = x;
+    }
+
+    // This will change the x and y coordinates depending on how much the player
+    // moves
+    public void move() {
+
+    }
+
+    // This will fire the tank and increase shotcount, uses artillery
+    public int fire() {
+        // returning 0 until artillery is made and can be used
+        return 0;
+    }
+
+    // This will tell if we hit the tank by comparing the missle location with the
+    // location of enemy tank
+    public int hit() {
+        // returning 0 for now
+        return 0;
+    }
 }
