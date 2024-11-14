@@ -89,7 +89,7 @@ public class GUI {
 
         // set up the panel for player number
         JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel playerLabel = new JLabel("Players (1 - 8):");
+        JLabel playerLabel = new JLabel("Players (2 - 8):");
         playerField = new JTextField(5);
         playerField.setPreferredSize(new Dimension(100, 25));
         playerPanel.add(playerLabel);
@@ -113,15 +113,25 @@ public class GUI {
 
 
     private void getPlayerPanel() {
+        int chips;
+        int playerCount;
+        try {
+            chips = Integer.parseInt(chipsField.getText());
+            playerCount = Integer.parseInt(playerField.getText());
+        } catch (NumberFormatException ex) {
+            startAlert();
+            return;
+        }
+
+        // Validate the input values for chips and player count
+        if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
+            startAlert();
+            return;
+        }
+
+        nameAlert();
         playerPanel.removeAll();
         playerPanel.setPreferredSize(new Dimension(300, 1000));
-
-        // get the player number and chips
-        int playerCount;
-        int chips;
-
-        playerCount = Integer.parseInt(playerField.getText());
-        chips = Integer.parseInt(chipsField.getText());
 
         for (int i = 0; i < playerCount; i++) {
             JPanel singlePlayerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -201,6 +211,22 @@ public class GUI {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int chips;
+                int playerCount;
+                try {
+                    chips = Integer.parseInt(chipsField.getText());
+                    playerCount = Integer.parseInt(playerField.getText());
+                } catch (NumberFormatException ex) {
+                    startAlert();
+                    return;
+                }
+
+                // Validate the input values for chips and player count
+                if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
+                    startAlert();
+                    return;
+                }
+
                 // Disable name editing after starting the game
                 for (JTextField playerNameField : playerNameFields) {
                     playerNameField.setEditable(false);
@@ -290,6 +316,56 @@ public class GUI {
 
         return newPanel;
     }
+
+    private void startAlert(){
+        // Create the dialog to show the Farkle message
+        JDialog startDialog = new JDialog(mainWindowFrame, "Game Alert", true);
+        startDialog.setSize(600, 100);
+        startDialog.setLocationRelativeTo(mainWindowFrame);
+
+        // Create a label with a Farkle message
+        JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel alert = new JLabel("Please set up correct chips and player number on the left side before you start game" , SwingConstants.CENTER);
+        JLabel alertNextLine = new JLabel("(after you start game, you can not change player name, chips and player number)", SwingConstants.CENTER);
+        alertPanel.add(alert);
+        alertPanel.add(alertNextLine);
+
+        // Create an OK button to close the dialog
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> startDialog.dispose());
+
+        // Add message and button to the dialog
+        startDialog.setLayout(new BorderLayout());
+        startDialog.add(alertPanel, BorderLayout.CENTER);
+        startDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Show the dialog
+        startDialog.setVisible(true);
+    }
+
+    private void nameAlert(){
+        // Create the dialog to show the Farkle message
+        JDialog nameDialog = new JDialog(mainWindowFrame, "Name Alert", true);
+        nameDialog.setSize(600, 100);
+        nameDialog.setLocationRelativeTo(mainWindowFrame);
+
+        // Create a label with a Farkle message
+        JLabel farkle = new JLabel("Please input your name on the right side, after start game, you can not change your name!!!!", SwingConstants.CENTER);
+
+        // Create an OK button to close the dialog
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> nameDialog.dispose());
+
+        // Add message and button to the dialog
+        nameDialog.setLayout(new BorderLayout());
+        nameDialog.add(farkle, BorderLayout.CENTER);
+        nameDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Show the dialog
+        nameDialog.setVisible(true);
+    }
+
+
 
 
     void runGUI(){
