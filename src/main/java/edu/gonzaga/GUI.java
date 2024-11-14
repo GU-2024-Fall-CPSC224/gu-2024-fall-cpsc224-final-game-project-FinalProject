@@ -2,18 +2,25 @@ package edu.gonzaga;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class GUI {
     JFrame mainWindowFrame;
     JPanel rolePanel = new JPanel();
     JPanel playerPanel = new JPanel();
-    JPanel pokerPanel = new JPanel();
     JPanel gamePanel = new JPanel();
     JPanel reminder = new JPanel();
     RoleImage roleImage;
 
+    JLabel potLabelText;
+
     JTextField chipsField;
     JTextField playerField;
+
+    // List to hold player name fields
+    ArrayList<JTextField> playerNameFields = new ArrayList<>();
 
     public GUI(){
         roleImage = new RoleImage("media/poker rules.png");
@@ -42,7 +49,8 @@ public class GUI {
         this.playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
 
         // set up poker panel
-        this.pokerPanel = getPokerPanel();
+        JPanel pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pokerContainerPanel.add(getPokerPanel());
 
         // set up game panel
         this.gamePanel = getGamePanel();
@@ -51,11 +59,11 @@ public class GUI {
         this.reminder = getReminder();
 
         // input all panels in main window
-        this.mainWindowFrame.add(this.rolePanel, BorderLayout.WEST);
-        this.mainWindowFrame.add(this.playerPanel, BorderLayout.EAST);
-        this.mainWindowFrame.add(this.pokerPanel, BorderLayout.SOUTH);
-        this.mainWindowFrame.add(this.reminder, BorderLayout.NORTH);
-        this.mainWindowFrame.add(this.gamePanel, BorderLayout.CENTER);
+        this.mainWindowFrame.getContentPane().add(this.rolePanel, BorderLayout.WEST);
+        this.mainWindowFrame.getContentPane().add(this.playerPanel, BorderLayout.EAST);
+        this.mainWindowFrame.getContentPane().add(pokerContainerPanel, BorderLayout.SOUTH);
+        this.mainWindowFrame.getContentPane().add(this.reminder, BorderLayout.NORTH);
+        this.mainWindowFrame.getContentPane().add(this.gamePanel, BorderLayout.CENTER);
     }
 
     private JPanel getRolePanel() {
@@ -92,6 +100,7 @@ public class GUI {
         // set up ok button
         JButton okPlayerButton = new JButton("OK");
         okPlayerButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         okPlayerButton.addActionListener(e -> getPlayerPanel());
 
         rolePanel.add(Box.createVerticalStrut(10));
@@ -105,6 +114,7 @@ public class GUI {
 
     private void getPlayerPanel() {
         playerPanel.removeAll();
+        playerPanel.setPreferredSize(new Dimension(300, 1000));
 
         // get the player number and chips
         int playerCount;
@@ -114,7 +124,7 @@ public class GUI {
         chips = Integer.parseInt(chipsField.getText());
 
         for (int i = 0; i < playerCount; i++) {
-            JPanel singlePlayerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JPanel singlePlayerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
             Profile profile = new Profile("media/profile.png");
             JLabel iconLabel = new JLabel(profile.getRoleImage());
@@ -127,6 +137,7 @@ public class GUI {
 
             JTextField playerNameField = new JTextField("Player Name");
             playerNameField.setPreferredSize(new Dimension(150, 25));
+            playerNameFields.add(playerNameField); // add player name in array list
 
             JLabel chipsLabel = new JLabel("Chips: " + chips);
 
@@ -142,24 +153,144 @@ public class GUI {
 
     private JPanel getPokerPanel() {
         JPanel newPanel = new JPanel();
-        newPanel.setLayout(new FlowLayout());
+        newPanel.setLayout(new BorderLayout());
+
+        // set up the panel for player's cards
+        JPanel pokerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        String imagePath = "media/purple_back.jpg";
+        CardBackImage cardBackImage = new CardBackImage(imagePath);
+        for (int i = 0; i < 2; i++) {
+            JLabel cardBack = new JLabel(cardBackImage.getBackImage());
+            pokerPanel.add(cardBack);
+        }
+
+        // set up the panel for options
+        JPanel optionPanel = new JPanel();
+        optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.X_AXIS));
+        JButton check = new JButton("Check");
+        JButton call = new JButton("Call");
+        JButton raise = new JButton("Raise");
+        JButton fold = new JButton("Fold");
+        optionPanel.add(check);
+        optionPanel.add(call);
+        optionPanel.add(raise);
+        optionPanel.add(fold);
+
+        newPanel.add(pokerPanel, BorderLayout.NORTH);
+        newPanel.add(optionPanel, BorderLayout.SOUTH);
 
         return newPanel;
     }
 
     private JPanel getGamePanel() {
-        JPanel newPanel = new JPanel();
-        newPanel.setLayout(new FlowLayout());
+        // Main panel to hold the start button initially
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
-        return newPanel;
+        // Set up the start panel with a Start button
+        JPanel startPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton startButton = new JButton("Start");
+        startButton.setPreferredSize(new Dimension(200, 100));
+
+
+        startPanel.add(startButton);
+
+        // Add the start panel to the main panel
+        mainPanel.add(startPanel, BorderLayout.CENTER);
+
+        // Set up action listener for the Start button
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Disable name editing after starting the game
+                for (JTextField playerNameField : playerNameFields) {
+                    playerNameField.setEditable(false);
+                }
+
+                // Remove the start panel when the button is pressed
+                mainPanel.remove(startPanel);
+
+                // Set up the panel for the game view
+                JPanel gamePanel = new JPanel();
+                gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS)); // Vertical layout for centering
+
+                // Add vertical glue to push content to center
+                gamePanel.add(Box.createVerticalGlue());
+
+                // Set up the panel for the "river" (cards display)
+                JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+                // Load card back image
+                String imagePath = "media/purple_back.jpg";
+                CardBackImage cardBackImage = new CardBackImage(imagePath);
+
+                // Create the river by adding five card back images with flip buttons below each
+                for (int i = 0; i < 5; i++) {
+                    // Panel to hold the card back and the flip button
+                    JPanel cardContainer = new JPanel();
+                    cardContainer.setLayout(new BoxLayout(cardContainer, BoxLayout.Y_AXIS));
+
+                    JLabel cardBack = new JLabel(cardBackImage.getBackImage());
+                    JButton flipButton = new JButton("Flip");
+                    flipButton.setEnabled(false);
+
+                    cardBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    flipButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                    // Add the card back and flip button to the card container
+                    cardContainer.add(cardBack);
+                    cardContainer.add(Box.createVerticalStrut(5));
+                    cardContainer.add(flipButton);
+
+                    // Add the container to the cardPanel
+                    cardPanel.add(cardContainer);
+                }
+
+                // Set up the panel for pot
+                JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                JLabel potLabel = new JLabel("Pot: ");
+                potLabelText = new JLabel("0");
+                potPanel.add(potLabel);
+                potPanel.add(potLabelText);
+
+                // Add cardPanel and potPanel to gamePanel vertically
+                gamePanel.add(cardPanel);
+                gamePanel.add(Box.createVerticalStrut(10)); // Add space between cards and pot
+                gamePanel.add(potPanel);
+
+                // Add vertical glue to push content to center
+                gamePanel.add(Box.createVerticalGlue());
+
+                // Add the gamePanel to the mainPanel
+                mainPanel.add(gamePanel, BorderLayout.CENTER);
+
+                // Refresh the mainPanel to show the updated components
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        return mainPanel;
     }
+
+
 
     private JPanel getReminder() {
-        JPanel newPanel = new JPanel();
-        newPanel.setLayout(new FlowLayout());
+        JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components
+        newPanel.setPreferredSize(new Dimension(300, 150));
+
+        JLabel reminderLabel = new JLabel("Initial Reminder Text");
+
+        // Use GridBagConstraints to center the label
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER; // Center within the cell
+
+        newPanel.add(reminderLabel, gbc);
 
         return newPanel;
     }
+
 
     void runGUI(){
         System.out.println("Starting GUI app");

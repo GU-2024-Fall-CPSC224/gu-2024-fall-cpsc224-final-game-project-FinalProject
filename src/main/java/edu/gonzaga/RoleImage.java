@@ -20,7 +20,7 @@ public class RoleImage {
         try {
             System.out.println("Loading image: " + imagesPath);
             BufferedImage currPicture = ImageIO.read(new File(imagesPath));
-            Image dimg = currPicture.getScaledInstance(300, 500, Image.SCALE_SMOOTH);
+            Image dimg = currPicture.getScaledInstance(300, 400, Image.SCALE_SMOOTH);
             roleImage = new ImageIcon(dimg);
         } catch (IOException e) {
             System.err.println("Error loading image: " + e.getMessage());
