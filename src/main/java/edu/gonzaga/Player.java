@@ -2,7 +2,7 @@ package edu.gonzaga;
 
 //literally just stores the name
 public class Player{
-    public String name;
+    private String name;
 
     public Player(String userName){
         this.name = userName;

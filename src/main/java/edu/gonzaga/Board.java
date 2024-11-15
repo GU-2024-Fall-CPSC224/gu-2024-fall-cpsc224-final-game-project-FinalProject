@@ -41,7 +41,7 @@ public class Board {
      * @return true/false there is a mark on the selected tile.
      */
     public boolean isMarked(int x, int y){
-        return markers[x][y];
+        return markers[y][x];
     }
 
 
@@ -67,14 +67,18 @@ public class Board {
         return false;
     }
 
+    public void setMarked(int x, int y, boolean hit){
+        //if hit: do something in Swing
+        markers[y][x] = true;
+    }
 
     /**
      * addShip() adds a ship to the array list of ships sotred on the board.
      * @param boat
-     */
+    */
     public void addShip(Ship newShip ){
-        //add a boat to the arraylist of active boats:
-        shipList.add( newShip );
+      //add a boat to the arraylist of active boats:
+      shipList.add( newShip );
     }
 
 
@@ -121,5 +125,24 @@ public class Board {
         } // All ships checked.
         
         return shipDetected;
+    }
+    //for testing purposes, no GUI
+    public void printBoard(){
+        for (int i = 0; i < markers.length; i++){
+            for (int j = 0; j < markers[i].length; j++){
+                if (markers[i][j] == true){
+                    if (isMarkerHit(j,i)){
+                        System.out.print(" X ");
+                    }
+                    else {
+                        System.out.print(" O ");
+                    }
+                }
+                else {
+                    System.out.print(" ~ ");
+                }
+            }
+            System.out.println("");
+        }
     }
 }

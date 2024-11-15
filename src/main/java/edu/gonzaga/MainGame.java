@@ -45,8 +45,19 @@ public class MainGame {
         System.out.println("Welcome to Battleship!");
         System.out.print("Player 1 Name: ");
         String player1 = input.nextLine();
+        if (player1.equals("")){
+            player1 = "Player 1";
+        }
+        Player playerOne = new Player(player1);
+        Board boardOne = new Board();
+
         System.out.print("Player 2 Name: ");
         String player2 = input.nextLine();
+        if (player2.equals("")){
+            player2 = "Player 2";
+        }
+        Player playerTwo = new Player(player2);
+        Board boardTwo = new Board();
 
         gameWon = false;
 
@@ -62,10 +73,7 @@ public class MainGame {
         //String[] shipTypes = [sub, destroyer, aircraft carrier, cruiser, battleship]
         //there is probably a smoother way to do this, but just to see the types
 
-
-        // PART 3.) ---------- PLAYER SETUP: ----------
-
-        System.out.println(player1 + " it's time to set up!");
+        System.out.println(playerOne.getName() + " it's time to set up!");
         //go through each ship type and place their ship on the board
         //not sure how we plan to do this in the final game, but this is just to show the set up loop
         /* 
@@ -79,8 +87,7 @@ public class MainGame {
 
         //SWING: switch screen
 
-
-        System.out.println(player2 + " it's time to set up!");
+        System.out.println(playerTwo.getName() + " it's time to set up!");
         
         /* 
          * for (ship Type: shipTypes){
@@ -91,28 +98,42 @@ public class MainGame {
         */
 
         Boolean turn1 = true; //track which player's turn (true = player1, false = player2)
-        int turnLimit = 5; //just for testing purposes, delete before final submission
-
-
-        // PART 4.) ---------- PLAY GAME / PROCESS TURNS ----------
+        int turnLimit = 30; //just for testing purposes, delete before final submission
+      
+        int xHit = 0;
+        int yHit = 0;
+        Boolean didHit = true;
 
         //SWING: draw Boards
         
         while (!gameWon) { //main gameplay loop
             if (turn1){
-                System.out.println(player1 + " it's your turn!");
-                
+                System.out.println(playerOne.getName() + " it's your turn!");
+                boardTwo.printBoard();
+
                 //Shoot at player 2 (select a tile in swing)
-                
-                //setHit, isHit, 
-                
-                //update board
+                Boolean validGuess = false;
+                //text based shooting before gui is added
+                while (!validGuess){ //remove reguess
+                    System.out.print("Type a number 1-10 for the x: ");
+                    xHit = input.nextInt() -1;
+
+                    System.out.print("Type a number 1-10 for the y: ");
+                    yHit = input.nextInt() -1;
+
+                    validGuess  = !boardTwo.isMarked(xHit,yHit);
+                    if (!validGuess){
+                        System.out.println("Already guessed!");
+                    }
+                }
+                didHit = boardTwo.isMarkerHit(xHit, yHit);
+                boardTwo.setMarked(xHit, yHit, didHit);
             }
             else {
-                System.out.println(player2 + " it's your turn!");
+                System.out.println(playerTwo.getName() + " it's your turn!");
                 //shoot at player 1 (select a tile in swing)
-                //setHit, isHit
-                //update board
+
+                //boardOne.printBoard();
             }
             //if all ships sunk, gameWon = true
 
@@ -121,7 +142,7 @@ public class MainGame {
             if (turnLimit <= 0){
                 gameWon = true;
             }
-
+            
             turn1 = !turn1; //switch turn
         }
 
@@ -131,10 +152,10 @@ public class MainGame {
         String gameWinner = "";
         //winner is the last player's turn
         if (turn1){
-            gameWinner = player1;
+            gameWinner = playerOne.getName();
         }
         else {
-            gameWinner = player2;
+            gameWinner = playerTwo.getName();
         }
 
         System.out.println("Congratulations "+ gameWinner + "!");
