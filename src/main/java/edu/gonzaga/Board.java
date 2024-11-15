@@ -67,14 +67,9 @@ public class Board {
         return false;
     }
 
-    public void setMarked(int x, int y, boolean hit){
-        //if hit: do something in Swing
-        markers[y][x] = true;
-    }
-
     /**
-     * addShip() adds a ship to the array list of ships sotred on the board.
-     * @param boat
+     * addShip() adds a ship to the array list of ships sorted on the board.
+     * @param newShip
     */
     public void addShip(Ship newShip ){
       //add a boat to the arraylist of active boats:
@@ -86,8 +81,8 @@ public class Board {
      * isMarkerHit() determines if the checked space contains a ship by subsiquently
      * checking every space that is overlapping with a ship.
      * 
-     * @param x -coordinate of attempted shot
-     * @param y -coordinate of attempted shot
+     * @param markerX -coordinate of attempted shot
+     * @param markerY -coordinate of attempted shot
      * @return is there a ship on that tile
      */
     public boolean isMarkerHit(int markerX, int markerY){
