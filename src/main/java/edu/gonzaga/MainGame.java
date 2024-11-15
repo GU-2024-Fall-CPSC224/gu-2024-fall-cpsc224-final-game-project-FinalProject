@@ -8,6 +8,7 @@
  * Copyright: 2024
  */
 package edu.gonzaga;
+import java.util.ArrayList;
 import java.util.Scanner; //just used for testing, delete when swing is integrated
 /*
  * right now this has no java swing, and is text-based and not actually playable. just a starting point for the main function
@@ -17,8 +18,27 @@ import java.util.Scanner; //just used for testing, delete when swing is integrat
 public class MainGame {
     public static void main(String[] args) {
 
+        // -----------------------------------
+        // ATTRIBUTES START HERE
+        // -----------------------------------
+
         Scanner input = new Scanner(System.in);
 
+        // Stores the state of the current game. Automatically set to false at the start
+        Boolean gameWon = false;
+
+        // playerBoards holds the battleship board for each player.
+        ArrayList<Board> playerBoards = new ArrayList<Board>();
+
+        // -----------------------------------
+        // METHODS / MAIN GAME STARTS HERE
+        // -----------------------------------
+
+
+
+
+        // PART 1.) ---------- GREET PLAYERS / AQUIRE USERNAMES ----------
+        
         //SWING: welcome screen
 
         // Start game as text, in final this will be done in Swing
@@ -39,9 +59,16 @@ public class MainGame {
         Player playerTwo = new Player(player2);
         Board boardTwo = new Board();
 
-        Boolean gameWon = false;
+        gameWon = false;
 
-        //SWING: set up board 
+
+        // PART 2.) ---------- GENERATE INITIAL BOARDS ----------
+
+        //SWING: set up board / add boards to array list
+        for ( int i = 0; i < 2; i++ ) {
+            playerBoards.add( new Board() );
+        }
+        
 
         //String[] shipTypes = [sub, destroyer, aircraft carrier, cruiser, battleship]
         //there is probably a smoother way to do this, but just to see the types
@@ -57,7 +84,9 @@ public class MainGame {
          * }
         */
 
+
         //SWING: switch screen
+
         System.out.println(playerTwo.getName() + " it's time to set up!");
         
         /* 
@@ -70,10 +99,11 @@ public class MainGame {
 
         Boolean turn1 = true; //track which player's turn (true = player1, false = player2)
         int turnLimit = 30; //just for testing purposes, delete before final submission
-
+      
         int xHit = 0;
         int yHit = 0;
         Boolean didHit = true;
+
         //SWING: draw Boards
         
         while (!gameWon) { //main gameplay loop
@@ -115,6 +145,10 @@ public class MainGame {
             
             turn1 = !turn1; //switch turn
         }
+
+
+        // PART 5.) ---------- END GAME ----------
+
         String gameWinner = "";
         //winner is the last player's turn
         if (turn1){
