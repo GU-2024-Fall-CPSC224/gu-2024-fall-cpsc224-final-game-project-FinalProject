@@ -13,6 +13,7 @@ public class GUI {
     JPanel gamePanel = new JPanel();
     JPanel reminder = new JPanel();
     RoleImage roleImage;
+    JButton okPlayerButton = new JButton("OK");
 
     JLabel potLabelText;
 
@@ -98,7 +99,7 @@ public class GUI {
         rolePanel.add(playerPanel);
 
         // set up ok button
-        JButton okPlayerButton = new JButton("OK");
+
         okPlayerButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         okPlayerButton.addActionListener(e -> getPlayerPanel());
@@ -231,6 +232,11 @@ public class GUI {
                 for (JTextField playerNameField : playerNameFields) {
                     playerNameField.setEditable(false);
                 }
+
+                // after game start, you can not change anything
+                playerField.setEditable(false);
+                chipsField.setEditable(false);
+                okPlayerButton.setEnabled(false);
 
                 // Remove the start panel when the button is pressed
                 mainPanel.remove(startPanel);
