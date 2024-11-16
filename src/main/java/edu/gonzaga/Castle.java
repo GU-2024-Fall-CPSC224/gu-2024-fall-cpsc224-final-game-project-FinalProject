@@ -1,3 +1,4 @@
+package edu.gonzaga;
 public class Castle {
     private int height;
 
