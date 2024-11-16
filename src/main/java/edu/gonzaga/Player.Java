@@ -1,3 +1,4 @@
+package edu.gonzaga;
 import java.util.ArrayList;
 import java.util.Scanner;
 /*
