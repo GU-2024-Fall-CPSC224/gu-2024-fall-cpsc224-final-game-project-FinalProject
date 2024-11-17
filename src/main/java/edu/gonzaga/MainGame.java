@@ -12,23 +12,18 @@
  */
 package edu.gonzaga;
 
+import javax.swing.JFrame;
 
 /** Main program class for launching your team's program. */
 public class MainGame {
     public static void main(String[] args) {
-        Snake snake = new Snake();
-        System.out.println(snake);
-        snake.move();
-        System.out.println(snake);
-        snake.turn('d');
-        snake.move();
-        System.out.println(snake);
-        snake.turn('l');
-        snake.move();
-        System.out.println(snake);
-        snake.move();
-        System.out.println(snake);
+        // intro window
+        JFrame frame = new JFrame("Snake Game");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
 
-        // Your code here. Good luck!
+        Game game = new Game();
+        frame.add(game);
+        game.startMenu(frame);
     }
 }
