@@ -60,6 +60,12 @@ public class Board {
      */
     public void setMarked(int x, int y, boolean hit){
 
+        // When checking a space, determine if a ship occupies it (a.k.a. the ship is "hit").
+        isMarkerHit( x, y );
+
+        // Once you determine the status of the marker ( hit or miss ), you can update the image appropriately.
+        // This would also be where the game tells the ship to note it's been hit? <<<< printboard currently does this too.
+
         markers[x][y] = true;
     }
 
@@ -81,6 +87,33 @@ public class Board {
     public void addShip(Ship newShip ){
       //add a boat to the arraylist of active boats:
       shipList.add( newShip );
+    }
+
+
+    /**
+     * validateShipPlacement() takes a pair of coordinates and checks if a ship
+     * can be placed there, comparing ship direction and length.
+     * @param newShip
+     * @return true / false the ship can be placed at these coordinates.
+    */
+    public Boolean validateShipPlacement( Ship newShip ){
+        // CONCERN: currently, I'm coding this function to take in a ship object, which already
+        // knows it's lenght and direction. Do we want this function to compare direct length / x and y instead?
+
+        Boolean validPlacement = false;
+
+        // Check ship placement:
+
+        // If the ship cannot be placed: inform the player that their spot is invalid.
+        if ( validPlacement == false ){
+            System.out.println( "Sorry! You can't place that ship here!" );
+        }
+        // If the ship can be placed. inform the player of this instead.
+        else {
+            System.out.println( "Valid placement." );
+        }
+        // Return ship placement is valid.
+        return validPlacement;
     }
 
 
@@ -128,18 +161,40 @@ public class Board {
         
         return shipDetected;
     }
-    //for testing purposes, no GUI
+
+
+    /**
+     * getAllShipCoordinates takes each ship in the board's shiplist and calculates the coordinates
+     * of each "segment" of each ship, returning all these coordinates in an array.
+     */
+    public ArrayList<Integer> getAllShipCoordinates(){
+        ArrayList<Integer> shipCoordinates = new ArrayList<>();
+        return shipCoordinates;
+    }
+
+
+    /**
+     * printBoard() is used for testing purposes, and prints an ASCII-based version
+     * of the player board / G.U.I., with all markers shown.
+     * 
+     */
     public void printBoard(){
+        // for all rows.
         for (int i = 0; i < markers.length; i++){
+            // for all columns.
             for (int j = 0; j < markers[i].length; j++){
+                // If the space printed has a set marker, display it.
                 if (markers[i][j] == true){
+                    // If the marker is a hit, display a hit marker.
                     if (isMarkerHit(j,i)){
                         System.out.print(" X ");
                     }
+                    // If the marker is a miss, display a miss marker.
                     else {
                         System.out.print(" O ");
                     }
                 }
+                // If the printed space has no marker status, print the default board background.
                 else {
                     System.out.print(" ~ ");
                 }
