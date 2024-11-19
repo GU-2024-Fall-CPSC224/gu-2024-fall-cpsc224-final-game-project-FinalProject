@@ -1,7 +1,4 @@
 package edu.gonzaga;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 /*
  * This is Tank class holds all information regarding Tanks the players will be controlling. 
  */
@@ -53,6 +50,7 @@ public class Tank {
         color = colorSet;
     }
 
+    // Getters
     public String getColor() {
         return this.color;
     }
@@ -69,12 +67,14 @@ public class Tank {
         return this.yCord;
     }
 
-    public void setHealth(Integer healthSet) {
-        health = healthSet;
+  public Integer getTrajectory() {
+        return this.trajectory;
     }
 
-    public Integer getTrajectory() {
-        return this.trajectory;
+
+    //Setters
+    public void setHealth(Integer healthSet) {
+        health = healthSet;
     }
 
     public void setXCord(Integer xSet) {
