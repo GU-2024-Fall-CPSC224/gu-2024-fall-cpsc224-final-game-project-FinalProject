@@ -166,6 +166,9 @@ public class Board {
             // If they are equal, return true.
             for ( Coordinate checkingCoord : segmentCoordinates ) {
                 if ( checkingCoord.equals( playerCoord ) ) {
+
+                    // < ---- If we wnated to call isShipSunk anywhere, it would have to be here.
+
                     return true;
                 }
             }

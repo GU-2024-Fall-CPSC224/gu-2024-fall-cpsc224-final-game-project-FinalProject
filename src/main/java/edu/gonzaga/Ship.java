@@ -17,6 +17,9 @@ public abstract class Ship {
     // Determines if the ship will extend downwards or to the right.
     private final boolean isVertical;
 
+    // Holds the state of whether the ship is still in play.
+    private boolean isSunk;
+
     // -----------------------------------
     // METHODS START HERE
     // -----------------------------------
@@ -89,6 +92,14 @@ public abstract class Ship {
     public abstract int getLength();
 
 
+    /**
+     * setIsSunk() sets whether the ship is currently in play.
+     */
+    public void setIsSunk( Boolean newStatus ) {
+        isSunk = newStatus; // <------ Does this need newStatus? Can't we just set it to false? It's not coming back INTO play is it?
+    }
+
+
     /** 
      * getAllCoordinates() takes the primary coordinates of a ship, and calculates each
      * additional coordinate point the ship occupies. A ship should know where it is.
@@ -109,6 +120,7 @@ public abstract class Ship {
         Integer shipLength = this.getLength();
 
         // For each section of the ship, increment it's coordinates (depending on direction) and add the to the list!
+        // NOTE: i is set to 1 to account for the primaryShipCoordinate!
         for ( int i = 1; i < shipLength; i++ ) {
             
             // If the ship is facing downwards:
