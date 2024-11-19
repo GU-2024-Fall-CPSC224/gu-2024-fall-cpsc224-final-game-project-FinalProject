@@ -36,6 +36,7 @@ public class CandyLand {
         ImageIcon purpleIcon = new ImageIcon("project design documents/Picture6.jpg");
         ImageIcon redIcon = new ImageIcon("project design documents/Picture7.jpg");
         ImageIcon yellowIcon = new ImageIcon("project design documents/Picture8.jpg");
+        ImageIcon boardIcon = new ImageIcon("project design documents/board2.jpg");
         JFrame frame1 = new JFrame();
         JPanel panel1 = new JPanel();
         JPanel panel2 = new JPanel();
@@ -103,14 +104,18 @@ public class CandyLand {
         characterD.setVisible(true);
 
         // frame 3 **************************************
-        panel3.setSize(900, 700);
+        //panel3.setSize(900, 700);
 //        try {
 //            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        panel3.setSize(1200, 700);//changes width from 900 to 1200!
-//        try {
+        panel3.setSize(900, 800);//changes width from 900 to 1200!
+        JButton boardButton = new JButton(boardIcon); 
+        boardButton.setSize(900,800);
+        boardButton.setLocation(0,0);   
+        panel3.add(boardButton);
+        //        try {
 //            panel3.setContentPane(
 //                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
 //        } catch (IOException e) {
