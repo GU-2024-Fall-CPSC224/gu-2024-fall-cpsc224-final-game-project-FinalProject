@@ -36,13 +36,15 @@ public class CandyLand {
         ImageIcon purpleIcon = new ImageIcon("project design documents/Picture6.jpg");
         ImageIcon redIcon = new ImageIcon("project design documents/Picture7.jpg");
         ImageIcon yellowIcon = new ImageIcon("project design documents/Picture8.jpg");
+        ImageIcon boardIcon = new ImageIcon("project design documents/board2.jpg");
         JFrame frame1 = new JFrame();
-        JFrame frame2 = new JFrame();
-        JFrame frame3 = new JFrame();
-        JFrame frame4 = new JFrame();
+        JPanel panel1 = new JPanel();
+        JPanel panel2 = new JPanel();
+        JPanel panel3 = new JPanel();
+        JPanel panel4 = new JPanel();
         JLabel label1 = new JLabel("Choose number of players:");
         label1.setBounds(10, 10, 200, 50);
-        frame1.add(label1);
+        panel1.add(label1);
 
         JButton button1 = new JButton("2");
         button1.setBounds(100, 200, 50, 50);
@@ -52,23 +54,32 @@ public class CandyLand {
         button3.setBounds(300, 200, 50, 50);
         JButton button4 = new JButton("Enter");
         button4.setBounds(650, 500, 100, 50);
-        frame1.add(button1);
-        frame1.add(button2);
-        frame1.add(button3);
-        frame1.add(button4);
-
+        panel1.add(button1);
+        panel1.add(button2);
+        panel1.add(button3);
+        panel1.add(button4);
+        panel1.setSize(1100, 650);
+        panel2.setSize(1100, 650);
+        panel3.setSize(1100, 650);
+        panel4.setSize(1100, 650);
         frame1.setSize(1100, 650);
         frame1.setLayout(null);
+        frame1.add(panel1);
+        frame1.add(panel2);
+        frame1.add(panel3);
+        frame1.add(panel4);
         frame1.setVisible(true);
+        panel1.setVisible(true);
+
 
         // frame 2 **************************************
-        frame2.setSize(1100, 650);
-        frame2.setLayout(null);
-        frame2.setVisible(false);
+        panel2.setSize(1100, 650);
+        panel2.setLayout(null);
+        panel2.setVisible(false);
         JLabel label2 = new JLabel("CHOOSE YOUR CHARACTER!");
         label2.setBounds(350, 250, 400, 50);
         label2.setFont(new Font("Courier", Font.BOLD, 30));
-        frame2.add(label2);
+        panel2.add(label2);
         JButton characterA = new JButton(pinkIcon);
         characterA.setBounds(100, 50, 200, 200);
         JButton characterB = new JButton(purpleIcon);
@@ -80,40 +91,48 @@ public class CandyLand {
         JButton button5 = new JButton("Enter");
         JButton enterButton = new JButton("Enter");
         enterButton.setBounds(500, 300, 100, 50);
-        frame2.add(enterButton);
+        panel2.add(enterButton);
         enterButton.setVisible(true);
         button5.setBounds(650, 500, 100, 50);
-        frame2.add(characterA);
+        panel2.add(characterA);
         characterA.setVisible(true);
-        frame2.add(characterB);
+        panel2.add(characterB);
         characterB.setVisible(true);
-        frame2.add(characterC);
+        panel2.add(characterC);
         characterC.setVisible(true);
-        frame2.add(characterD);
+        panel2.add(characterD);
         characterD.setVisible(true);
 
         // frame 3 **************************************
-        frame3.setSize(1200, 700);//changes width from 900 to 1200!
-        try {
-            frame3.setContentPane(
-                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        frame3.add(board);
-        frame3.setVisible(false);
+        //panel3.setSize(900, 700);
+//        try {
+//            frame3.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        panel3.setSize(900, 800);//changes width from 900 to 1200!
+        JButton boardButton = new JButton(boardIcon); 
+        boardButton.setSize(900,800);
+        boardButton.setLocation(0,0);   
+        panel3.add(boardButton);
+        //        try {
+//            panel3.setContentPane(
+//                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        panel3.add(board);
+        panel3.setVisible(false);
 
         // frame 4 **************************************
-        frame4.setSize(800, 600);
-        frame4.setLayout(null);
-        frame4.setVisible(false);
+        panel4.setSize(800, 600);
+        panel4.setLayout(null);
+        panel4.setVisible(false);
 
         while (!done) {
             // image icon class for images
             frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
             // frame 1 **************************************
             button1.addActionListener(new ActionListener() {
                 @Override
@@ -136,8 +155,8 @@ public class CandyLand {
             button4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frame1.setVisible(false);
-                    frame2.setVisible(true);
+                    panel1.setVisible(false);
+                    panel2.setVisible(true);
                 }
             });
             characterA.addActionListener(new ActionListener() {
@@ -182,15 +201,15 @@ public class CandyLand {
             button5.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frame2.setVisible(false);
-                    frame3.setVisible(true);
+                    panel2.setVisible(false);
+                    panel3.setVisible(true);
                 }
             });
             enterButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frame2.setVisible(false);
-                    frame3.setVisible(true);
+                    panel2.setVisible(false);
+                    panel3.setVisible(true);
                 }
             });
             int numberOfPlayers = getPlayerInput();
@@ -204,8 +223,32 @@ public class CandyLand {
             }
 
             board.addPlayers(players);
-
-            boolean continueGame = true;
+            
+              boolean continueGame = true;
+              
+              while(continueGame) {
+                  for (int i = 0; i < players.size(); i++) {
+                      players.get(i).playTurn(board);
+                      if (players.get(i).checkWinner()) {
+                          System.out.println(players.get(i).getCharacter() + " is the Winner");
+                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+                          JLabel text = new JLabel("Congratulations!!!");
+                          winner.setFont(new Font("Courier", Font.BOLD, 20));
+                          text.setFont(new Font("Courier", Font.BOLD, 20));
+                          winner.setSize(500, 50);
+                          text.setSize(500, 50);
+                          text.setLocation(250, 100);
+                          winner.setLocation(175, 200);
+                          panel4.add(winner);
+                          panel4.add(text);
+                          panel3.setVisible(false);
+                          panel4.setVisible(true);
+                          continueGame = false;
+                          break;
+                      }
+                  }
+              }
+//            boolean continueGame = true;
 
             while (continueGame) {
                 for (int i = 0; i < players.size(); i++) {
@@ -220,16 +263,15 @@ public class CandyLand {
                         text.setSize(500, 50);
                         text.setLocation(250, 100);
                         winner.setLocation(175, 200);
-                        frame4.add(winner);
-                        frame4.add(text);
-                        frame3.setVisible(false);
-                        frame4.setVisible(true);
+                        panel4.add(winner);
+                        panel4.add(text);
+                        panel3.setVisible(false);
+                        panel4.setVisible(true);
                         continueGame = false;
                         break;
                     }
                 }
             }
-
         }
 
     }
