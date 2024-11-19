@@ -15,7 +15,10 @@ package edu.gonzaga;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+<<<<<<< HEAD
 import java.awt.Font;
+=======
+>>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,7 +39,10 @@ public class MainGame {
     private JPanel centerNorthPanel = new JPanel();
     private JPanel centerSouthPanel = new JPanel();
     // the label that goes at the bottom: 
+<<<<<<< HEAD
     private JLabel title = new JLabel("TANKS");
+=======
+>>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
     private JLabel names = new JLabel("By Christain Carrington, Abby Fewel, and Ayden Humphries");
     // buttons that go in the middle, in panel 5:
     private JButton start = new JButton("Start");
@@ -50,11 +56,20 @@ public class MainGame {
 
     public static void main(String[] args) {
         MainGame game = new MainGame();
+<<<<<<< HEAD
         System.out.println("TANKS");
         game.formattingIntroScreen();
     }
         
     public void formattingIntroScreen() {
+=======
+        System.out.println("");
+        header();
+        game.formatting();
+    }
+        
+    public void formatting() {
+>>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
         setUpButtonListeners(); // to make Start and How to Play buttons listen
 
         //formats the frame:
@@ -71,16 +86,47 @@ public class MainGame {
         frame.add(northPanel,BorderLayout.NORTH);
         frame.add(centerPanel,BorderLayout.CENTER);
         frame.add(southPanel,BorderLayout.SOUTH);
+<<<<<<< HEAD
         title.setFont(new Font("Algerian", Font.BOLD, 75)); // formats the title "TANKS"
         northPanel.add(title);
+=======
+>>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
         southPanel.add(names);
         centerPanel.add(centerNorthPanel,BorderLayout.NORTH); // putting border layout in center panel
         centerPanel.add(centerSouthPanel,BorderLayout.SOUTH);
         ImageIcon tankStartScreenIcon = new ImageIcon("TankIntroScreen.png");
         tankPicture.setIcon(tankStartScreenIcon);
+<<<<<<< HEAD
         centerNorthPanel.add(tankPicture); // STILL WORKING ON GETTING THIS PICTURE TO UPLOAD RIGHT
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
+=======
+        centerNorthPanel.add(tankPicture);
+        centerSouthPanel.add(start);
+        centerSouthPanel.add(howToPlay);
+    }
+
+    public void setUpButtonListeners() {
+        ActionListener buttonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (actionEvent.getSource() == howToPlay) {
+                    instructionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    instructionsFrame.setSize(200, 200);
+                    instructionsFrame.setLayout(null);
+                    instructionsFrame.setVisible(true);
+                } else if (actionEvent.getSource() == start) {
+                    // will start the game
+                }
+            }
+        };
+        start.addActionListener(buttonListener);
+        howToPlay.addActionListener(buttonListener);
+    }
+
+    public void howToPlayFrame() {
+        
+>>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
     }
 
     public void setUpButtonListeners() {
