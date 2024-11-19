@@ -40,6 +40,16 @@ public abstract class Ship {
 
 
     /**
+     * getPrimaryCoordinate() gets the primary (main) coordinate of a ship.
+     * 
+     * @return Coordinate primaryShipCoordinates
+     */
+    public Coordinate getPrimaryShipCoordinates() {
+        return primaryShipCoordinates;
+    }
+
+
+    /**
      * getX() gets the x coordinate of the front / nose of the ship.
      */
     public int getX() {
@@ -93,6 +103,9 @@ public abstract class Ship {
         
         Integer shipXCoord = primaryShipCoordinates.getX();
         Integer shipYCoord = primaryShipCoordinates.getY();
+        // Add the primary ship coordinates to the array as well!
+        shipCoordinates.add( primaryShipCoordinates );
+
         Integer shipLength = this.getLength();
 
         // For each section of the ship, increment it's coordinates (depending on direction) and add the to the list!

@@ -126,7 +126,7 @@ public class MainGame {
                         System.out.println("Already guessed!");
                     }
                 }
-                didHit = boardTwo.isMarkerHit(xHit, yHit);
+                //didHit = boardTwo.isMarkerHit(xHit, yHit); <<<<<< isMarkerHit() is called when you check any space.
                 boardTwo.setMarked(xHit, yHit, didHit);
             }
             else {

@@ -48,7 +48,12 @@ public class Board {
      * @return true/false there is a mark on the selected tile.
      */
     public boolean isMarked(int x, int y){
-        return markers[y][x];
+        
+        // Adding coordinate object here. Fully transition?
+        Coordinate checkCoordinate = new Coordinate( x, y );
+        
+        //return markers[y][x];
+        return markers[ checkCoordinate.getY() ][ checkCoordinate.getX() ];
     }
 
 
@@ -60,13 +65,17 @@ public class Board {
      */
     public void setMarked(int x, int y, boolean hit){
 
+        // Move player x and y into coordinate.
+        Coordinate playerCoord = new Coordinate( x, y );
+
         // When checking a space, determine if a ship occupies it (a.k.a. the ship is "hit").
-        isMarkerHit( x, y );
+        isMarkerHit( playerCoord );
 
         // Once you determine the status of the marker ( hit or miss ), you can update the image appropriately.
         // This would also be where the game tells the ship to note it's been hit? <<<< printboard currently does this too.
 
-        markers[x][y] = true;
+        //markers[x][y] = true;
+        markers[ playerCoord.getX() ][ playerCoord.getY() ] = true;
     }
 
 
@@ -80,6 +89,7 @@ public class Board {
         return false;
     }
 
+    
     /**
      * addShip() adds a ship to the array list of ships sorted on the board.
      * @param newShip
@@ -100,20 +110,23 @@ public class Board {
         // CONCERN: currently, I'm coding this function to take in a ship object, which already
         // knows it's lenght and direction. Do we want this function to compare direct length / x and y instead?
 
-        Boolean validPlacement = false;
+        // Get ship coordinates:
+        ArrayList<Coordinate> segmentCoordinates = new ArrayList<>();
+        segmentCoordinates = newShip.getAllCoordinates();
 
         // Check ship placement:
-
-        // If the ship cannot be placed: inform the player that their spot is invalid.
-        if ( validPlacement == false ){
-            System.out.println( "Sorry! You can't place that ship here!" );
+        for (Coordinate coordinate : segmentCoordinates) {
+            // Check X:
+            if ( ( coordinate.getX() > 10 ) || (coordinate.getX() < 1 ) ) {
+                return false;
+            }
+            // Check Y:
+            if ( ( coordinate.getY() > 10 ) || (coordinate.getY() < 1 ) ) {
+                return false;
+            }
         }
-        // If the ship can be placed. inform the player of this instead.
-        else {
-            System.out.println( "Valid placement." );
-        }
-        // Return ship placement is valid.
-        return validPlacement;
+        // If all spaces are checked without issue, then return true.
+        return true;
     }
 
 
@@ -125,41 +138,27 @@ public class Board {
      * @param markerY -coordinate of attempted shot
      * @return is there a ship on that tile
      */
-    public boolean isMarkerHit(int markerX, int markerY){
-        
-        // Stores whether a ship was found while checking ship spaces.
-        Boolean shipDetected = false;
+    public boolean isMarkerHit( Coordinate playerCoord ){
 
         // Check if the checked space hits a ship:
         for ( Ship ship : shipList ) {
-            // Get the coordinate of the ship's front / tip, and its dircetion:
-            Integer shipXCoord = ship.getX();
-            Integer shipYCoord = ship.getY();
-            Boolean tempDirection = ship.isVertical();
-            
-            for ( int i = 0; i < ship.getLength(); i++ ) {
-                
-                // Compare marker coordinates against each ship coordinate and see if they overlap:
-                if ( ( shipXCoord == markerX ) && ( shipYCoord == markerY ) ) {
-                    // A ship overlaps with the space checked! YOU'VE HIT A BATTLESHIP!
-                    shipDetected = true;
-                    // Potentially return here, as you don't need to check any other spaces?
+            // Get the coordinates of the ship's segments:
+
+            // segmentCoordnets contains the coordinate objects of each segment of the current ship being checked.
+            ArrayList<Coordinate> segmentCoordinates = new ArrayList<>();
+            segmentCoordinates = ship.getAllCoordinates();
+
+            // Compare each ssegment against the space being checked:
+            // If they are equal, return true.
+            for ( Coordinate checkingCoord : segmentCoordinates ) {
+                if ( checkingCoord.equals( playerCoord ) ) {
+                    return true;
                 }
-                // No overlapping ships found. check next section of ship.
-                else {
-                    // If the ship is facing downwards:
-                    if ( tempDirection == true ) {
-                        shipYCoord++;
-                    }
-                    // Else if the ship is facing to the right:
-                    else {
-                        shipXCoord++;
-                    }
-                }
-            } // All sections of a ship checked.
+            }
+            // If the coordinates are not equal, check next coordinate.
         } // All ships checked.
-        
-        return shipDetected;
+        // If no coordinates overlap, than return false. The checked space is not a hit.
+        return false;
     }
 
 
@@ -186,7 +185,7 @@ public class Board {
                 // If the space printed has a set marker, display it.
                 if (markers[i][j] == true){
                     // If the marker is a hit, display a hit marker.
-                    if (isMarkerHit(j,i)){
+                    if ( isMarkerHit( new Coordinate( i, j ) ) ){ // <<<<<< Added coordinate here so this still works. Hopefully.
                         System.out.print(" X ");
                     }
                     // If the marker is a miss, display a miss marker.

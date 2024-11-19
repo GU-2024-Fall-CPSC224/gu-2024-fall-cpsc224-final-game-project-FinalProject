@@ -58,7 +58,7 @@ public class CoordinateTest {
         Coordinate testCoord = new Coordinate(4, 9);
         Coordinate comparisonCoord = new Coordinate(3, 5);
 
-        System.out.println( "Expected output for comparison is true: the coordinates are equal."); 
+        System.out.println( "Expected output for comparison is false: the coordinates are not equal."); 
         assertFalse( comparisonCoord.equals(testCoord) ); 
     }
 }

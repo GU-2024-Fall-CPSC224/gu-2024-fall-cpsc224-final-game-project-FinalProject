@@ -35,10 +35,12 @@ public class BoardTest {
 
         // Add a test ship to the board, facing downward and starting at coordinate [5, 5]:
         testBoard.addShip( new GenericShip(5, 5, true, 3) );
+        // Add test coordinate to simulate player input:
+        Coordinate testCoordinate = new Coordinate( 5, 5 );
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the checked tile contains a ship. HIT!" );
-        assertTrue( testBoard.isMarkerHit(5, 5) );
+        assertTrue( testBoard.isMarkerHit( testCoordinate ) );
     }
 
     @Test 
@@ -49,10 +51,12 @@ public class BoardTest {
 
         // Add a test ship to the board, facing downward and starting at coordinate [5, 5]:
         testBoard.addShip( new GenericShip(5, 5, true, 3) );
+        // Add test coordinate to simulate player input:
+        Coordinate testCoordinate = new Coordinate( 5, 7 );
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the checked tile contains a ship. HIT!" );
-        assertTrue( testBoard.isMarkerHit(5, 7) );
+        assertTrue( testBoard.isMarkerHit( testCoordinate ) );
     }
 
     @Test 
@@ -63,10 +67,12 @@ public class BoardTest {
 
         // Add a test ship to the board, facing downward and starting at coordinate [5, 5]:
         testBoard.addShip( new GenericShip(5, 5, false, 3) );
+        // Add test coordinate to simulate player input:
+        Coordinate testCoordinate = new Coordinate( 5, 5 );
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the checked tile contains a ship. HIT!" );
-        assertTrue( testBoard.isMarkerHit(5, 5) );
+        assertTrue( testBoard.isMarkerHit( testCoordinate ) );
     }
 
     @Test 
@@ -77,9 +83,11 @@ public class BoardTest {
 
         // Add a test ship to the board, facing downward and starting at coordinate [5, 5]:
         testBoard.addShip( new GenericShip(5, 5, false, 3) );
+        // Add test coordinate to simulate player input:
+        Coordinate testCoordinate = new Coordinate( 7, 5 );
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the checked tile contains a ship. HIT!" );
-        assertTrue( testBoard.isMarkerHit(7, 5) );
+        assertTrue( testBoard.isMarkerHit( testCoordinate ) );
     }
 }
