@@ -52,7 +52,7 @@ public class Board {
         // Adding coordinate object here. Fully transition?
         Coordinate checkCoordinate = new Coordinate( x, y );
         
-        //return markers[y][x];
+        //return markers[y][x]; // < --- markers[][] here flips coords?
         return markers[ checkCoordinate.getY() ][ checkCoordinate.getX() ];
     }
 
@@ -74,8 +74,8 @@ public class Board {
         // Once you determine the status of the marker ( hit or miss ), you can update the image appropriately.
         // This would also be where the game tells the ship to note it's been hit? <<<< printboard currently does this too.
 
-        //markers[x][y] = true;
-        markers[ playerCoord.getX() ][ playerCoord.getY() ] = true;
+        //markers[x][y] = true;     // < --- markers[][] here flips coords?
+        markers[ playerCoord.getY() ][ playerCoord.getX() ] = true; 
     }
 
 
@@ -85,18 +85,32 @@ public class Board {
      * @return if the ship is has all tiles hit, and is sunk
      */
     public boolean isShipSunk(Ship attackedShip){
-        //check if all other x and y have been hit for the ship, if so return true
-        return false;
+
+        // segmentCoordnets contains the coordinate objects of each segment of the current ship being checked.
+        ArrayList<Coordinate> segmentCoordinates = new ArrayList<>();
+        segmentCoordinates = attackedShip.getAllCoordinates();
+
+        for (Coordinate coordinate : segmentCoordinates) {
+            // If a segment of the ship remains unmarked, return false.
+            if ( isMarked( coordinate.getX(), coordinate.getY() ) == false ) {
+                return false;
+            }
+        }
+        // If all ship segments have been marked, return true.
+        return true; // <---------- This should probably be changed to call a Ship method setIsSunk on the attacked ship.
     }
 
-    
+
     /**
      * addShip() adds a ship to the array list of ships sorted on the board.
      * @param newShip
     */
     public void addShip(Ship newShip ){
-      //add a boat to the arraylist of active boats:
-      shipList.add( newShip );
+        //add a boat to the arraylist of active boats:
+
+        // <-------------- I imagine that this could be where we put the validateShipPlacement method call?
+
+        shipList.add( newShip );
     }
 
 
