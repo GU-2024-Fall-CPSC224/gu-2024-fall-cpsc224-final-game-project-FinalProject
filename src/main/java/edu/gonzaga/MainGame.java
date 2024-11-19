@@ -5,7 +5,7 @@
  * Project Description:
  * 
  * 
- * Contributors:
+ * Contributors: Christian Carrington, Ayden Humpries, Abby Fewel
  * 
  * 
  * Copyright: 2023
@@ -15,10 +15,7 @@ package edu.gonzaga;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-<<<<<<< HEAD
 import java.awt.Font;
-=======
->>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,17 +29,14 @@ import java.awt.event.ActionEvent;
 /** Main program class for launching your team's program. */
 public class MainGame {
     private JFrame frame = new JFrame(); // the frame that opens when the program is run
-    // panels in the border layout: 
+    // panels in the border layout:
     private JPanel northPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
     private JPanel southPanel = new JPanel();
     private JPanel centerNorthPanel = new JPanel();
     private JPanel centerSouthPanel = new JPanel();
-    // the label that goes at the bottom: 
-<<<<<<< HEAD
+    // the label that goes at the bottom:
     private JLabel title = new JLabel("TANKS");
-=======
->>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
     private JLabel names = new JLabel("By Christain Carrington, Abby Fewel, and Ayden Humphries");
     // buttons that go in the middle, in panel 5:
     private JButton start = new JButton("Start");
@@ -56,51 +50,40 @@ public class MainGame {
 
     public static void main(String[] args) {
         MainGame game = new MainGame();
-<<<<<<< HEAD
         System.out.println("TANKS");
         game.formattingIntroScreen();
     }
-        
+
     public void formattingIntroScreen() {
-=======
-        System.out.println("");
-        header();
-        game.formatting();
-    }
-        
-    public void formatting() {
->>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
         setUpButtonListeners(); // to make Start and How to Play buttons listen
 
-        //formats the frame:
+        // formats the frame:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // defaults settings
         frame.setSize(500, 500);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
-        northPanel.setBackground(Color.GREEN); // colors 
+        northPanel.setBackground(Color.GREEN); // colors
         centerPanel.setBackground(Color.lightGray);
         southPanel.setBackground(Color.white);
         northPanel.setPreferredSize(new Dimension(100, 100)); // dimensions of panels
         centerPanel.setPreferredSize(new Dimension(100, 100));
         southPanel.setPreferredSize(new Dimension(100, 100));
-        frame.add(northPanel,BorderLayout.NORTH);
-        frame.add(centerPanel,BorderLayout.CENTER);
-        frame.add(southPanel,BorderLayout.SOUTH);
-<<<<<<< HEAD
+        frame.add(northPanel, BorderLayout.NORTH);
+        frame.add(centerPanel, BorderLayout.CENTER);
+        frame.add(southPanel, BorderLayout.SOUTH);
+
         title.setFont(new Font("Algerian", Font.BOLD, 75)); // formats the title "TANKS"
         northPanel.add(title);
-=======
->>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
+
         southPanel.add(names);
-        centerPanel.add(centerNorthPanel,BorderLayout.NORTH); // putting border layout in center panel
-        centerPanel.add(centerSouthPanel,BorderLayout.SOUTH);
+        centerPanel.add(centerNorthPanel, BorderLayout.NORTH); // putting border layout in center panel
+        centerPanel.add(centerSouthPanel, BorderLayout.SOUTH);
         ImageIcon tankStartScreenIcon = new ImageIcon("TankIntroScreen.png");
         tankPicture.setIcon(tankStartScreenIcon);
-<<<<<<< HEAD
+
         centerNorthPanel.add(tankPicture); // STILL WORKING ON GETTING THIS PICTURE TO UPLOAD RIGHT
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
-=======
         centerNorthPanel.add(tankPicture);
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
@@ -125,30 +108,7 @@ public class MainGame {
     }
 
     public void howToPlayFrame() {
-        
->>>>>>> 4eed0fd187bf1fc91fc1bd2fc52282ae6120d54c
+        // Figuring things out
+        System.out.println("Do game things.");
     }
-
-    public void setUpButtonListeners() {
-        ActionListener buttonListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (actionEvent.getSource() == howToPlay) { // STILL WORKING ON THIS
-                    // this will open a frame that will have a file that has all of the instructions written out
-                    instructionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    instructionsFrame.setSize(200, 200);
-                    instructionsFrame.setLayout(null);
-                    instructionsFrame.setVisible(true);
-                } else if (actionEvent.getSource() == start) {
-                    // will start the game
-                }
-            }
-        };
-        start.addActionListener(buttonListener);
-        howToPlay.addActionListener(buttonListener);
-    }
-
-    public void howToPlayFrame() {
-        // tbd if this will be used
-    }  
 }
