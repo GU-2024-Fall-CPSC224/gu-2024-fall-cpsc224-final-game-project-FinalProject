@@ -53,7 +53,7 @@ public class Board {
         Coordinate checkCoordinate = new Coordinate( x, y );
         
         //return markers[y][x]; // < --- markers[][] here flips coords?
-        return markers[ checkCoordinate.getY() ][ checkCoordinate.getX() ];
+        return markers[ checkCoordinate.y() ][ checkCoordinate.x() ];
     }
 
 
@@ -75,7 +75,7 @@ public class Board {
         // This would also be where the game tells the ship to note it's been hit? <<<< printboard currently does this too.
 
         //markers[x][y] = true;     // < --- markers[][] here flips coords?
-        markers[ playerCoord.getY() ][ playerCoord.getX() ] = true; 
+        markers[ playerCoord.y() ][ playerCoord.x() ] = true; 
     }
 
 
@@ -92,7 +92,7 @@ public class Board {
 
         for (Coordinate coordinate : segmentCoordinates) {
             // If a segment of the ship remains unmarked, return false.
-            if ( isMarked( coordinate.getX(), coordinate.getY() ) == false ) {
+            if ( isMarked( coordinate.x(), coordinate.y() ) == false ) {
                 return false;
             }
         }
@@ -131,11 +131,11 @@ public class Board {
         // Check ship placement:
         for (Coordinate coordinate : segmentCoordinates) {
             // Check X:
-            if ( ( coordinate.getX() > 10 ) || (coordinate.getX() < 1 ) ) {
+            if ( ( coordinate.x() > 10 ) || (coordinate.x() < 1 ) ) {
                 return false;
             }
             // Check Y:
-            if ( ( coordinate.getY() > 10 ) || (coordinate.getY() < 1 ) ) {
+            if ( ( coordinate.y() > 10 ) || (coordinate.y() < 1 ) ) {
                 return false;
             }
         }

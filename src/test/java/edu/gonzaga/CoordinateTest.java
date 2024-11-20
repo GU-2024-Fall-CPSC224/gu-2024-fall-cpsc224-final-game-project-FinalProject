@@ -15,7 +15,7 @@ public class CoordinateTest {
         Coordinate testCoord = new Coordinate(0, 0);
 
         System.out.println( "Expected output for x-coordinate is 0.");
-        assertEquals(expectedX, testCoord.getX());
+        assertEquals(expectedX, testCoord.x());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class CoordinateTest {
         Coordinate testCoord = new Coordinate(0, 0);
 
         System.out.println( "Expected output for y-coordinate is 0.");
-        assertEquals(expectedY, testCoord.getY());
+        assertEquals(expectedY, testCoord.y());
     }
 
     @Test 

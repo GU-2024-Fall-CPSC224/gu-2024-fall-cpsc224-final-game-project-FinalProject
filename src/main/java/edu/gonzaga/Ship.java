@@ -7,17 +7,20 @@ public abstract class Ship {
     // -----------------------------------
     // ATTRIBUTES START HERE
     // -----------------------------------
-    
-    //private final int x;
-    //private final int y;
 
-    //Primary ship coordinates are stored here.
-    private Coordinate primaryShipCoordinates;
+    /**
+     * Primary ship coordinates are stored here.
+     */
+    private Coordinate position;
 
-    // Determines if the ship will extend downwards or to the right.
+    /**
+     * Determines if the ship will extend downwards or to the right.
+     */ 
     private final boolean isVertical;
 
-    // Holds the state of whether the ship is still in play.
+    /**
+     * Holds the state of whether the ship is still in play.
+     */ 
     private boolean isSunk;
 
     // -----------------------------------
@@ -33,12 +36,10 @@ public abstract class Ship {
      */
     public Ship(int x, int y, boolean isVertical) {
         
-        //this.x = x;
-        //this.y = y;
-
         //Set ship primary coordinates:
-        this.primaryShipCoordinates = new Coordinate( x, y );
+        this.position = new Coordinate( x, y );
         this.isVertical = isVertical;
+        this.isSunk = false;
     }
 
 
@@ -47,32 +48,8 @@ public abstract class Ship {
      * 
      * @return Coordinate primaryShipCoordinates
      */
-    public Coordinate getPrimaryShipCoordinates() {
-        return primaryShipCoordinates;
-    }
-
-
-    /**
-     * getX() gets the x coordinate of the front / nose of the ship.
-     */
-    public int getX() {
-        
-        //return x;
-        
-        return primaryShipCoordinates.getX();
-    }
-
-
-    /**
-     * getY() gets the y coordinate of the front / nose of the ship.
-     * 
-     * @return y coordinate
-     */
-    public int getY() {
-        
-        //return y;
-
-        return primaryShipCoordinates.getY();
+    public Coordinate getPosition() {
+        return position;
     }
 
 
@@ -93,10 +70,19 @@ public abstract class Ship {
 
 
     /**
-     * setIsSunk() sets whether the ship is currently in play.
+     * sinkShip() sets when the ship is out of play.
      */
-    public void setIsSunk( Boolean newStatus ) {
-        isSunk = newStatus; // <------ Does this need newStatus? Can't we just set it to false? It's not coming back INTO play is it?
+    public void sinkShip() {
+        isSunk = true;
+    }
+
+
+    /**
+     * getIsSunk() returns the ship's status on whether it is in play.
+     * @return true/fasle ship is "sunk" and out of play.
+     */
+    public Boolean getIsSunk() {
+        return isSunk;
     }
 
 
@@ -112,10 +98,10 @@ public abstract class Ship {
         // Generate a new coordinate arraylist. This will contain all the calculated coordinates.
         ArrayList<Coordinate> shipCoordinates = new ArrayList<>();
         
-        Integer shipXCoord = primaryShipCoordinates.getX();
-        Integer shipYCoord = primaryShipCoordinates.getY();
+        Integer shipXCoord = position.x();
+        Integer shipYCoord = position.y();
         // Add the primary ship coordinates to the array as well!
-        shipCoordinates.add( primaryShipCoordinates );
+        shipCoordinates.add( position );
 
         Integer shipLength = this.getLength();
 
