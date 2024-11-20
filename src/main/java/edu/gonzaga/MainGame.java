@@ -65,7 +65,7 @@ public class MainGame {
 
         //formats the frame:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // defaults settings
-        frame.setSize(800, 800);
+        frame.setSize(750, 750);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
         northPanel.setBackground(Color.GREEN); // colors 
