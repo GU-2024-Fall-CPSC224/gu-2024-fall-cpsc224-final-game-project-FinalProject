@@ -14,6 +14,12 @@
             <version>5.8.0-RC1</version>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.dyn4j</groupId>
+            <artifactId>dyn4j</artifactId>
+            <version>5.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
