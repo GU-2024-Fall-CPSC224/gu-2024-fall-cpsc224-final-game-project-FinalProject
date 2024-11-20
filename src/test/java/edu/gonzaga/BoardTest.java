@@ -12,19 +12,30 @@ public class BoardTest {
         // Generate test board
         Board testBoard = new Board();
 
+        // Make a test coordinate.
+        Coordinate testCoordinate = new Coordinate(0, 0);
+
+        // Mark the board at the test coordinate.
+        testBoard.setMarked( testCoordinate );
+
         System.out.println( "Expected boolean state is false: the checked tile is not marked." );
-        assertFalse( testBoard.isMarked(0, 0) );
+        assertTrue( testBoard.isMarked( testCoordinate ) );
     }
 
     @Test
-    void checkSetMarked() {
+    void checkIsMarkedFalse() {
         // Generate test board
         Board testBoard = new Board();
 
-        testBoard.setMarked(0, 0, false);
+        // Make a test coordinate.
+        Coordinate testCoordinate = new Coordinate(0, 0);
+        Coordinate falseCoordinate = new Coordinate(5, 6);
 
-        System.out.println( "Expected boolean state is true: the checked tile is not marked." );
-        assertTrue( testBoard.isMarked(0, 0) );
+        // Mark the board at the test coordinate.
+        testBoard.setMarked( testCoordinate );
+
+        System.out.println( "Expected boolean state is false: the checked tile is not marked." );
+        assertFalse( testBoard.isMarked( falseCoordinate ) );
     }
 
     @Test 
@@ -104,7 +115,7 @@ public class BoardTest {
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the ship can be placed." );
-        assertTrue( testBoard.validateShipPlacement( testShip ) );
+        assertTrue( testBoard.validateShipPlacement( testShip.getPosition(), testShip.isVertical(), testShip.getLength() ) );
     }
 
     @Test
@@ -118,7 +129,7 @@ public class BoardTest {
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is true: the ship can be placed." );
-        assertTrue( testBoard.validateShipPlacement( testShip ) );
+        assertTrue( testBoard.validateShipPlacement( testShip.getPosition(), testShip.isVertical(), testShip.getLength() ) );
     }
 
     @Test
@@ -132,7 +143,7 @@ public class BoardTest {
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is false: the ship cannot be placed." );
-        assertFalse( testBoard.validateShipPlacement( testShip ) );
+        assertFalse( testBoard.validateShipPlacement( testShip.getPosition(), testShip.isVertical(), testShip.getLength() ) );
     }
 
     @Test
@@ -146,7 +157,7 @@ public class BoardTest {
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is false: the ship cannot be placed." );
-        assertFalse( testBoard.validateShipPlacement( testShip ) );
+        assertFalse( testBoard.validateShipPlacement( testShip.getPosition(), testShip.isVertical(), testShip.getLength() ) );
     }
 
     @Test
@@ -156,11 +167,11 @@ public class BoardTest {
         Board testBoard = new Board();
 
         // Create a test ship for the board, facing downward and starting at coordinate [5, 5]:
-        Ship testShip = new GenericShip(5, 10, true, 2);
+        Ship testShip = new GenericShip(5, 10, true, 3);
 
         // Check if the player's chosen space overlaps with a ship!
         System.out.println( "Expected boolean state is false: the ship cannot be placed." );
-        assertFalse( testBoard.validateShipPlacement( testShip ) );
+        assertFalse( testBoard.validateShipPlacement( testShip.getPosition(), testShip.isVertical(), testShip.getLength() ) );
     }
 
     // ---------------------------- ship sinking method checks -----------------------------
@@ -175,10 +186,11 @@ public class BoardTest {
         Ship testShip = new GenericShip(4, 4, true, 4);
 
         // Hit boat segments:
-        testBoard.setMarked(4, 4, true);
-        testBoard.setMarked(4, 5, true);
-        testBoard.setMarked(4, 6, true);
-        testBoard.setMarked(4, 7, true);
+        for ( int i = 0; i < 4; i++ ) {
+            // Make a coordinate:
+            Coordinate testCoordinate = new Coordinate( 4, (4 + i) );
+            testBoard.setMarked( testCoordinate );
+        }
 
         // Check if isShipSunk() recognizses that a ship has been sunk:
         System.out.println( "Expected state is true: A ship has been sunk." );
@@ -195,10 +207,11 @@ public class BoardTest {
         Ship testShip = new GenericShip(4, 4, true, 4);
 
         // Hit boat segments:
-        testBoard.setMarked(4, 4, true);
-        testBoard.setMarked(4, 5, true);
-        testBoard.setMarked(4, 6, true);
-        testBoard.setMarked(4, 8, true);
+        for ( int i = 0; i < 4; i++ ) {
+            // Make a coordinate:
+            Coordinate testCoordinate = new Coordinate( (2 + i), (6) );
+            testBoard.setMarked( testCoordinate );
+        }
 
         // Check if isShipSunk() recognizses that a ship has been sunk:
         System.out.println( "Expected state is false: A ship has not been sunk." );

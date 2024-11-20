@@ -47,10 +47,7 @@ public class Board {
      * @param y coordinate
      * @return true/false there is a mark on the selected tile.
      */
-    public boolean isMarked(int x, int y){
-        
-        // Adding coordinate object here. Fully transition?
-        Coordinate checkCoordinate = new Coordinate( x, y );
+    public boolean isMarked( Coordinate checkCoordinate ){
         
         //return markers[y][x]; // < --- markers[][] here flips coords?
         return markers[ checkCoordinate.y() ][ checkCoordinate.x() ];
@@ -63,19 +60,12 @@ public class Board {
      * @param y y-coordinate of attempted shot
      * @param hit does that tile have a boat on it
      */
-    public void setMarked(int x, int y, boolean hit){
+    public void setMarked( Coordinate playerCoord ){
 
-        // Move player x and y into coordinate.
-        Coordinate playerCoord = new Coordinate( x, y );
+        markers[ playerCoord.y() ][ playerCoord.x() ] = true; 
 
         // When checking a space, determine if a ship occupies it (a.k.a. the ship is "hit").
         isMarkerHit( playerCoord );
-
-        // Once you determine the status of the marker ( hit or miss ), you can update the image appropriately.
-        // This would also be where the game tells the ship to note it's been hit? <<<< printboard currently does this too.
-
-        //markers[x][y] = true;     // < --- markers[][] here flips coords?
-        markers[ playerCoord.y() ][ playerCoord.x() ] = true; 
     }
 
 
@@ -92,7 +82,7 @@ public class Board {
 
         for (Coordinate coordinate : segmentCoordinates) {
             // If a segment of the ship remains unmarked, return false.
-            if ( isMarked( coordinate.x(), coordinate.y() ) == false ) {
+            if ( isMarked( coordinate ) == false ) {
                 return false;
             }
         }
@@ -106,10 +96,12 @@ public class Board {
      * @param newShip
     */
     public void addShip(Ship newShip ){
-        //add a boat to the arraylist of active boats:
 
-        // <-------------- I imagine that this could be where we put the validateShipPlacement method call?
-
+        // If the ship is not placed in a valid location, return without adding the ship.
+        if ( validateShipPlacement( newShip.getPosition(), newShip.isVertical(), newShip.getLength() ) == false ) {
+            return;
+        }
+        // The placement of the ship is valid, add it to the list.
         shipList.add( newShip );
     }
 
@@ -120,13 +112,14 @@ public class Board {
      * @param newShip
      * @return true / false the ship can be placed at these coordinates.
     */
-    public Boolean validateShipPlacement( Ship newShip ){
-        // CONCERN: currently, I'm coding this function to take in a ship object, which already
-        // knows it's lenght and direction. Do we want this function to compare direct length / x and y instead?
+    public Boolean validateShipPlacement( Coordinate spaceChosen, Boolean vertical, Integer shipLength ){
 
+        // Generate a test ship:
+        Ship checkShip = new GenericShip( spaceChosen.x(), spaceChosen.y(), false, shipLength );
+        
         // Get ship coordinates:
         ArrayList<Coordinate> segmentCoordinates = new ArrayList<>();
-        segmentCoordinates = newShip.getAllCoordinates();
+        segmentCoordinates = checkShip.getAllCoordinates();
 
         // Check ship placement:
         for (Coordinate coordinate : segmentCoordinates) {
@@ -139,6 +132,7 @@ public class Board {
                 return false;
             }
         }
+
         // If all spaces are checked without issue, then return true.
         return true;
     }
