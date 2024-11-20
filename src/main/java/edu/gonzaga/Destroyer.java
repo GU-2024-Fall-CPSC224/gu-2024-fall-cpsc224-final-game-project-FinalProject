@@ -9,6 +9,10 @@ public class Destroyer extends Ship {
     }
 
     //use ability: one-shot enemy boat
+    public void powerShot(){
+        //user selects tile to shoot
+        //if its a hit, all other tiles occupied by that ship will be marked, and ship is sunk
+    }
 
     @Override
     public int getLength() {

@@ -9,6 +9,7 @@ public class Sub extends Ship {
     }
 
     //use ability: hide from recon (passive)
+    //nothing really special in this code, actually take place in carriers code
 
     @Override
     public int getLength() {

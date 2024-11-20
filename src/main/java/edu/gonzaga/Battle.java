@@ -9,6 +9,15 @@ public class Battle extends Ship{
     }
 
     //use ability: multishot (maybe shoots in an 'X' pattern?)
+    public void multiShot(){
+        //user selects center tile to shoot
+        
+        //shoot centertile
+        //shoot centertile x++ y++
+        //shoot centertile x++ y--
+        //shoot centertile x-- y++
+        //shoot centertile x-- y--
+    }
 
     @Override
     public int getLength() {
