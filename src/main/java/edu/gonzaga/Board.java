@@ -115,7 +115,7 @@ public class Board {
     public Boolean validateShipPlacement( Coordinate spaceChosen, Boolean vertical, Integer shipLength ){
 
         // Generate a test ship:
-        Ship checkShip = new GenericShip( spaceChosen.x(), spaceChosen.y(), false, shipLength );
+        Ship checkShip = new GenericShip( spaceChosen.x(), spaceChosen.y(), vertical, shipLength );
         
         // Get ship coordinates:
         ArrayList<Coordinate> segmentCoordinates = new ArrayList<>();
