@@ -102,7 +102,6 @@ public class MainGame {
       
         int xHit = 0;
         int yHit = 0;
-        Boolean didHit = true;
 
         //SWING: draw Boards
         
@@ -114,6 +113,9 @@ public class MainGame {
                 //Shoot at player 2 (select a tile in swing)
                 Boolean validGuess = false;
                 //text based shooting before gui is added
+
+                Coordinate guessCoordinate = new Coordinate(0,0);
+
                 while (!validGuess){ //remove reguess
                     System.out.print("Type a number 1-10 for the x: ");
                     xHit = input.nextInt() -1;
@@ -121,13 +123,15 @@ public class MainGame {
                     System.out.print("Type a number 1-10 for the y: ");
                     yHit = input.nextInt() -1;
 
-                    validGuess  = !boardTwo.isMarked(xHit,yHit);
+                    guessCoordinate = new Coordinate( xHit, yHit );
+
+                    validGuess = !boardTwo.isMarked( guessCoordinate );
                     if (!validGuess){
                         System.out.println("Already guessed!");
                     }
                 }
-                didHit = boardTwo.isMarkerHit(xHit, yHit);
-                boardTwo.setMarked(xHit, yHit, didHit);
+                //didHit = boardTwo.isMarkerHit(xHit, yHit); <<<<<< isMarkerHit() is called when you check any space.
+                boardTwo.setMarked( guessCoordinate );
             }
             else {
                 System.out.println(playerTwo.getName() + " it's your turn!");
