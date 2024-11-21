@@ -18,10 +18,21 @@ public abstract class Ship {
      */ 
     private final boolean isVertical;
 
+
+    enum shipType {
+        CARRIER,
+        BATTLE,
+        SUB,
+        CRUISER,
+        DESTROYER,
+        GENERIC //to be deleted later, just for testing purposes
+    }
+
     /**
      * Holds the state of whether the ship is still in play.
      */ 
     private boolean isSunk;
+
 
     // -----------------------------------
     // METHODS START HERE
@@ -31,7 +42,7 @@ public abstract class Ship {
     /**
      * Basic ship constructor
      * @param x
-     * @param y
+     * @param y 
      * @param isVertical
      */
     public Ship(int x, int y, boolean isVertical) {
@@ -67,6 +78,9 @@ public abstract class Ship {
      * getLength() returns the length of the ship.
     */
     public abstract int getLength();
+
+    public abstract shipType getType();
+
 
 
     /**
@@ -124,4 +138,5 @@ public abstract class Ship {
         // Return the calculated ship coordinates.
         return shipCoordinates;
     }
+
 }
