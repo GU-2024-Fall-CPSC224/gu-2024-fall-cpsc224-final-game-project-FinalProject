@@ -153,12 +153,29 @@ public class Board {
         // Check ship placement:
         for (Coordinate coordinate : segmentCoordinates) {
             // Check X:
-            if ( ( coordinate.x() > 10 ) || (coordinate.x() < 1 ) ) {
+            if ( ( coordinate.x() > 9 ) || (coordinate.x() < 0 ) ) {
                 return false;
             }
             // Check Y:
-            if ( ( coordinate.y() > 10 ) || (coordinate.y() < 1 ) ) {
+            if ( ( coordinate.y() > 9 ) || (coordinate.y() < 0 ) ) {
                 return false;
+            }
+        }
+
+        // Check for ship collision:
+        for ( Ship collidingShip : shipList ) {
+
+            // Get all the potential collision points of each ship placed on the boards.
+            ArrayList<Coordinate> collidingShipCoordinates = new ArrayList<>();
+            collidingShipCoordinates = collidingShip.getAllCoordinates();
+
+            // If the collision ship has an intersecting point with your new ship, return false.
+            for ( Coordinate coordinate : segmentCoordinates ) {
+                if ( collidingShipCoordinates.contains( coordinate ) ) {
+                    System.out.println( "INVALID: ship collision detected at X-" 
+                                        + coordinate.x() + " : Y-" + coordinate.y() );
+                    return false;
+                }
             }
         }
 
