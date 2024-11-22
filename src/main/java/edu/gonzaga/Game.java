@@ -16,8 +16,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import main.java.edu.gonzaga.Score;
-
 public class Game extends JPanel implements ActionListener {
     // dimensions
     private static final int game_width = 1000;
@@ -83,14 +81,14 @@ public class Game extends JPanel implements ActionListener {
     private void startGame() {
         if (!playGame || snakeDeath) return;
 
-        board.displayBoard();
+       // board.displayBoard();
         snake.move();
         switch (board.detectCollision()) {
             case "food":
                 //score++
                 snake.grow();
-                food.applyAffect(snake);
-                food = new Food(0, 0); //todo: randomize pos and type
+               // food.applyAffect(snake);
+               // food = new Food(0, 0); //todo: randomize pos and type
                 break;
             case "edge":
                 snakeDeath = true;
@@ -152,6 +150,6 @@ public class Game extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        tick();
+      //  tick();
     }
 }
