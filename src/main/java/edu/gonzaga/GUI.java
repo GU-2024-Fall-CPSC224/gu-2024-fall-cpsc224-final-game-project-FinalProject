@@ -8,56 +8,73 @@ import java.util.ArrayList;
 
 public class GUI {
     JFrame mainWindowFrame;
-    JPanel rolePanel = new JPanel();
-    JPanel playerPanel = new JPanel();
-    JPanel gamePanel = new JPanel();
-    JPanel reminder = new JPanel();
+    JPanel rolePanel;
+    JPanel playerPanel;
+    JPanel gamePanel;
+    JPanel reminder;
+    JPanel pokerContainerPanel;
     RoleImage roleImage;
-    JButton okPlayerButton = new JButton("OK");
+    JButton okPlayerButton;
 
+    String imagePath = "media/purple_back.jpg";
+    CardBackImage cardBackImage;
     JLabel potLabelText;
 
     JTextField chipsField;
     JTextField playerField;
 
-    // List to hold player name fields
-    ArrayList<JTextField> playerNameFields = new ArrayList<>();
+    ArrayList<Player> players;
+    int currentPlayerIndex;
+    int currentNum;
+    ArrayList<ArrayList<ArrayList<Object>>> playersHands; // Each player has a hand (list of cards)
 
-    public GUI(){
+
+    Cards deck;
+
+    public GUI() {
         roleImage = new RoleImage("media/poker rules.png");
+        players = new ArrayList<>();
+        playersHands = new ArrayList<>();
+        currentPlayerIndex = 0;
+        currentNum = 0; // Initialize the number of turns taken
+        cardBackImage = new CardBackImage(imagePath);
     }
-
     public static void main(String[] args) {
         GUI app = new GUI();
         app.runGUI();
     }
 
     void setGUI(){
+        // Initialize the deck
+        deck = new Cards("media");
+        deck.initializeDeck();
+
         // set up the main window
         this.mainWindowFrame = new JFrame("Poker Game");
         this.mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.mainWindowFrame.setSize(1300, 1000);
         this.mainWindowFrame.setResizable(true);
 
         this.mainWindowFrame.setLocation(100, 100);
-        this.mainWindowFrame.setSize(1300, 1000);
         this.mainWindowFrame.setLayout(new BorderLayout());
 
 
         // set up role panel
-        this.rolePanel = getRolePanel();
+        rolePanel = getRolePanel();
 
         // set up player panel
-        this.playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+        playerPanel = new JPanel();
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
 
         // set up poker panel
-        JPanel pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        pokerContainerPanel.add(getPokerPanel());
+        pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pokerContainerPanel.add(new JLabel("Waiting for players..."));
 
         // set up game panel
-        this.gamePanel = getGamePanel();
+        gamePanel = getGamePanel();
 
         // set up game reminder
-        this.reminder = getReminder();
+        reminder = getReminder();
 
         // input all panels in main window
         this.mainWindowFrame.getContentPane().add(this.rolePanel, BorderLayout.WEST);
@@ -99,6 +116,7 @@ public class GUI {
         rolePanel.add(playerPanel);
 
         // set up ok button
+        okPlayerButton = new JButton("OK");
 
         okPlayerButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -110,7 +128,6 @@ public class GUI {
 
         return newPanel;
     }
-
 
 
     private void getPlayerPanel() {
@@ -134,64 +151,110 @@ public class GUI {
         playerPanel.removeAll();
         playerPanel.setPreferredSize(new Dimension(300, 1000));
 
+
+
         for (int i = 0; i < playerCount; i++) {
-            JPanel singlePlayerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-            Profile profile = new Profile("media/profile.png");
-            JLabel iconLabel = new JLabel(profile.getRoleImage());
-            singlePlayerPanel.add(iconLabel);
-
-
-            // set up the panel for chips and name
-            JPanel infoPanel = new JPanel();
-            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-
-            JTextField playerNameField = new JTextField("Player Name");
-            playerNameField.setPreferredSize(new Dimension(150, 25));
-            playerNameFields.add(playerNameField); // add player name in array list
-
-            JLabel chipsLabel = new JLabel("Chips: " + chips);
-
-            infoPanel.add(playerNameField);
-            infoPanel.add(chipsLabel);
-            singlePlayerPanel.add(infoPanel);
-            playerPanel.add(singlePlayerPanel);
+            Player player = new Player("Player " + (i + 1), chips, "media/profile.png");
+            players.add(player);
+            playersHands.add(new ArrayList<>());
+            playerPanel.add(player.getPlayerPanel());
         }
+
         playerPanel.revalidate();
         playerPanel.repaint();
+
+        if (!players.isEmpty()) {
+            updatePokerPanel(players.get(0));
+        }
     }
 
+    private void updatePokerPanel(Player player) {
+        pokerContainerPanel.removeAll();
+        pokerContainerPanel.add(getPokerPanel(player));
+        pokerContainerPanel.revalidate();
+        pokerContainerPanel.repaint();
+    }
 
-    private JPanel getPokerPanel() {
+    private JPanel getPokerPanel(Player player) {
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BorderLayout());
 
-        // set up the panel for player's cards
+        // Panel for player's cards
         JPanel pokerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        String imagePath = "media/purple_back.jpg";
-        CardBackImage cardBackImage = new CardBackImage(imagePath);
+        JLabel[] cardLabels = new JLabel[2]; // Labels for the two cards
+
+        // Initialize with card backs
         for (int i = 0; i < 2; i++) {
             JLabel cardBack = new JLabel(cardBackImage.getBackImage());
-            pokerPanel.add(cardBack);
+            cardLabels[i] = cardBack; // Save the card back label
+            pokerPanel.add(cardBack); // Add card back to panel
         }
 
-        // set up the panel for options
+        // Panel for action buttons
         JPanel optionPanel = new JPanel();
         optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.X_AXIS));
         JButton check = new JButton("Check");
         JButton call = new JButton("Call");
         JButton raise = new JButton("Raise");
         JButton fold = new JButton("Fold");
+
+        // Button to reveal cards
+        // Button to reveal cards or switch to the next player
+        JButton checkCard = new JButton("Check Cards");
+        checkCard.addActionListener(e -> {
+            if (currentNum < players.size()) { // Ensure it only works within the player count
+                if (checkCard.getText().equals("Check Cards")) {
+                    // Draw two cards for the current player
+                    ArrayList<ArrayList<Object>> currentHand = playersHands.get(currentPlayerIndex);
+                    currentHand.clear(); // Clear any previous cards for this player
+                    for (int i = 0; i < 2; i++) {
+                        ArrayList<Object> drawnCard = deck.drawTheCard();
+                        if (drawnCard != null) {
+                            currentHand.add(drawnCard); // Add the card to the player's hand
+                            ImageIcon cardImage = deck.getCardImage(drawnCard);
+                            cardLabels[i].setIcon(cardImage); // Update card label
+                        }
+                    }
+
+                    // Change button to "Next Player"
+                    checkCard.setText("Next Player");
+                } else if (checkCard.getText().equals("Next Player")) {
+                    // Reset card labels to purple back
+                    for (JLabel cardLabel : cardLabels) {
+                        cardLabel.setIcon(cardBackImage.getBackImage());
+                    }
+
+                    // Switch to the next player
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                    currentNum++; // Increment the number of turns taken
+                    if (currentNum < players.size()) {
+                        updatePokerPanel(players.get(currentPlayerIndex));
+                    }
+
+                    // Change button back to "Check Cards"
+                    checkCard.setText("Check Cards");
+                }
+            } else {
+                // All players have taken their turn
+                checkCard.setEnabled(false); // Disable the button when done
+            }
+        });
+
+        // Add buttons to optionPanel
         optionPanel.add(check);
         optionPanel.add(call);
         optionPanel.add(raise);
         optionPanel.add(fold);
+        optionPanel.add(checkCard);
 
+        // Add pokerPanel and optionPanel to newPanel
         newPanel.add(pokerPanel, BorderLayout.NORTH);
         newPanel.add(optionPanel, BorderLayout.SOUTH);
 
         return newPanel;
     }
+
+
 
     private JPanel getGamePanel() {
         // Main panel to hold the start button initially
@@ -229,8 +292,8 @@ public class GUI {
                 }
 
                 // Disable name editing after starting the game
-                for (JTextField playerNameField : playerNameFields) {
-                    playerNameField.setEditable(false);
+                for (Player player : players) {
+                    player.setNameEditable(false);
                 }
 
                 // after game start, you can not change anything
@@ -370,9 +433,6 @@ public class GUI {
         // Show the dialog
         nameDialog.setVisible(true);
     }
-
-
-
 
     void runGUI(){
         System.out.println("Starting GUI app");
