@@ -74,18 +74,31 @@ public class Player {
     }
 
     // Draw cards from the deck
-    public void drawCards(Cards deck) {
+    public ArrayList<ArrayList<Object>> drawCards(Cards deck, JLabel[] cardLabels) {
+        hand.clear();
         for (int i = 0; i < 2; i++) {
-            ArrayList<Object> card = deck.drawTheCard();
-            if (card != null) {
-                hand.add(card);
+            ArrayList<Object> drawnCard = deck.drawTheCard(); // Draw a card from the deck
+            if (drawnCard != null) {
+                hand.add(drawnCard); // Add the card to the player's hand
+                ImageIcon cardImage = deck.getCardImage(drawnCard); // Get the card's image
+                cardLabels[i].setIcon(cardImage); // Update the corresponding card label
             }
         }
+        return hand;
     }
+
 
     // Get the player's hand
     public ArrayList<ArrayList<Object>> getHand() {
         return hand;
     }
+
+    // fold the card
+
+    // check the chips
+
+    // call the chips
+
+    // raise the chips
 }
 

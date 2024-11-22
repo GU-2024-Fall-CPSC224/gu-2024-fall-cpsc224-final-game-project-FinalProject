@@ -151,8 +151,6 @@ public class GUI {
         playerPanel.removeAll();
         playerPanel.setPreferredSize(new Dimension(300, 1000));
 
-
-
         for (int i = 0; i < playerCount; i++) {
             Player player = new Player("Player " + (i + 1), chips, "media/profile.png");
             players.add(player);
@@ -162,10 +160,6 @@ public class GUI {
 
         playerPanel.revalidate();
         playerPanel.repaint();
-
-        if (!players.isEmpty()) {
-            updatePokerPanel(players.get(0));
-        }
     }
 
     private void updatePokerPanel(Player player) {
@@ -197,24 +191,24 @@ public class GUI {
         JButton call = new JButton("Call");
         JButton raise = new JButton("Raise");
         JButton fold = new JButton("Fold");
+        fold.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         // Button to reveal cards
         // Button to reveal cards or switch to the next player
         JButton checkCard = new JButton("Check Cards");
         checkCard.addActionListener(e -> {
+            ganmeAlert();
+
             if (currentNum < players.size()) { // Ensure it only works within the player count
                 if (checkCard.getText().equals("Check Cards")) {
                     // Draw two cards for the current player
-                    ArrayList<ArrayList<Object>> currentHand = playersHands.get(currentPlayerIndex);
-                    currentHand.clear(); // Clear any previous cards for this player
-                    for (int i = 0; i < 2; i++) {
-                        ArrayList<Object> drawnCard = deck.drawTheCard();
-                        if (drawnCard != null) {
-                            currentHand.add(drawnCard); // Add the card to the player's hand
-                            ImageIcon cardImage = deck.getCardImage(drawnCard);
-                            cardLabels[i].setIcon(cardImage); // Update card label
-                        }
-                    }
+                    ArrayList<ArrayList<Object>> currentHand = player.drawCards(deck, cardLabels);
+                    playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
 
                     // Change button to "Next Player"
                     checkCard.setText("Next Player");
@@ -304,6 +298,10 @@ public class GUI {
                 // Remove the start panel when the button is pressed
                 mainPanel.remove(startPanel);
 
+                if (!players.isEmpty()) {
+                    updatePokerPanel(players.get(0));
+                }
+
                 // Set up the panel for the game view
                 JPanel gamePanel = new JPanel();
                 gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS)); // Vertical layout for centering
@@ -387,12 +385,10 @@ public class GUI {
     }
 
     private void startAlert(){
-        // Create the dialog to show the Farkle message
         JDialog startDialog = new JDialog(mainWindowFrame, "Game Alert", true);
         startDialog.setSize(600, 100);
         startDialog.setLocationRelativeTo(mainWindowFrame);
 
-        // Create a label with a Farkle message
         JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel alert = new JLabel("Please set up correct chips and player number on the left side before you start game" , SwingConstants.CENTER);
         JLabel alertNextLine = new JLabel("(after you start game, you can not change player name, chips and player number)", SwingConstants.CENTER);
@@ -413,13 +409,11 @@ public class GUI {
     }
 
     private void nameAlert(){
-        // Create the dialog to show the Farkle message
         JDialog nameDialog = new JDialog(mainWindowFrame, "Name Alert", true);
         nameDialog.setSize(600, 100);
         nameDialog.setLocationRelativeTo(mainWindowFrame);
 
-        // Create a label with a Farkle message
-        JLabel farkle = new JLabel("Please input your name on the right side, after start game, you can not change your name!!!!", SwingConstants.CENTER);
+        JLabel alert = new JLabel("Please input your name on the right side, after start game, you can not change your name!!!!", SwingConstants.CENTER);
 
         // Create an OK button to close the dialog
         JButton okButton = new JButton("OK");
@@ -427,11 +421,30 @@ public class GUI {
 
         // Add message and button to the dialog
         nameDialog.setLayout(new BorderLayout());
-        nameDialog.add(farkle, BorderLayout.CENTER);
+        nameDialog.add(alert, BorderLayout.CENTER);
         nameDialog.add(okButton, BorderLayout.SOUTH);
 
         // Show the dialog
         nameDialog.setVisible(true);
+    }
+
+    private void ganmeAlert(){
+        JDialog ganmeDialog = new JDialog(mainWindowFrame, "Ganme Alert", true);
+        ganmeDialog.setSize(600, 100);
+        ganmeDialog.setLocationRelativeTo(mainWindowFrame);
+
+        JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel alert = new JLabel("Before you click \"Next Player\", you should make your choice (Fold, Check, Call or Raise)");
+        alertPanel.add(alert);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> ganmeDialog.dispose());
+
+        ganmeDialog.setLayout(new BorderLayout());
+        ganmeDialog.add(alertPanel, BorderLayout.CENTER);
+        ganmeDialog.add(okButton, BorderLayout.SOUTH);
+
+        ganmeDialog.setVisible(true);
     }
 
     void runGUI(){

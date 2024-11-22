@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Cards {
-    ArrayList<Card> cards; // List of Card objects
+    ArrayList<SingleCard> cards; // List of Card objects
     ArrayList<ArrayList<Object>> deckOfCards; // Deck for game logic
 
     public Cards(String imagesPath) {
@@ -30,7 +30,7 @@ public class Cards {
                     currPicture = ImageIO.read(new File(filename));
                     Image dimg = currPicture.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
                     ImageIcon scaledImage = new ImageIcon(dimg);
-                    cards.add(new Card(getSuitName(suit), i, scaledImage)); // Add Card object to the cards list
+                    cards.add(new SingleCard(getSuitName(suit), i, scaledImage)); // Add Card object to the cards list
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -65,7 +65,7 @@ public class Cards {
     public ImageIcon getCardImage(ArrayList<Object> card) {
         String suit = (String) card.get(0);
         int value = (int) card.get(1);
-        for (Card c : cards) { // Loop through Card objects
+        for (SingleCard c : cards) { // Loop through Card objects
             if (c.suit.equals(suit) && c.value == value) {
                 return c.image; // Return the corresponding image
             }
@@ -83,18 +83,5 @@ public class Cards {
             case 'H' -> "Hearts";
             default -> "Unknown";
         };
-    }
-}
-
-// Card class representing individual cards
-class Card {
-    String suit;
-    int value;
-    ImageIcon image;
-
-    public Card(String suit, int value, ImageIcon image) {
-        this.suit = suit;
-        this.value = value;
-        this.image = image;
     }
 }
