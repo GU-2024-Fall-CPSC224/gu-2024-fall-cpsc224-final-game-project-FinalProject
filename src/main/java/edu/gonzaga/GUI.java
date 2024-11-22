@@ -191,12 +191,27 @@ public class GUI {
         JButton call = new JButton("Call");
         JButton raise = new JButton("Raise");
         JButton fold = new JButton("Fold");
-        fold.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+//        fold.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                int playerIndex = players.indexOf(player); // Get the index of the current player
+//                if (playerIndex != -1) {
+//                    playersHands.remove(playerIndex); // Remove the player's hand from playersHands
+//
+//                    // Check if there are still players in the game
+//                    if (playersHands.size() == 1) {
+//                        int remainingPlayerIndex = players.indexOf(playersHands.get(0));
+//                        Player winner = players.get(remainingPlayerIndex); // The last remaining player
+//                        JOptionPane.showMessageDialog(null,
+//                                winner.getName() + ", all other players folded! You win the chips from the pot!");
+//                    } else {
+//                        // Move to the next player
+//                        currentPlayerIndex = currentPlayerIndex % players.size();
+//                        updatePokerPanel(players.get(currentPlayerIndex));
+//                    }
+//                }
+//            }
+//        });
 
         // Button to reveal cards
         // Button to reveal cards or switch to the next player
