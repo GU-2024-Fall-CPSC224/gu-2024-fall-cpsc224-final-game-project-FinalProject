@@ -76,12 +76,16 @@ public class Cards {
 
     // Map suit abbreviation to suit name
     private String getSuitName(char suit) {
-        return switch (suit) {
-            case 'S' -> "Spades";
-            case 'C' -> "Clubs";
-            case 'D' -> "Diamonds";
-            case 'H' -> "Hearts";
-            default -> "Unknown";
-        };
+        if (suit == 'S') {
+            return "Spades";
+        } else if (suit == 'C') {
+            return "Clubs";
+        } else if (suit == 'D') {
+            return "Diamonds";
+        } else if (suit == 'H') {
+            return "Hearts";
+        } else {
+            return "Unknown";
+        }
     }
 }
