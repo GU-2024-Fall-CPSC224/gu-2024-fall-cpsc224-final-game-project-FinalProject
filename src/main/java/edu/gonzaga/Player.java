@@ -93,12 +93,49 @@ public class Player {
         return hand;
     }
 
+    // check the cards
+    public ArrayList<ArrayList<Object>> checkCard(JLabel[] cardLabels, Cards deck) {
+        // Clear the player's hand and draw two new cards
+        hand.clear();
+        for (int i = 0; i < 2; i++) {
+            ArrayList<Object> drawnCard = deck.drawTheCard();
+            if (drawnCard != null) {
+                hand.add(drawnCard); // Add to player's hand
+                ImageIcon cardImage = deck.getCardImage(drawnCard);
+                cardLabels[i].setIcon(cardImage); // Update card labels
+            }
+        }
+        return hand;
+    }
+
     // fold the card
+    public void foldCard(int currentPlayer, ArrayList<ArrayList<ArrayList<Object>>> playersHands) {
+        if (!playersHands.get(currentPlayer).isEmpty()) {
+            playersHands.get(currentPlayer).clear();
+        }
+    }
 
     // check the chips
+
 
     // call the chips
 
     // raise the chips
+
+    // make decision
+    public void makeDicision(String decision, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+        if(decision.equals("fold")){
+            foldCard(currentPlayer, playersHands);
+        }
+//        else if(decision.equals("chip")){
+//
+//        }
+//        else if(decision.equals("raise")){
+//
+//        }
+//        else{
+//            //check()
+//        }
+    }
 }
 
