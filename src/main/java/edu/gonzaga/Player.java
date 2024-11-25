@@ -59,6 +59,7 @@ public class Player {
 
     public void playerMoveSpaces(Board board){
         space = board.findNextSpace(hand, space);
+        loc = board.candyPath.get(space);
         if(space==board.spaces.size()-1){
             winner = true;
         }
