@@ -221,22 +221,22 @@ public class CandyLand {
                     panel3.setVisible(true);
                     for(int i = 0; i < players.size(); i++)
                     {
-                        if(players.getLabel() == 1)
+                        if(players.get(i).getLabel() == 1)
                         {
                             panel3.add(characterA);
                             moveIcon(characterA, board.candyPath.get(0));
                         }
-                        if(players.getLabel() == 2)
+                        if(players.get(i).getLabel() == 2)
                         {
                             panel3.add(characterB);
                             moveIcon(characterB, board.candyPath.get(0));
                         }
-                        if(players.getLabel() == 3)
+                        if(players.get(i).getLabel() == 3)
                         {
                             panel3.add(characterC);
                             moveIcon(characterC, board.candyPath.get(0));
                         }
-                        if(players.getLabel() == 4)
+                        if(players.get(i).getLabel() == 4)
                         {
                             panel3.add(characterD);
                             moveIcon(characterD, board.candyPath.get(0));
