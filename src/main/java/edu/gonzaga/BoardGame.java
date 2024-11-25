@@ -57,13 +57,13 @@ public class BoardGame {
         }
     }
 
-    public void movePlayer(int player, int steps) {
+    public void movePlayer(int player, Point location) {
         playerPositions[player] = (playerPositions[player] + steps) % (boardButtons.length * boardButtons[0].length);
         updateBoard();
     }
 
     public static void main(String[] args) {
         BoardGame game = new BoardGame(5, 5, 2);
-        game.movePlayer(0, 3); // Example: Move player 0 by 3 steps
+        game.movePlayer(0, location); // Example: Move player 0 by 3 steps
     }
 }
