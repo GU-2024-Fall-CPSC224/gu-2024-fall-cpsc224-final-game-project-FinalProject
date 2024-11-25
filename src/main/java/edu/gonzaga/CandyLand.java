@@ -219,6 +219,7 @@ public class CandyLand {
                 public void actionPerformed(ActionEvent e) {
                     panel2.setVisible(false);
                     panel3.setVisible(true);
+                    panel3.setLayout(null);
                     for(int i = 0; i < players.size(); i++)
                     {
                         if(players.get(i).getLabel() == 1)
@@ -308,7 +309,7 @@ public class CandyLand {
         }
 
     }
-
+    
     public static int getPlayerInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the number of players playing (2-4): ");
