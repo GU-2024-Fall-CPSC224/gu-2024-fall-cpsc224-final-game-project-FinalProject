@@ -8,6 +8,13 @@ public class Player {
     Card hand;
     boolean winner = false;
     int space;
+    int label;
+    public void setLabel(int x){
+        label = x;
+    }
+    public int getLabel(){
+        return label;
+    }
     public void setCard(Card cards){
         hand = cards;
     }
