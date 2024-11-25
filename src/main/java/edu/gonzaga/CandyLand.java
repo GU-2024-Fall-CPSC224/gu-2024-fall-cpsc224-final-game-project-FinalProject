@@ -117,10 +117,19 @@ public class CandyLand {
 //        }
         panel3.setSize(900, 800);//changes width from 900 to 1200!
         JButton boardButton = new JButton(boardIcon);
+        JButton drawButton = new JButton("Draw Card");
+        JButton movePlayerButton = new JButton("Move");
+        JLabel cardPrint = new JLabel("bob");
         boardButton.setSize(900,800);
         boardButton.setLocation(0,0);   
         panel3.add(boardButton);
-        panel3.add(new MovingPlayer(pinkIcon));
+        drawButton.setSize(50,20);
+        drawButton.setLocation(825,200);
+        movePlayerButton.setSize(50,20);
+        movePlayerButton.setLocation(825,750);
+        panel3.add(drawButton);
+        panel3.add(movePlayerButton);
+        panel3.add(cardPrint);
         //        try {
 //            panel3.setContentPane(
 //                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
