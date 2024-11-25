@@ -7,14 +7,17 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int chips;
+    private boolean isActive;
     private JPanel playerPanel;
     private JTextField nameField;
     private JLabel chipsLabel;
+    private JLabel chipsChange;
     private ArrayList<ArrayList<Object>> hand;
 
     public Player(String name, int chips, String profileImagePath) {
         this.name = name;
         this.chips = chips;
+        this.isActive = true;
         this.hand = new ArrayList<>();
         initializePlayerPanel(profileImagePath);
     }
@@ -35,9 +38,11 @@ public class Player {
         nameField = new JTextField(name);
         nameField.setPreferredSize(new Dimension(150, 25));
         chipsLabel = new JLabel("Chips: " + chips);
+        chipsChange = new JLabel("");
 
         infoPanel.add(nameField);
         infoPanel.add(chipsLabel);
+        infoPanel.add(chipsChange);
         playerPanel.add(infoPanel);
     }
 
@@ -87,45 +92,25 @@ public class Player {
         return hand;
     }
 
-
     // Get the player's hand
     public ArrayList<ArrayList<Object>> getHand() {
         return hand;
     }
 
-    // check the cards
-    public ArrayList<ArrayList<Object>> checkCard(JLabel[] cardLabels, Cards deck) {
-        // Clear the player's hand and draw two new cards
-        hand.clear();
-        for (int i = 0; i < 2; i++) {
-            ArrayList<Object> drawnCard = deck.drawTheCard();
-            if (drawnCard != null) {
-                hand.add(drawnCard); // Add to player's hand
-                ImageIcon cardImage = deck.getCardImage(drawnCard);
-                cardLabels[i].setIcon(cardImage); // Update card labels
-            }
-        }
-        return hand;
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
-    // fold the card
-    public void foldCard(int currentPlayer, ArrayList<ArrayList<ArrayList<Object>>> playersHands) {
-        if (!playersHands.get(currentPlayer).isEmpty()) {
-            playersHands.get(currentPlayer).clear();
-        }
+    public boolean isActive() {
+        return isActive;
     }
-
-    // check the chips
-
-
-    // call the chips
-
-    // raise the chips
 
     // make decision
     public void makeDicision(String decision, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
-        if(decision.equals("fold")){
-            foldCard(currentPlayer, playersHands);
+        if (decision.equals("fold")) {
+            System.out.println("Player " + this.getName() + " folded.");
+            this.setName("Fold");
+            setActive(false);
         }
 //        else if(decision.equals("chip")){
 //

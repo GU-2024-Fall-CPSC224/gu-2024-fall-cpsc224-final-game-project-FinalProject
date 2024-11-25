@@ -39,7 +39,6 @@ public class GUI {
         currentPlayerIndex = 0;
         currentNum = 0; // Initialize the number of turns taken
         cardBackImage = new CardBackImage(imagePath);
-        round = new SingleRound(players, playersHands);
     }
     public static void main(String[] args) {
         GUI app = new GUI();
@@ -160,17 +159,19 @@ public class GUI {
             Player player = new Player("Player " + (i + 1), chips, "media/profile.png");
             players.add(player);
             ArrayList<ArrayList<Object>> hand = new ArrayList<>();
+
             playersHands.add(hand);
             playerPanel.add(player.getPlayerPanel());
         }
+
+        // initial round after create players
+        round = new SingleRound(players);
 
         playerPanel.revalidate();
         playerPanel.repaint();
     }
 
     private void updatePokerPanel(Player player) {
-        round.checkWinner();
-
         pokerContainerPanel.removeAll();
         pokerContainerPanel.add(getPokerPanel(player));
         pokerContainerPanel.revalidate();
@@ -208,33 +209,25 @@ public class GUI {
                 if (checkCard.getText().equals("Check Cards")) {
                     ganmeAlert();
                     // Draw two cards for the current player
-                    ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).checkCard(cardLabels, deck);
+                    ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
                     playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
 
                     // Change button to "Next Player"
                     checkCard.setText("Next Player");
                 } else if (checkCard.getText().equals("Next Player")) {
 
+                    round.checkWinner();
+
+                    if(round.getActivePlayers() > 1){
+                        currentNum++;
+                        int nextPlayer = round.nextPlayer();
+                        updatePokerPanel(players.get(nextPlayer));
+                    }
+
                     // Reset card labels to purple back
                     for (JLabel cardLabel : cardLabels) {
                         cardLabel.setIcon(cardBackImage.getBackImage());
                     }
-
-                    currentNum++;
-                    int activePlayers = 0;
-
-                    for (ArrayList<ArrayList<Object>> hand : playersHands) {
-                        if (!hand.isEmpty()) {
-                            activePlayers++;
-                        }
-                    }
-
-                    // Switch to the next player
-                    do {
-                        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-                    } while (playersHands.get(currentPlayerIndex).isEmpty() && activePlayers > 1);
-
-                    updatePokerPanel(players.get(currentPlayerIndex));
 
                     // Change button back to "Check Cards"
                     checkCard.setText("Check Cards");
@@ -272,20 +265,17 @@ public class GUI {
 
         fold.addActionListener(e -> {
             player.makeDicision("fold", playersHands, currentPlayerIndex);
+            round.foldCard(currentPlayerIndex);
 
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
 
-            player.setName("Fold");
-
-            check.setEnabled(false);
-            call.setEnabled(false);
-            raise.setEnabled(false);
-            fold.setEnabled(false);
-
-            round.foldCard();
+            if (round.getActivePlayers() > 1) {
+                int nextPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(nextPlayerIndex));
+            }
         });
 
         // Add buttons to optionPanel

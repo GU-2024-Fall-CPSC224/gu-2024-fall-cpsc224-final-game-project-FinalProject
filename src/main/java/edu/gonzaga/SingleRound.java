@@ -6,44 +6,51 @@ import java.util.ArrayList;
 
 public class SingleRound {
     private ArrayList<Player> players;
-    private ArrayList<ArrayList<ArrayList<Object>>> playersHands;
     private int currentPlayerIndex;
     private int activePlayers;
 
-    public SingleRound(ArrayList<Player> players, ArrayList<ArrayList<ArrayList<Object>>> playersHands) {
+    public SingleRound(ArrayList<Player> players) {
         this.players = players;
-        this.playersHands = playersHands;
         this.currentPlayerIndex = 0;
-        updateActivePlayers();
+        this.activePlayers = players.size();
     }
 
-    public void foldCard() {
-        // clear the cards
-        playersHands.get(currentPlayerIndex).clear();
+    public void foldCard(int currentPlayerIndex) {
+        activePlayers--;
+        System.out.println("Active players remaining: " + activePlayers);
 
-        updateActivePlayers();
+        if (activePlayers == 1 || currentPlayerIndex == players.size() - 1) {
+            checkWinner();
+        }
     }
 
     public void checkWinner() {
-        // check the winner
-        updateActivePlayers();
+        System.out.println("Checking for winner...");
+        System.out.println("active player: " + activePlayers);
         if (activePlayers == 1) {
-            for (int i = 0; i < playersHands.size(); i++) {
-                if (!playersHands.get(i).isEmpty()) {
-                    Player winner = players.get(i);
-                    JOptionPane.showMessageDialog(null, winner.getName() + ", you win the pot!");
+            for (Player player : players) {
+                if (player.isActive()) {
+                    JOptionPane.showMessageDialog(null, player.getName() + " wins the pot!");
                     System.exit(0);
                 }
             }
         }
     }
 
-    private void updateActivePlayers() {
-        activePlayers = 0;
-        for (ArrayList<ArrayList<Object>> hand : playersHands) {
-            if (!hand.isEmpty()) {
-                activePlayers++;
-            }
-        }
+    public int nextPlayer() {
+        do {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            System.out.println("Next player index: " + currentPlayerIndex + " (" + players.get(currentPlayerIndex).getName() + ")");
+        } while (!players.get(currentPlayerIndex).isActive());
+        return currentPlayerIndex;
+    }
+
+
+    public int getActivePlayers() {
+        return activePlayers;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }
