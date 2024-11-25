@@ -276,7 +276,7 @@ public class CandyLand {
         }
 
     }
-
+    
     public static int getPlayerInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the number of players playing (2-4): ");
