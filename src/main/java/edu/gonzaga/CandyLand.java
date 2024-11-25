@@ -26,6 +26,7 @@ import java.awt.font.*;
 public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
+    static ArrayList <JLabel> playerIcons = new ArrayList<JLabel>();
 
     public static void moveIcon(JLabel button, Point newLocation) {
         button.setBounds((int)newLocation.getX() - 10, (int)newLocation.getY(), 15, 30);
@@ -234,6 +235,7 @@ public class CandyLand {
                             one.setVisible(true);
                             moveIcon(one, board.candyPath.get(0));
                             panel3.setComponentZOrder(one, 0);
+                            playerIcons.add(one);
                         }
                         if(players.get(i).getLabel() == 2)
                         {
@@ -241,6 +243,7 @@ public class CandyLand {
                             two.setVisible(true);
                             moveIcon(two, board.candyPath.get(0));
                             panel3.setComponentZOrder(two, 0);
+                            playerIcons.add(two);
                         }
                         if(players.get(i).getLabel() == 3)
                         {
@@ -248,6 +251,7 @@ public class CandyLand {
                             three.setVisible(true);
                             moveIcon(three, board.candyPath.get(0));
                             panel3.setComponentZOrder(three, 0);
+                            playerIcons.add(three);
                         }
                         if(players.get(i).getLabel() == 4)
                         {
@@ -255,6 +259,7 @@ public class CandyLand {
                             four.setVisible(true);
                             moveIcon(four, board.candyPath.get(0));
                             panel3.setComponentZOrder(four, 0);
+                            playerIcons.add(four);
                         }
                     }
                 }
@@ -273,33 +278,35 @@ public class CandyLand {
             
               boolean continueGame = true;
               
-//              while(continueGame) {
-//                  for (int i = 0; i < players.size(); i++) {
-//                      players.get(i).playTurn(board);
-//                      if (players.get(i).checkWinner()) {
-//                          System.out.println(players.get(i).getCharacter() + " is the Winner");
-//                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
-//                          JLabel text = new JLabel("Congratulations!!!");
-//                          winner.setFont(new Font("Courier", Font.BOLD, 20));
-//                          text.setFont(new Font("Courier", Font.BOLD, 20));
-//                          winner.setSize(500, 50);
-//                          text.setSize(500, 50);
-//                          text.setLocation(250, 100);
-//                          winner.setLocation(175, 200);
-//                          panel4.add(winner);
-//                          panel4.add(text);
-//                          panel3.setVisible(false);
-//                          panel4.setVisible(true);
-//                          continueGame = false;
-//                          break;
-//                      }
-//                  }
-//              }
+              while(continueGame) {
+                  for (int i = 0; i < players.size(); i++) {
+                      players.get(i).playTurn(board);
+                      moveIcon(one, players.get(i).loc);
+                      if (players.get(i).checkWinner()) {
+                          System.out.println(players.get(i).getCharacter() + " is the Winner");
+                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+                          JLabel text = new JLabel("Congratulations!!!");
+                          winner.setFont(new Font("Courier", Font.BOLD, 20));
+                          text.setFont(new Font("Courier", Font.BOLD, 20));
+                          winner.setSize(500, 50);
+                          text.setSize(500, 50);
+                          text.setLocation(250, 100);
+                          winner.setLocation(175, 200);
+                          panel4.add(winner);
+                          panel4.add(text);
+                          panel3.setVisible(false);
+                          panel4.setVisible(true);
+                          continueGame = false;
+                          break;
+                      }
+                  }
+              }
 //            boolean continueGame = true;
 
             while (continueGame) {
                 for (int i = 0; i < players.size(); i++) {
                     players.get(i).playTurn(board);
+                    moveIcon(playerIcons.get(i), players.get(i).loc);
                     if (players.get(i).checkWinner()) {
                         System.out.println(players.get(i).getCharacter() + " is the Winner");
                         JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
