@@ -117,14 +117,16 @@ public class CandyLand {
         panel3.setSize(900, 800);//changes width from 900 to 1200!
         JButton boardButton = new JButton(boardIcon); 
         boardButton.setSize(900,800);
-        boardButton.setLocation(0,0);
-//        panel3.add(boardButton);
+        boardButton.setLocation(0,0);   
+        panel3.add(boardButton);
+        panel3.add(new MovingPlayer(pinkIcon));
         //        try {
 //            panel3.setContentPane(
 //                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        panel3.add(board);
         panel3.setVisible(false);
 
         // frame 4 **************************************
@@ -158,7 +160,6 @@ public class CandyLand {
             button4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println(numberOfPlayers);
                     panel1.setVisible(false);
                     panel2.setVisible(true);
                 }
@@ -218,9 +219,7 @@ public class CandyLand {
                 public void actionPerformed(ActionEvent e) {
                     panel2.setVisible(false);
                     panel3.setVisible(true);
-                    for (int i = 0; i < players.size(); i++) {
-                        System.out.println(players.get(i).getCharacter());
-                    }
+                    panel3.setLayout(null);
                     for(int i = 0; i < players.size(); i++)
                     {
                         if(players.get(i).getLabel() == 1)
@@ -247,16 +246,15 @@ public class CandyLand {
                     }
                 }
             });
-//            int numberOfPlayers = getPlayerInput();
-//            System.out.println(numberOfPlayers);
-//            Scanner sc = new Scanner(System.in);
-//            for (int i = 0; i < numberOfPlayers; i++) {
-//                System.out.println("Pick character 1-4!"); // the gui will fix this logic
-//                int character = sc.nextInt();
-//                players.add(new Player());
-//                players.get(i).setCharacter(board.playerNames.get(character));
+            int numberOfPlayers = getPlayerInput();
+            Scanner sc = new Scanner(System.in);
+            for (int i = 0; i < numberOfPlayers; i++) {
+                System.out.println("Pick character 1-4!"); // the gui will fix this logic
+                int character = sc.nextInt();
+                players.add(new Player());
+                players.get(i).setCharacter(board.playerNames.get(character));
                 // board.removePlayerNameIndex(character);
-//            }
+            }
 
             board.addPlayers(players);
             
@@ -311,7 +309,7 @@ public class CandyLand {
         }
 
     }
-
+    
     public static int getPlayerInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the number of players playing (2-4): ");
