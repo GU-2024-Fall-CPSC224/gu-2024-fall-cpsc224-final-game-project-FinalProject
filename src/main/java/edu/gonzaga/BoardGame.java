@@ -11,7 +11,7 @@ public class BoardGame {
     private int[] playerPositions; // Track player positions (1D for simplicity)
 
     public BoardGame(int rows, int cols, int numPlayers) {
-        frame = new JFrame("Board Game");
+        frame = new JFrame("Candy Land");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(rows, cols));
 
