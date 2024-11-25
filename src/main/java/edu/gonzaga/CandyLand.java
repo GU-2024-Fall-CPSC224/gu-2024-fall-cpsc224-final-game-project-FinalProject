@@ -273,28 +273,28 @@ public class CandyLand {
             
               boolean continueGame = true;
               
-              while(continueGame) {
-                  for (int i = 0; i < players.size(); i++) {
-                      players.get(i).playTurn(board);
-                      if (players.get(i).checkWinner()) {
-                          System.out.println(players.get(i).getCharacter() + " is the Winner");
-                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
-                          JLabel text = new JLabel("Congratulations!!!");
-                          winner.setFont(new Font("Courier", Font.BOLD, 20));
-                          text.setFont(new Font("Courier", Font.BOLD, 20));
-                          winner.setSize(500, 50);
-                          text.setSize(500, 50);
-                          text.setLocation(250, 100);
-                          winner.setLocation(175, 200);
-                          panel4.add(winner);
-                          panel4.add(text);
-                          panel3.setVisible(false);
-                          panel4.setVisible(true);
-                          continueGame = false;
-                          break;
-                      }
-                  }
-              }
+//              while(continueGame) {
+//                  for (int i = 0; i < players.size(); i++) {
+//                      players.get(i).playTurn(board);
+//                      if (players.get(i).checkWinner()) {
+//                          System.out.println(players.get(i).getCharacter() + " is the Winner");
+//                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+//                          JLabel text = new JLabel("Congratulations!!!");
+//                          winner.setFont(new Font("Courier", Font.BOLD, 20));
+//                          text.setFont(new Font("Courier", Font.BOLD, 20));
+//                          winner.setSize(500, 50);
+//                          text.setSize(500, 50);
+//                          text.setLocation(250, 100);
+//                          winner.setLocation(175, 200);
+//                          panel4.add(winner);
+//                          panel4.add(text);
+//                          panel3.setVisible(false);
+//                          panel4.setVisible(true);
+//                          continueGame = false;
+//                          break;
+//                      }
+//                  }
+//              }
 //            boolean continueGame = true;
 
             while (continueGame) {
