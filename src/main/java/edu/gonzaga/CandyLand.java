@@ -28,7 +28,7 @@ public class CandyLand {
     static int playerCounter = 0;
 
     public static void moveIcon(JLabel button, Point newLocation) {
-        button.setBounds((int)newLocation.getX(), (int)newLocation.getY(), 10, 10);
+        button.setBounds((int)newLocation.getX(), (int)newLocation.getY(), 15, 30);
     }
 
     public static void main(String[] args) {
@@ -225,6 +225,7 @@ public class CandyLand {
                     panel2.setVisible(false);
                     panel3.setVisible(true);
                     panel3.setLayout(null);
+                    panel3.setComponentZOrder(boardButton, 1);
                     for(int i = 0; i < players.size(); i++)
                     {
                         if(players.get(i).getLabel() == 1)
@@ -232,25 +233,28 @@ public class CandyLand {
                             panel3.add(one);
                             one.setVisible(true);
                             moveIcon(one, board.candyPath.get(0));
+                            panel3.setComponentZOrder(one, 0);
                         }
                         if(players.get(i).getLabel() == 2)
                         {
                             panel3.add(two);
                             two.setVisible(true);
                             moveIcon(two, board.candyPath.get(0));
+                            panel3.setComponentZOrder(two, 0);
                         }
                         if(players.get(i).getLabel() == 3)
                         {
                             panel3.add(three);
                             three.setVisible(true);
                             moveIcon(three, board.candyPath.get(0));
+                            panel3.setComponentZOrder(three, 0);
                         }
                         if(players.get(i).getLabel() == 4)
                         {
                             panel3.add(four);
                             four.setVisible(true);
                             moveIcon(four, board.candyPath.get(0));
-                            
+                            panel3.setComponentZOrder(four, 0);
                         }
                     }
                 }
