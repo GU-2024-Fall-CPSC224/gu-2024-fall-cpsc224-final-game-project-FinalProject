@@ -121,12 +121,12 @@ public class CandyLand {
         JButton movePlayerButton = new JButton("Move");
         JLabel cardPrint = new JLabel("bob");
         boardButton.setSize(900,800);
-        boardButton.setLocation(0,0);   
+        boardButton.setLocation(0,0);
         panel3.add(boardButton);
         drawButton.setSize(50,20);
-        drawButton.setLocation(825,200);
+        drawButton.setLocation(500,100);
         movePlayerButton.setSize(50,20);
-        movePlayerButton.setLocation(825,750);
+        movePlayerButton.setLocation(600,750);
         movePlayerButton.setVisible(true);
         drawButton.setVisible(true);
         panel3.add(drawButton);
