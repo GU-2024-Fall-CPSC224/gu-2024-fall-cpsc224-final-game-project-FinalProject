@@ -62,7 +62,7 @@ public class CandyLand {
         panel2.setSize(1100, 650);
         panel3.setSize(1100, 650);
         panel4.setSize(1100, 650);
-        frame1.setSize(1100, 650);
+        frame1.setSize(1100, 750);
         frame1.setLayout(null);
         frame1.add(panel1);
         frame1.add(panel2);
@@ -115,6 +115,7 @@ public class CandyLand {
         boardButton.setSize(900,800);
         boardButton.setLocation(0,0);   
         panel3.add(boardButton);
+        panel3.add(new MovingPlayer(pinkIcon));
         //        try {
 //            panel3.setContentPane(
 //                    new JLabel(new ImageIcon(ImageIO.read(new File("project design documents/board2.jpg")))));
