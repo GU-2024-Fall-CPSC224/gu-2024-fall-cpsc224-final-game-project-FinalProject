@@ -27,6 +27,10 @@ public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
 
+    public static void moveIcon(JButton button, Point newLocation) {
+        button.setBounds((int)newLocation.getX(), (int)newLocation.getY(), 10, 10);
+    }
+
     public static void main(String[] args) {
         Board board = new Board();
         ArrayList<Player> players = new ArrayList<>();
@@ -167,6 +171,7 @@ public class CandyLand {
                     players.get(players.size() - 1).setCharacter("Mally Mallo");
                     board.removePlayerName("Mally Mallo");
                     characterA.setVisible(false);
+                    players.get(players.size() - 1).setLabel(1);
                 }
             });
 
@@ -177,6 +182,7 @@ public class CandyLand {
                     players.get(players.size() - 1).setCharacter("Twirly Girl");
                     board.removePlayerName("Twirly Girl");
                     characterB.setVisible(false);
+                    players.get(players.size() - 1).setLabel(2);
                 }
             });
             characterC.addActionListener(new ActionListener() {
@@ -187,6 +193,7 @@ public class CandyLand {
                     players.get(players.size() - 1).setCharacter("Cutie Cone");
                     board.removePlayerName("Cutie Cone");
                     characterC.setVisible(false);
+                    players.get(players.size() - 1).setLabel(3);
                 }
             });
 
@@ -197,6 +204,7 @@ public class CandyLand {
                     players.get(players.size() - 1).setCharacter("Giggly Gumdrop");
                     board.removePlayerName("Giggly Gumdrop");
                     characterD.setVisible(false);
+                    players.get(players.size() - 1).setLabel(4);
                 }
             });
             button5.addActionListener(new ActionListener() {
@@ -211,6 +219,30 @@ public class CandyLand {
                 public void actionPerformed(ActionEvent e) {
                     panel2.setVisible(false);
                     panel3.setVisible(true);
+                    for(int i = 0; i < players.size(); i++)
+                    {
+                        if(players.getLabel() == 1)
+                        {
+                            panel3.add(characterA);
+                            moveIcon(characterA, board.candyPath.get(0));
+                        }
+                        if(players.getLabel() == 2)
+                        {
+                            panel3.add(characterB);
+                            moveIcon(characterB, board.candyPath.get(0));
+                        }
+                        if(players.getLabel() == 3)
+                        {
+                            panel3.add(characterC);
+                            moveIcon(characterC, board.candyPath.get(0));
+                        }
+                        if(players.getLabel() == 4)
+                        {
+                            panel3.add(characterD);
+                            moveIcon(characterD, board.candyPath.get(0));
+                            
+                        }
+                    }
                 }
             });
             int numberOfPlayers = getPlayerInput();
