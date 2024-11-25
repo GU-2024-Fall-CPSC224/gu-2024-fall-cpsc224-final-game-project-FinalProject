@@ -51,9 +51,9 @@ public class Player {
         playerMoveSpaces(board);
     }
     public void drawCardPlayer(Board board){
-        System.out.println("Enter to draw card!! ");
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
+//        System.out.println("Enter to draw card!! ");
+//        Scanner scanner = new Scanner(System.in);
+//        scanner.nextLine();
         hand = board.drawCard();
     }
 
