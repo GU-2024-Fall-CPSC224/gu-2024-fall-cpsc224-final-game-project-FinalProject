@@ -27,16 +27,16 @@ public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
     static ArrayList <JLabel> playerIcons = new ArrayList<JLabel>();
-
+    static int turnCount = 0;
     public static void moveIcon(JLabel button, Point newLocation) {
         button.setBounds((int)newLocation.getX() - 10, (int)newLocation.getY(), 15, 30);
     }
-
+        
     public static void main(String[] args) {
         Board board = new Board();
         ArrayList<Player> players = new ArrayList<>();
         boolean done = false;
-
+        
         ImageIcon pinkIcon = new ImageIcon("project design documents/Picture5.jpg");
         ImageIcon purpleIcon = new ImageIcon("project design documents/Picture6.jpg");
         ImageIcon redIcon = new ImageIcon("project design documents/Picture7.jpg");
@@ -275,6 +275,42 @@ public class CandyLand {
                     }
                 }
             });
+            drawButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    players.get(turnCount).drawCardPlayer(board);
+                    cardPrint.setText(players.get(turnCount).getCard().getSquare1()+ " " + players.get(turnCount).getCard().getSquare2());
+                    players.get(turnCount).playerMoveSpaces(board);
+                    }
+                }
+            );
+            movePlayerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    moveIcon(playerIcons.get(turnCount), players.get(turnCount).loc);
+                    
+                    if(players.get(turnCount).checkWinner()){
+                        System.out.println(players.get(turnCount).getCharacter() + " is the Winner");
+                          JLabel winner = new JLabel("The winner is " + players.get(turnCount).getCharacter() + "!!!");
+                          JLabel text = new JLabel("Congratulations!!!");
+                          winner.setFont(new Font("Courier", Font.BOLD, 20));
+                          text.setFont(new Font("Courier", Font.BOLD, 20));
+                          winner.setSize(500, 50);
+                          text.setSize(500, 50);
+                          text.setLocation(250, 100);
+                          winner.setLocation(175, 200);
+                          panel4.add(winner);
+                          panel4.add(text);
+                          panel3.setVisible(false);
+                          panel4.setVisible(true);
+                          //continueGame = false;
+                    }
+                    else if(turnCount==playerCounter){
+                        turnCount=0;
+                    }
+                    }                    
+                }
+            );
            /* int numberOfPlayers = getPlayerInput();
             Scanner sc = new Scanner(System.in);
             for (int i = 0; i < numberOfPlayers; i++) {
