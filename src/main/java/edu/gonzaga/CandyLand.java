@@ -230,21 +230,25 @@ public class CandyLand {
                         if(players.get(i).getLabel() == 1)
                         {
                             panel3.add(one);
+                            one.setVisible(true);
                             moveIcon(one, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 2)
                         {
                             panel3.add(two);
+                            two.setVisible(true);
                             moveIcon(two, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 3)
                         {
                             panel3.add(three);
+                            three.setVisible(true);
                             moveIcon(three, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 4)
                         {
                             panel3.add(four);
+                            four.setVisible(true);
                             moveIcon(four, board.candyPath.get(0));
                             
                         }
