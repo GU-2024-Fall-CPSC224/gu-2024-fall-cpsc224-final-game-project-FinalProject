@@ -1,9 +1,10 @@
 package edu.gonzaga;
 
 import java.util.Scanner;
+import java.awt.*;
 
 public class Player {
-    Location loc;
+    Point loc;
     String character;
     Card hand;
     boolean winner = false;
@@ -18,8 +19,8 @@ public class Player {
     public void setCard(Card cards){
         hand = cards;
     }
-    public void setLocation(Location index){
-        loc = index;
+    public void setLocation(Point location){
+        loc = location;
     }
     public void setCharacter(String name){
         character = name;
