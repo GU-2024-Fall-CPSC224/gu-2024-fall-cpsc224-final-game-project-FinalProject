@@ -27,7 +27,7 @@ public class CandyLand {
     static int numberOfPlayers = 2;
     static int playerCounter = 0;
 
-    public static void moveIcon(JButton button, Point newLocation) {
+    public static void moveIcon(JLabel button, Point newLocation) {
         button.setBounds((int)newLocation.getX(), (int)newLocation.getY(), 10, 10);
     }
 
@@ -115,7 +115,7 @@ public class CandyLand {
 //            e.printStackTrace();
 //        }
         panel3.setSize(900, 800);//changes width from 900 to 1200!
-        JButton boardButton = new JButton(boardIcon); 
+        JButton boardButton = new JButton(boardIcon);
         boardButton.setSize(900,800);
         boardButton.setLocation(0,0);   
         panel3.add(boardButton);
@@ -130,6 +130,11 @@ public class CandyLand {
         panel3.setVisible(false);
 
         // frame 4 **************************************
+        JLabel one = new JLabel(pinkIcon);
+        JLabel two = new JLabel(purpleIcon);
+        JLabel three = new JLabel(redIcon);
+        JLabel four = new JLabel(yellowIcon);
+        
         panel4.setSize(800, 600);
         panel4.setLayout(null);
         panel4.setVisible(false);
@@ -224,29 +229,29 @@ public class CandyLand {
                     {
                         if(players.get(i).getLabel() == 1)
                         {
-                            panel3.add(characterA);
-                            moveIcon(characterA, board.candyPath.get(0));
+                            panel3.add(one);
+                            moveIcon(one, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 2)
                         {
-                            panel3.add(characterB);
-                            moveIcon(characterB, board.candyPath.get(0));
+                            panel3.add(two);
+                            moveIcon(two, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 3)
                         {
-                            panel3.add(characterC);
-                            moveIcon(characterC, board.candyPath.get(0));
+                            panel3.add(three);
+                            moveIcon(three, board.candyPath.get(0));
                         }
                         if(players.get(i).getLabel() == 4)
                         {
-                            panel3.add(characterD);
-                            moveIcon(characterD, board.candyPath.get(0));
+                            panel3.add(four);
+                            moveIcon(four, board.candyPath.get(0));
                             
                         }
                     }
                 }
             });
-            int numberOfPlayers = getPlayerInput();
+           /* int numberOfPlayers = getPlayerInput();
             Scanner sc = new Scanner(System.in);
             for (int i = 0; i < numberOfPlayers; i++) {
                 System.out.println("Pick character 1-4!"); // the gui will fix this logic
@@ -255,7 +260,7 @@ public class CandyLand {
                 players.get(i).setCharacter(board.playerNames.get(character));
                 // board.removePlayerNameIndex(character);
             }
-
+                */
             board.addPlayers(players);
             
               boolean continueGame = true;
