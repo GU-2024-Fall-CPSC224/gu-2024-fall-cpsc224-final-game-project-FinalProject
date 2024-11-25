@@ -127,6 +127,8 @@ public class CandyLand {
         drawButton.setLocation(825,200);
         movePlayerButton.setSize(50,20);
         movePlayerButton.setLocation(825,750);
+        movePlayerButton.setVisible(true);
+        drawButton.setVisible(true);
         panel3.add(drawButton);
         panel3.add(movePlayerButton);
         panel3.add(cardPrint);
