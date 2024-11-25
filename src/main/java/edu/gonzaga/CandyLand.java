@@ -28,7 +28,7 @@ public class CandyLand {
     static int playerCounter = 0;
 
     public static void moveIcon(JLabel button, Point newLocation) {
-        button.setBounds((int)newLocation.getX(), (int)newLocation.getY(), 15, 30);
+        button.setBounds((int)newLocation.getX() - 10, (int)newLocation.getY(), 15, 30);
     }
 
     public static void main(String[] args) {
