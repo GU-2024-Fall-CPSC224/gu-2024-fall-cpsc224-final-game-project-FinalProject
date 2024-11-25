@@ -326,14 +326,14 @@ public class CandyLand {
             board.addPlayers(players);
             
               boolean continueGame = true;
-              
+
               while(continueGame) {
-                  for (int i = 0; i < players.size(); i++) {
-                      players.get(i).playTurn(board);
-                      moveIcon(one, players.get(i).loc);
-                      if (players.get(i).checkWinner()) {
-                          System.out.println(players.get(i).getCharacter() + " is the Winner");
-                          JLabel winner = new JLabel("The winner is " + players.get(i).getCharacter() + "!!!");
+                  for (Player player : players) {
+                      player.playTurn(board);
+                      moveIcon(one, player.loc);
+                      if (player.checkWinner()) {
+                          System.out.println(player.getCharacter() + " is the Winner");
+                          JLabel winner = new JLabel("The winner is " + player.getCharacter() + "!!!");
                           JLabel text = new JLabel("Congrtulations!!!!!!");
                           winner.setFont(new Font("Courier", Font.BOLD, 20));
                           text.setFont(new Font("Courier", Font.BOLD, 20));
