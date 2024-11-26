@@ -38,11 +38,11 @@ public class Player {
         nameField = new JTextField(name);
         nameField.setPreferredSize(new Dimension(150, 25));
         chipsLabel = new JLabel("Chips: " + chips);
-        chipsChange = new JLabel("");
+        chipsChange = new JLabel("Decision: ");
 
+        infoPanel.add(chipsChange);
         infoPanel.add(nameField);
         infoPanel.add(chipsLabel);
-        infoPanel.add(chipsChange);
         playerPanel.add(infoPanel);
     }
 
@@ -78,6 +78,12 @@ public class Player {
         return chips;
     }
 
+    public void setChips(int chips) {}
+
+    public void changeChips(int chips) {
+        this.chipsChange.setText("Decision: check " + chips);
+    }
+
     // Draw cards from the deck
     public ArrayList<ArrayList<Object>> drawCards(Cards deck, JLabel[] cardLabels) {
         hand.clear();
@@ -106,21 +112,24 @@ public class Player {
     }
 
     // make decision
-    public void makeDicision(String decision, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+    public void makeDecision(String decision, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+        // when player choose fold their cards
         if (decision.equals("fold")) {
             System.out.println("Player " + this.getName() + " folded.");
             this.setName("Fold");
             setActive(false);
         }
-//        else if(decision.equals("chip")){
+//        else if(decision.equals("call")){
 //
 //        }
 //        else if(decision.equals("raise")){
 //
 //        }
-//        else{
-//            //check()
-//        }
+        // when player check (match 0 chips) or forget to make decision (default)
+        else{
+            System.out.println("Player " + this.getName() + " check");
+            this.changeChips(0);
+        }
     }
 }
 

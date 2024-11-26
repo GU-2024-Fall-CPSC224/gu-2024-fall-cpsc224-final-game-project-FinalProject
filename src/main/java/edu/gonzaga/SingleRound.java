@@ -15,6 +15,7 @@ public class SingleRound {
         this.activePlayers = players.size();
     }
 
+    // fold cards
     public void foldCard(int currentPlayerIndex) {
         activePlayers--;
         System.out.println("Active players remaining: " + activePlayers);
@@ -24,6 +25,12 @@ public class SingleRound {
         }
     }
 
+    // 0 chips
+    public void checkChips(int currentPlayerIndex) {
+
+    }
+
+    // check the only one player is winner
     public void checkWinner() {
         System.out.println("Checking for winner...");
         System.out.println("active player: " + activePlayers);
@@ -37,6 +44,7 @@ public class SingleRound {
         }
     }
 
+    // switch to next player
     public int nextPlayer() {
         do {
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();

@@ -205,33 +205,20 @@ public class GUI {
         JButton checkCard = new JButton("Check Cards");
         checkCard.addActionListener(e -> {
             if (currentNum < players.size()) { // Ensure it only works within the player count
+                ganmeAlert();
+                // Draw two cards for the current player
+                ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
+                playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
 
-                if (checkCard.getText().equals("Check Cards")) {
-                    ganmeAlert();
-                    // Draw two cards for the current player
-                    ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
-                    playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
+                // after check cards, player can make decision
+                check.setEnabled(true);
+                call.setEnabled(true);
+                raise.setEnabled(true);
+                fold.setEnabled(true);
 
-                    // Change button to "Next Player"
-                    checkCard.setText("Next Player");
-                } else if (checkCard.getText().equals("Next Player")) {
+                // Change button to "Next Player"
+                checkCard.setEnabled(false);
 
-                    round.checkWinner();
-
-                    if(round.getActivePlayers() > 1){
-                        currentNum++;
-                        int nextPlayer = round.nextPlayer();
-                        updatePokerPanel(players.get(nextPlayer));
-                    }
-
-                    // Reset card labels to purple back
-                    for (JLabel cardLabel : cardLabels) {
-                        cardLabel.setIcon(cardBackImage.getBackImage());
-                    }
-
-                    // Change button back to "Check Cards"
-                    checkCard.setText("Check Cards");
-                }
             } else {
                 // All players have taken their turn
                 checkCard.setEnabled(false); // Disable the button when done
@@ -240,31 +227,30 @@ public class GUI {
 
         // player can make choice
         check.addActionListener(e -> {
-            player.makeDicision("check", playersHands, currentPlayerIndex);
-            check.setEnabled(false);
-            call.setEnabled(false);
-            raise.setEnabled(false);
-            fold.setEnabled(false);
+            player.makeDecision("check", playersHands, currentPlayerIndex);
+            round.checkChips(currentPlayerIndex);
+
+            for(JLabel cardLabel : cardLabels){
+                cardLabel.setIcon(cardBackImage.getBackImage());
+            }
+
+            if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                int nextPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(nextPlayerIndex));
+                currentNum++;
+            }
         });
 
         call.addActionListener(e -> {
-            player.makeDicision("call", playersHands, currentPlayerIndex);
-            check.setEnabled(false);
-            call.setEnabled(false);
-            raise.setEnabled(false);
-            fold.setEnabled(false);
+            player.makeDecision("call", playersHands, currentPlayerIndex);
         });
 
         raise.addActionListener(e -> {
-            player.makeDicision("raise", playersHands, currentPlayerIndex);
-            check.setEnabled(false);
-            call.setEnabled(false);
-            raise.setEnabled(false);
-            fold.setEnabled(false);
+            player.makeDecision("raise", playersHands, currentPlayerIndex);
         });
 
         fold.addActionListener(e -> {
-            player.makeDicision("fold", playersHands, currentPlayerIndex);
+            player.makeDecision("fold", playersHands, currentPlayerIndex);
             round.foldCard(currentPlayerIndex);
 
             // flip the card to be back
@@ -284,6 +270,12 @@ public class GUI {
         optionPanel.add(raise);
         optionPanel.add(fold);
         optionPanel.add(checkCard);
+
+        // player must check cards first
+        check.setEnabled(false);
+        call.setEnabled(false);
+        raise.setEnabled(false);
+        fold.setEnabled(false);
 
         // Add pokerPanel and optionPanel to newPanel
         newPanel.add(pokerPanel, BorderLayout.NORTH);
