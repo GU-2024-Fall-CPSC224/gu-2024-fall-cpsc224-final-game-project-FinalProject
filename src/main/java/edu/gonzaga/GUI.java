@@ -26,8 +26,9 @@ public class GUI {
     ArrayList<Player> players;
     int currentPlayerIndex;
     int currentNum;
+    int potChips;
+    int[] playerChips;
     ArrayList<ArrayList<ArrayList<Object>>> playersHands; // Each player has a hand (list of cards)
-
 
     Cards deck;
     SingleRound round;
@@ -38,6 +39,7 @@ public class GUI {
         playersHands = new ArrayList<>();
         currentPlayerIndex = 0;
         currentNum = 0; // Initialize the number of turns taken
+        potChips = 0;
         cardBackImage = new CardBackImage(imagePath);
     }
     public static void main(String[] args) {
@@ -147,6 +149,10 @@ public class GUI {
             startAlert();
             return;
         }
+        playerChips = new int[playerCount];
+        for(int i = 0; i < playerCount; i++) {
+            playerChips[i] = chips;
+        }
 
         nameAlert();
         playerPanel.removeAll();
@@ -204,8 +210,8 @@ public class GUI {
         // Button to reveal cards or switch to the next player
         JButton checkCard = new JButton("Check Cards");
         checkCard.addActionListener(e -> {
-            if (currentNum < players.size()) { // Ensure it only works within the player count
-                ganmeAlert();
+            if (currentNum < players.size()) {
+
                 // Draw two cards for the current player
                 ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
                 playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
@@ -227,30 +233,51 @@ public class GUI {
 
         // player can make choice
         check.addActionListener(e -> {
-            player.makeDecision("check", playersHands, currentPlayerIndex);
+            player.makeDecision("check", 0, playersHands, currentPlayerIndex);
             round.checkChips(currentPlayerIndex);
 
             for(JLabel cardLabel : cardLabels){
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
 
+            // next player
             if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                int nextPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(nextPlayerIndex));
+                currentPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
             }
         });
 
         call.addActionListener(e -> {
-            player.makeDecision("call", playersHands, currentPlayerIndex);
+            player.makeDecision("call", 0, playersHands, currentPlayerIndex);
         });
 
         raise.addActionListener(e -> {
-            player.makeDecision("raise", playersHands, currentPlayerIndex);
+            int chipsToRaise = round.raiseChips(currentPlayerIndex);
+            if(chipsToRaise > 0){
+                int updateChips = player.makeDecision("raise", chipsToRaise, playersHands, currentPlayerIndex);
+                playerChips[currentPlayerIndex] = updateChips;
+                potLabelText.setText("Pot: " + round.changePot(chipsToRaise));
+            }else{
+                System.out.println("No chips raised");
+            }
+
+            // flip the card to be back
+            for (JLabel cardLabel : cardLabels) {
+                cardLabel.setIcon(cardBackImage.getBackImage());
+            }
+
+            // next player
+            if (round.getActivePlayers() > 1) {
+                currentPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(currentPlayerIndex));
+                System.out.println("Next Player: " + players.get(currentPlayerIndex).getName());
+                currentNum++;
+            }
         });
 
         fold.addActionListener(e -> {
-            player.makeDecision("fold", playersHands, currentPlayerIndex);
+            player.makeDecision("fold", 0, playersHands, currentPlayerIndex);
             round.foldCard(currentPlayerIndex);
 
             // flip the card to be back
@@ -258,9 +285,11 @@ public class GUI {
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
 
+            // next player
             if (round.getActivePlayers() > 1) {
-                int nextPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(nextPlayerIndex));
+                currentPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(currentPlayerIndex));
+                currentNum++;
             }
         });
 
@@ -375,9 +404,7 @@ public class GUI {
 
                 // Set up the panel for pot
                 JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                JLabel potLabel = new JLabel("Pot: ");
-                potLabelText = new JLabel("0");
-                potPanel.add(potLabel);
+                potLabelText = new JLabel("Pot: 0");
                 potPanel.add(potLabelText);
 
                 // Add cardPanel and potPanel to gamePanel vertically
@@ -461,25 +488,6 @@ public class GUI {
 
         // Show the dialog
         nameDialog.setVisible(true);
-    }
-
-    private void ganmeAlert(){
-        JDialog ganmeDialog = new JDialog(mainWindowFrame, "Ganme Alert", true);
-        ganmeDialog.setSize(600, 100);
-        ganmeDialog.setLocationRelativeTo(mainWindowFrame);
-
-        JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel alert = new JLabel("Before you click \"Next Player\", you should make your choice (Fold, Check, Call or Raise)");
-        alertPanel.add(alert);
-
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(e -> ganmeDialog.dispose());
-
-        ganmeDialog.setLayout(new BorderLayout());
-        ganmeDialog.add(alertPanel, BorderLayout.CENTER);
-        ganmeDialog.add(okButton, BorderLayout.SOUTH);
-
-        ganmeDialog.setVisible(true);
     }
 
     void runGUI(){

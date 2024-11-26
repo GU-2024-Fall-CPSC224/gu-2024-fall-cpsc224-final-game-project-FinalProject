@@ -54,7 +54,7 @@ public class Player {
     // update player's chips
     public void updateChips(int newChips) {
         this.chips = newChips;
-        chipsLabel.setText("Chips: " + chips);
+        chipsLabel.setText("Chips: " + newChips);
     }
 
     // check if player can input name
@@ -79,10 +79,6 @@ public class Player {
     }
 
     public void setChips(int chips) {}
-
-    public void changeChips(int chips) {
-        this.chipsChange.setText("Decision: check " + chips);
-    }
 
     // Draw cards from the deck
     public ArrayList<ArrayList<Object>> drawCards(Cards deck, JLabel[] cardLabels) {
@@ -112,7 +108,8 @@ public class Player {
     }
 
     // make decision
-    public void makeDecision(String decision, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+    public int makeDecision(String decision, int chipsRaised, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+        int updateChips = this.getChips();
         // when player choose fold their cards
         if (decision.equals("fold")) {
             System.out.println("Player " + this.getName() + " folded.");
@@ -122,14 +119,17 @@ public class Player {
 //        else if(decision.equals("call")){
 //
 //        }
-//        else if(decision.equals("raise")){
-//
-//        }
+        else if(decision.equals("raise")){
+            updateChips -= chipsRaised;
+            this.updateChips(updateChips);
+            this.chipsChange.setText("Decision: raise " + chipsRaised);
+        }
         // when player check (match 0 chips) or forget to make decision (default)
         else{
             System.out.println("Player " + this.getName() + " check");
-            this.changeChips(0);
+            this.chipsChange.setText("Decision: check " + 0);
         }
+        return updateChips;
     }
 }
 
