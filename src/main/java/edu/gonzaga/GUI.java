@@ -217,7 +217,14 @@ public class GUI {
                 playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
 
                 // after check cards, player can make decision
-                check.setEnabled(true);
+
+                // player can not check chips if anyone raise chips
+                int maxRaise = round.getMaxRaise();
+                if(maxRaise > 0){
+                    check.setEnabled(false);
+                }else{
+                    check.setEnabled(true);
+                }
                 call.setEnabled(true);
                 raise.setEnabled(true);
                 fold.setEnabled(true);
@@ -249,7 +256,29 @@ public class GUI {
         });
 
         call.addActionListener(e -> {
-            player.makeDecision("call", 0, playersHands, currentPlayerIndex);
+            int callAmount = round.callChips(currentPlayerIndex);
+            if(callAmount > 0){
+                int updateChips = player.makeDecision("call", callAmount, playersHands, currentPlayerIndex);
+                playerChips[currentPlayerIndex] = updateChips;
+                potLabelText.setText("Pot: " + round.changePot(callAmount));
+            }else{
+                player.makeDecision("check", 0, playersHands, currentPlayerIndex);
+                round.checkChips(currentPlayerIndex);
+                System.out.println("chips already match");
+            }
+
+            // flip the card to be back
+            for (JLabel cardLabel : cardLabels) {
+                cardLabel.setIcon(cardBackImage.getBackImage());
+            }
+
+            // next player
+            if (round.getActivePlayers() > 1) {
+                currentPlayerIndex = round.nextPlayer();
+                updatePokerPanel(players.get(currentPlayerIndex));
+                System.out.println("Next Player: " + players.get(currentPlayerIndex).getName());
+                currentNum++;
+            }
         });
 
         raise.addActionListener(e -> {

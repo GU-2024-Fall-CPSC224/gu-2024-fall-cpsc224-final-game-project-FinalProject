@@ -32,7 +32,7 @@ public class SingleRound {
 
     // check 0 chip
     public void checkChips(int currentPlayerIndex) {
-
+        saveChipsRaise[currentPlayerIndex] = 0;
     }
 
     // raise chips
@@ -46,6 +46,47 @@ public class SingleRound {
         int chipsRaise = raiseChipsDialog(currentPlayer);
         saveChipsRaise[currentPlayerIndex] = chipsRaise;
         return chipsRaise;
+    }
+
+    // call chips ( match the max raised chips)
+    public int callChips(int currentPlayerIndex) {
+        Player currentPlayer = players.get(currentPlayerIndex);
+        System.out.println("Current player: " + currentPlayer.getName());
+        if(!currentPlayer.isActive()){
+            return 0;
+        }
+
+        // find the max amount of chips
+        int maxRaise = getMaxRaise();
+
+        int callAmount = maxRaise - saveChipsRaise[currentPlayerIndex];
+
+        // if player already match the max amount
+        if(callAmount <= 0){
+            return 0;
+        }
+
+        if (callAmount > currentPlayer.getChips()) {
+            callAmount = currentPlayer.getChips(); // all in
+            System.out.println("Player " + currentPlayer.getName() + " goes all in with " + callAmount + " chips.");
+        } else {
+            System.out.println("Player " + currentPlayer.getName() + " calls with " + callAmount + " chips.");
+        }
+
+        currentPlayer.updateChips(currentPlayer.getChips() - callAmount);
+
+        saveChipsRaise[currentPlayerIndex] += callAmount;
+        return callAmount;
+    }
+
+    public int getMaxRaise() {
+        int maxRaise = 0;
+        for(int chips: saveChipsRaise){
+            if(chips >= maxRaise){
+                maxRaise = chips;
+            }
+        }
+        return maxRaise;
     }
 
     public int changePot(int chipsRaise) {
