@@ -32,6 +32,7 @@ public class GUI {
 
     Cards deck;
     SingleRound round;
+    MutipleTurn mutipleTurn;
 
     public GUI() {
         roleImage = new RoleImage("media/poker rules.png");
@@ -41,10 +42,6 @@ public class GUI {
         currentNum = 0; // Initialize the number of turns taken
         potChips = 0;
         cardBackImage = new CardBackImage(imagePath);
-    }
-    public static void main(String[] args) {
-        GUI app = new GUI();
-        app.runGUI();
     }
 
     void setGUI(){
@@ -243,6 +240,14 @@ public class GUI {
             player.makeDecision("check", 0, playersHands, currentPlayerIndex);
             round.checkChips(currentPlayerIndex);
 
+            updatePokerPanel(player);
+
+            if(checkNextTurn()){
+                mutipleTurn.nextTurn();
+                resetPlayerDecisions();
+                round.resetChipsRaise();
+            }
+
             for(JLabel cardLabel : cardLabels){
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
@@ -265,6 +270,14 @@ public class GUI {
                 player.makeDecision("check", 0, playersHands, currentPlayerIndex);
                 round.checkChips(currentPlayerIndex);
                 System.out.println("chips already match");
+            }
+
+            updatePokerPanel(player);
+
+            if(checkNextTurn()){
+                mutipleTurn.nextTurn();
+                resetPlayerDecisions();
+                round.resetChipsRaise();
             }
 
             // flip the card to be back
@@ -291,6 +304,14 @@ public class GUI {
                 System.out.println("No chips raised");
             }
 
+            updatePokerPanel(player);
+
+            if(checkNextTurn()){
+                mutipleTurn.nextTurn();
+                resetPlayerDecisions();
+                round.resetChipsRaise();
+            }
+
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
                 cardLabel.setIcon(cardBackImage.getBackImage());
@@ -308,6 +329,14 @@ public class GUI {
         fold.addActionListener(e -> {
             player.makeDecision("fold", 0, playersHands, currentPlayerIndex);
             round.foldCard(currentPlayerIndex);
+
+            updatePokerPanel(player);
+
+            if(checkNextTurn()){
+                mutipleTurn.nextTurn();
+                resetPlayerDecisions();
+                round.resetChipsRaise();
+            }
 
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
@@ -351,112 +380,140 @@ public class GUI {
         JPanel startPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton startButton = new JButton("Start");
         startButton.setPreferredSize(new Dimension(200, 100));
-
-
         startPanel.add(startButton);
 
         // Add the start panel to the main panel
         mainPanel.add(startPanel, BorderLayout.CENTER);
 
-        // Set up action listener for the Start button
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int chips;
-                int playerCount;
-                try {
-                    chips = Integer.parseInt(chipsField.getText());
-                    playerCount = Integer.parseInt(playerField.getText());
-                } catch (NumberFormatException ex) {
-                    startAlert();
-                    return;
-                }
+        // Action listener for the Start button
+        startButton.addActionListener(e -> {
+            int chips;
+            int playerCount;
 
-                // Validate the input values for chips and player count
-                if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
-                    startAlert();
-                    return;
-                }
-
-                // Disable name editing after starting the game
-                for (Player player : players) {
-                    player.setNameEditable(false);
-                }
-
-                // after game start, you can not change anything
-                playerField.setEditable(false);
-                chipsField.setEditable(false);
-                okPlayerButton.setEnabled(false);
-
-                // Remove the start panel when the button is pressed
-                mainPanel.remove(startPanel);
-
-                if (!players.isEmpty()) {
-                    updatePokerPanel(players.get(0));
-                }
-
-                // Set up the panel for the game view
-                JPanel gamePanel = new JPanel();
-                gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS)); // Vertical layout for centering
-
-                // Add vertical glue to push content to center
-                gamePanel.add(Box.createVerticalGlue());
-
-                // Set up the panel for the "river" (cards display)
-                JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-                // Load card back image
-                String imagePath = "media/purple_back.jpg";
-                CardBackImage cardBackImage = new CardBackImage(imagePath);
-
-                // Create the river by adding five card back images with flip buttons below each
-                for (int i = 0; i < 5; i++) {
-                    // Panel to hold the card back and the flip button
-                    JPanel cardContainer = new JPanel();
-                    cardContainer.setLayout(new BoxLayout(cardContainer, BoxLayout.Y_AXIS));
-
-                    JLabel cardBack = new JLabel(cardBackImage.getBackImage());
-                    JButton flipButton = new JButton("Flip");
-                    flipButton.setEnabled(false);
-
-                    cardBack.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    flipButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-                    // Add the card back and flip button to the card container
-                    cardContainer.add(cardBack);
-                    cardContainer.add(Box.createVerticalStrut(5));
-                    cardContainer.add(flipButton);
-
-                    // Add the container to the cardPanel
-                    cardPanel.add(cardContainer);
-                }
-
-                // Set up the panel for pot
-                JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-                potLabelText = new JLabel("Pot: 0");
-                potPanel.add(potLabelText);
-
-                // Add cardPanel and potPanel to gamePanel vertically
-                gamePanel.add(cardPanel);
-                gamePanel.add(Box.createVerticalStrut(10)); // Add space between cards and pot
-                gamePanel.add(potPanel);
-
-                // Add vertical glue to push content to center
-                gamePanel.add(Box.createVerticalGlue());
-
-                // Add the gamePanel to the mainPanel
-                mainPanel.add(gamePanel, BorderLayout.CENTER);
-
-                // Refresh the mainPanel to show the updated components
-                mainPanel.revalidate();
-                mainPanel.repaint();
+            // Parse and validate chips and player count input
+            try {
+                chips = Integer.parseInt(chipsField.getText());
+                playerCount = Integer.parseInt(playerField.getText());
+            } catch (NumberFormatException ex) {
+                startAlert();
+                return;
             }
+
+            if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
+                startAlert();
+                return;
+            }
+
+            // Disable name editing and input fields after starting the game
+            for (Player player : players) {
+                player.setNameEditable(false);
+            }
+            playerField.setEditable(false);
+            chipsField.setEditable(false);
+            okPlayerButton.setEnabled(false);
+
+            // Initialize river cards with card back images
+            ArrayList<JLabel> riverCards = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                riverCards.add(new JLabel(cardBackImage.getBackImage()));
+            }
+
+            // Initialize MutipleTurn
+            mutipleTurn = new MutipleTurn(deck, players, round, riverCards);
+
+            // Remove the start panel
+            mainPanel.remove(startPanel);
+
+            // Update poker panel for the first player
+            if (!players.isEmpty()) {
+                updatePokerPanel(players.get(0));
+            }
+
+            // Set up the game view
+            JPanel gamePanel = new JPanel();
+            gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+
+            // Add vertical glue to center content
+            gamePanel.add(Box.createVerticalGlue());
+
+            // Create the river panel for card display
+            JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            for (JLabel card : riverCards) {
+                cardPanel.add(card); // Add all river cards (back side) to the panel
+            }
+
+            // Panel for displaying pot information
+            JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            potLabelText = new JLabel("Pot: 0");
+            potPanel.add(potLabelText);
+
+            // Add cardPanel and potPanel to gamePanel
+            gamePanel.add(cardPanel);
+            gamePanel.add(Box.createVerticalStrut(10)); // Space between cards and pot
+            gamePanel.add(potPanel);
+            gamePanel.add(Box.createVerticalGlue());
+
+            // Add gamePanel to mainPanel
+            mainPanel.add(gamePanel, BorderLayout.CENTER);
+
+            // Refresh UI
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
 
         return mainPanel;
     }
 
 
+    // check if players can do the next turn
+    private boolean checkNextTurn() {
+        int maxRaise = round.getMaxRaise();
+        // check if every active players already put same chips into the pot
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+
+            if(player.isActive() && round.getRaiseChips(i) != maxRaise) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // reset player decision for new turn
+    public void resetPlayerDecisions(){
+        for (Player player : players) {
+            if (player.isActive()) {
+                player.resetDecision();
+            }
+        }
+        System.out.println("Player decisions have been reset for the next turn.");
+    }
+
+    // remove players
+    public void removePlayer(){
+        ArrayList<Player> playersToRemove = new ArrayList<>();
+
+        for(int i = 0; i < players.size(); i++){
+            Player player = players.get(i);
+
+            // if this player didn't have any chips and didn't raise any chips
+            if(player.getChips() == 0 && round.getRaiseChips(i) == 0){
+                playersToRemove.add(player);
+            }
+        }
+
+        // remove player
+        players.removeAll(playersToRemove);
+
+        // update playerPanel
+        playerPanel.removeAll();
+        for(Player player : players){
+            playerPanel.add(player.getPlayerPanel());
+        }
+
+        playerPanel.revalidate();
+        playerPanel.repaint();
+    }
 
     private JPanel getReminder() {
         JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components

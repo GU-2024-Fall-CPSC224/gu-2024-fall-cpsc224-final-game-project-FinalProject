@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int chips;
-    private boolean isActive;
+    boolean isActive;
     private JPanel playerPanel;
     private JTextField nameField;
     private JLabel chipsLabel;
@@ -113,6 +113,7 @@ public class Player {
         // when player choose fold their cards
         if (decision.equals("fold")) {
             System.out.println("Player " + this.getName() + " folded.");
+            this.chipsChange.setText("Decision: fold ");
             this.setName("Fold");
             setActive(false);
         }
@@ -130,6 +131,10 @@ public class Player {
             this.chipsChange.setText("Decision: check " + 0);
         }
         return updateChips;
+    }
+
+    public void resetDecision(){
+        this.chipsChange.setText("Decision: ");
     }
 }
 
