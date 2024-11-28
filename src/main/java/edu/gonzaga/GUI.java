@@ -28,6 +28,7 @@ public class GUI {
     int currentNum;
     int potChips;
     int[] playerChips;
+    int playTurn;
     ArrayList<ArrayList<ArrayList<Object>>> playersHands; // Each player has a hand (list of cards)
 
     Cards deck;
@@ -41,6 +42,7 @@ public class GUI {
         currentPlayerIndex = 0;
         currentNum = 0; // Initialize the number of turns taken
         potChips = 0;
+        playTurn = 0;
         cardBackImage = new CardBackImage(imagePath);
     }
 
@@ -206,15 +208,14 @@ public class GUI {
 
         // Button to reveal cards or switch to the next player
         JButton checkCard = new JButton("Check Cards");
-        checkCard.addActionListener(e -> {
-            if (currentNum < players.size()) {
 
+        checkCard.addActionListener(e -> {
+            if (checkCard.isEnabled()) {
                 // Draw two cards for the current player
                 ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
                 playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
 
                 // after check cards, player can make decision
-
                 // player can not check chips if anyone raise chips
                 int maxRaise = round.getMaxRaise();
                 if(maxRaise > 0){
@@ -246,6 +247,7 @@ public class GUI {
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();
+                playTurn++;
             }
 
             for(JLabel cardLabel : cardLabels){
@@ -278,6 +280,7 @@ public class GUI {
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();
+                playTurn++;
             }
 
             // flip the card to be back
@@ -310,6 +313,7 @@ public class GUI {
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();
+                playTurn++;
             }
 
             // flip the card to be back
@@ -336,6 +340,7 @@ public class GUI {
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();
+                playTurn++;
             }
 
             // flip the card to be back
@@ -358,11 +363,20 @@ public class GUI {
         optionPanel.add(fold);
         optionPanel.add(checkCard);
 
-        // player must check cards first
-        check.setEnabled(false);
-        call.setEnabled(false);
-        raise.setEnabled(false);
-        fold.setEnabled(false);
+        // player must check cards first only for first turn
+        if(playTurn == 0){
+            check.setEnabled(false);
+            call.setEnabled(false);
+            raise.setEnabled(false);
+            fold.setEnabled(false);
+        }else{
+            call.setEnabled(true);
+            raise.setEnabled(true);
+            fold.setEnabled(true);
+            check.setEnabled(true);
+            checkCard.setEnabled(false);
+        }
+
 
         // Add pokerPanel and optionPanel to newPanel
         newPanel.add(pokerPanel, BorderLayout.NORTH);
@@ -487,6 +501,8 @@ public class GUI {
             }
         }
         System.out.println("Player decisions have been reset for the next turn.");
+
+        updatePokerPanel(players.get(currentPlayerIndex));
     }
 
     // remove players

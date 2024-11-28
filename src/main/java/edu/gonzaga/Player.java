@@ -136,5 +136,23 @@ public class Player {
     public void resetDecision(){
         this.chipsChange.setText("Decision: ");
     }
+
+    public void viewCards(Cards deck) {
+        if (isActive) {
+            JPanel cardDisplayPanel = new JPanel();
+            cardDisplayPanel.setLayout(new FlowLayout());
+            for (ArrayList<Object> card : hand) {
+                ImageIcon cardImage = deck.getCardImage(card);
+                if (cardImage != null) {
+                    JLabel cardLabel = new JLabel(cardImage);
+                    cardDisplayPanel.add(cardLabel);
+                }
+            }
+            JOptionPane.showMessageDialog(null, cardDisplayPanel, "Your Cards", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "You are inactive or have folded!", "Alert", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
 }
 
