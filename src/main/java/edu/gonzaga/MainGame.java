@@ -60,8 +60,8 @@ public class MainGame {
 
     JTextField player1NameTextField = new JTextField();
     JTextField player2NameTextField = new JTextField();
-    // Player player1 = new Player();
-    // Player player2 = new Player();
+    Player player1 = new Player();
+    Player player2 = new Player();
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -101,8 +101,6 @@ public class MainGame {
         ImageIcon tankStartScreenIcon = new ImageIcon("tank_intro_screen.jpg");
         tankPicture.setIcon(tankStartScreenIcon);
         centerNorthPanel.add(tankPicture);
-        // centerNorthPanel.setIconImage(tankPicture.getImage()); // STILL WORKING ON
-        // GETTING THIS PICTURE TO UPLOAD RIGHT :)
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
     }
@@ -179,9 +177,7 @@ public class MainGame {
         ActionListener buttonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (actionEvent.getSource() == howToPlay) { // STILL WORKING ON THIS
-                    // this will open a frame that will have a file that has all of the instructions
-                    // written out
+                if (actionEvent.getSource() == howToPlay) {
                     ImageIcon howToPlayIcon = new ImageIcon("how_to_play.png"); // new icon with instructions
                     howToPlayFrameIcon.setIcon(howToPlayIcon); // set the icon for this label
                     instructionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
