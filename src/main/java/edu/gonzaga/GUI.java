@@ -238,13 +238,14 @@ public class GUI {
 
         // player can make choice
         check.addActionListener(e -> {
-            player.makeDecision("check", 0, playersHands, currentPlayerIndex);
+            player.makeDecision("check", 0, 0, playersHands, currentPlayerIndex);
             round.checkChips(currentPlayerIndex);
 
             updatePokerPanel(player);
 
-            if(checkNextTurn()){
+            if(checkNextTurn() && currentNum >= players.size()){
                 mutipleTurn.nextTurn();
+                currentNum = 0;
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
@@ -265,19 +266,22 @@ public class GUI {
         call.addActionListener(e -> {
             int callAmount = round.callChips(currentPlayerIndex);
             if(callAmount > 0){
-                int updateChips = player.makeDecision("call", callAmount, playersHands, currentPlayerIndex);
+                int totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
+                int updateChips = player.makeDecision("call", callAmount, totalRaisedChips, playersHands, currentPlayerIndex);
                 playerChips[currentPlayerIndex] = updateChips;
                 potLabelText.setText("Pot: " + round.changePot(callAmount));
             }else{
-                player.makeDecision("check", 0, playersHands, currentPlayerIndex);
+                player.makeDecision("check", 0, 0, playersHands, currentPlayerIndex);
                 round.checkChips(currentPlayerIndex);
                 System.out.println("chips already match");
             }
 
             updatePokerPanel(player);
 
-            if(checkNextTurn()){
+            if(checkNextTurn() && currentNum >= players.size()){
+                currentNum = 0;
                 mutipleTurn.nextTurn();
+                currentNum = 0;
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
@@ -300,7 +304,8 @@ public class GUI {
         raise.addActionListener(e -> {
             int chipsToRaise = round.raiseChips(currentPlayerIndex);
             if(chipsToRaise > 0){
-                int updateChips = player.makeDecision("raise", chipsToRaise, playersHands, currentPlayerIndex);
+                int totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
+                int updateChips = player.makeDecision("raise", chipsToRaise, totalRaisedChips, playersHands, currentPlayerIndex);
                 playerChips[currentPlayerIndex] = updateChips;
                 potLabelText.setText("Pot: " + round.changePot(chipsToRaise));
             }else{
@@ -309,7 +314,7 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if(checkNextTurn()){
+            if(checkNextTurn() && currentNum >= players.size()){
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();
@@ -331,12 +336,13 @@ public class GUI {
         });
 
         fold.addActionListener(e -> {
-            player.makeDecision("fold", 0, playersHands, currentPlayerIndex);
+            player.makeDecision("fold", 0, 0, playersHands, currentPlayerIndex);
             round.foldCard(currentPlayerIndex);
 
             updatePokerPanel(player);
 
-            if(checkNextTurn()){
+            if(checkNextTurn() && currentNum >= players.size()){
+                currentNum = 0;
                 mutipleTurn.nextTurn();
                 resetPlayerDecisions();
                 round.resetChipsRaise();

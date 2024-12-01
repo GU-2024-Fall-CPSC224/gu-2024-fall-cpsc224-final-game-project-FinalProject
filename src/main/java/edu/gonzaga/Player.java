@@ -108,7 +108,7 @@ public class Player {
     }
 
     // make decision
-    public int makeDecision(String decision, int chipsChange, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+    public int makeDecision(String decision, int chipsChange, int totalRaisedChips, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
         int updateChips = this.getChips();
         // when player choose fold their cards
         if (decision.equals("fold")) {
@@ -118,12 +118,12 @@ public class Player {
             setActive(false);
         }
         else if(decision.equals("call")){
-            this.chipsChange.setText("Decision: call " + chipsChange);
+            this.chipsChange.setText("Decision: call " + totalRaisedChips);
         }
         else if(decision.equals("raise")){
             updateChips -= chipsChange;
             this.updateChips(updateChips);
-            this.chipsChange.setText("Decision: raise " + chipsChange);
+            this.chipsChange.setText("Decision: raise " + totalRaisedChips);
         }
         // when player check (match 0 chips) or forget to make decision (default)
         else{
