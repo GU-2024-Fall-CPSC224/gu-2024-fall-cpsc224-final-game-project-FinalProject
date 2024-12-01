@@ -1,6 +1,5 @@
 package edu.gonzaga;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,11 +16,15 @@ public class SingleRound {
         this.currentPlayerIndex = 0;
         this.activePlayers = players.size();
         saveChipsRaise = new int[players.size()];
+        for (int i = 0; i < saveChipsRaise.length; i++) {
+            saveChipsRaise[i] = 0;
+        }
         this.pot = 0;
     }
 
     // fold cards
     public void foldCard(int currentPlayerIndex) {
+        saveChipsRaise[currentPlayerIndex] = 0;
         activePlayers--;
         System.out.println("Active players remaining: " + activePlayers);
 
@@ -44,7 +47,15 @@ public class SingleRound {
         }
 
         int chipsRaise = raiseChipsDialog(currentPlayer);
-        saveChipsRaise[currentPlayerIndex] = chipsRaise;
+        if (chipsRaise == -1) {
+            // Cancel was pressed; no chips were raised, and no action is taken
+            System.out.println("Raise canceled. No changes made.");
+            return -1; // Indicate that no raise was made
+        }
+
+        // Add the raised chips to the player's total contribution
+        saveChipsRaise[currentPlayerIndex] += chipsRaise;
+
         return chipsRaise;
     }
 
@@ -57,12 +68,14 @@ public class SingleRound {
         }
 
         // find the max amount of chips
-        int maxRaise = getMaxRaise();
+        int maxRaise = getMaxRaise(); // Get the highest raise so far
+        int currentRaise = saveChipsRaise[currentPlayerIndex]; // Player's current contribution
+        int callAmount = maxRaise - currentRaise; // Additional amount needed to match maxRaise
 
-        int callAmount = maxRaise - saveChipsRaise[currentPlayerIndex];
 
         // if player already match the max amount
         if(callAmount <= 0){
+            saveChipsRaise[currentPlayerIndex] = 0;
             return 0;
         }
 
@@ -73,9 +86,8 @@ public class SingleRound {
             System.out.println("Player " + currentPlayer.getName() + " calls with " + callAmount + " chips.");
         }
 
-        currentPlayer.updateChips(currentPlayer.getChips() - callAmount);
-
         saveChipsRaise[currentPlayerIndex] += callAmount;
+        currentPlayer.updateChips(currentPlayer.getChips() - callAmount);
         return callAmount;
     }
 
@@ -92,6 +104,32 @@ public class SingleRound {
     public int changePot(int chipsRaise) {
         pot += chipsRaise;
         return pot;
+    }
+
+    public int getRaiseChips(int currentPlayerIndex) {
+        return saveChipsRaise[currentPlayerIndex];
+    }
+
+    public boolean checkRaiseChips() {
+        Integer activePlayerRaise = null;
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            if (player.isActive()) {
+                if (activePlayerRaise == null) {
+                    activePlayerRaise = saveChipsRaise[i];
+                } else if (saveChipsRaise[i] != activePlayerRaise) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void resetChipsRaise() {
+        for (int i = 0; i < saveChipsRaise.length; i++) {
+            saveChipsRaise[i] = 0;
+        }
+        System.out.println("saveChipsRaise has been reset to 0 for all players.");
     }
 
     // check the only one player is winner
@@ -123,7 +161,7 @@ public class SingleRound {
     }
 
     public int raiseChipsDialog(Player currentPlayer) {
-        int[] chipsRaised = {0};
+        int[] chipsRaised = {-1};
         JDialog raiseDialog = new JDialog((Frame) null, "Raise Chips", true);
         raiseDialog.setSize(600, 200);
         raiseDialog.setLocationRelativeTo(null);
@@ -143,10 +181,12 @@ public class SingleRound {
         raiseButton.addActionListener(e -> {
             String input = raiseInput.getText();
             try{
-                int chips = Integer.parseInt(input);
+                int chips = Integer.parseInt(input); // Chips being added
+                int maxRaise = getMaxRaise();
+                int currentRaise = getRaiseChips(currentPlayerIndex);
 
                 // update chips after player put into the pot
-                if(chips > 0 && chips <= currentPlayer.getChips()) {
+                if (chips > 0 && (chips + currentRaise) >= maxRaise && chips <= currentPlayer.getChips()) {
                     chipsRaised[0] = chips;
                     raiseDialog.dispose();
                 }else if(chips > currentPlayer.getChips()){
@@ -154,7 +194,12 @@ public class SingleRound {
                             "You cannot raise more than your current chips (" + currentPlayer.getChips() + ").",
                             "Invalid Raise",
                             JOptionPane.ERROR_MESSAGE);
-                }else{
+                }else if((chips + currentRaise) < maxRaise){
+                    JOptionPane.showMessageDialog(raiseDialog,
+                            "You cannot raise less than max chips (" + getMaxRaise() + ").",
+                            "Invalid Raise",
+                            JOptionPane.ERROR_MESSAGE);
+                } else{
                     JOptionPane.showMessageDialog(raiseDialog,
                             "You must raise a positive amount.",
                             "Invalid Raise",
@@ -167,7 +212,6 @@ public class SingleRound {
 
         cancelButton.addActionListener(e -> {
             System.out.println("Cancelled raising chips");
-            chipsRaised[0] = 0;
             raiseDialog.dispose();
         });
 

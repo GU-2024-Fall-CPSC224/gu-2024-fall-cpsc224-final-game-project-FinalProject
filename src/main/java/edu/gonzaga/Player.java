@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int chips;
-    private boolean isActive;
+    boolean isActive;
     private JPanel playerPanel;
     private JTextField nameField;
     private JLabel chipsLabel;
@@ -108,21 +108,22 @@ public class Player {
     }
 
     // make decision
-    public int makeDecision(String decision, int chipsChange, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
+    public int makeDecision(String decision, int chipsChange, int totalRaisedChips, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
         int updateChips = this.getChips();
         // when player choose fold their cards
         if (decision.equals("fold")) {
             System.out.println("Player " + this.getName() + " folded.");
+            this.chipsChange.setText("Decision: fold ");
             this.setName("Fold");
             setActive(false);
         }
         else if(decision.equals("call")){
-            this.chipsChange.setText("Decision: call " + chipsChange);
+            this.chipsChange.setText("Decision: call " + totalRaisedChips);
         }
         else if(decision.equals("raise")){
             updateChips -= chipsChange;
             this.updateChips(updateChips);
-            this.chipsChange.setText("Decision: raise " + chipsChange);
+            this.chipsChange.setText("Decision: raise " + totalRaisedChips);
         }
         // when player check (match 0 chips) or forget to make decision (default)
         else{
@@ -131,5 +132,27 @@ public class Player {
         }
         return updateChips;
     }
+
+    public void resetDecision(){
+        this.chipsChange.setText("Decision: ");
+    }
+
+    public void viewCards(Cards deck) {
+        if (isActive) {
+            JPanel cardDisplayPanel = new JPanel();
+            cardDisplayPanel.setLayout(new FlowLayout());
+            for (ArrayList<Object> card : hand) {
+                ImageIcon cardImage = deck.getCardImage(card);
+                if (cardImage != null) {
+                    JLabel cardLabel = new JLabel(cardImage);
+                    cardDisplayPanel.add(cardLabel);
+                }
+            }
+            JOptionPane.showMessageDialog(null, cardDisplayPanel, "Your Cards", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "You are inactive or have folded!", "Alert", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
 }
 
