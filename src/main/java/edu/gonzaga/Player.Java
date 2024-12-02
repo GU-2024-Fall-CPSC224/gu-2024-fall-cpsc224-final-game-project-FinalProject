@@ -1,29 +1,31 @@
 package edu.gonzaga;
-import java.util.ArrayList;
-import java.util.Scanner;
-/*
- * This class holds all the code under main. This is where the stuff under the abstraction happens.
- */
 
 public class Player {
     public String name;
-    public int color;
+    public String color;
 
-    public String getName() {
+    public String getName() { // called from MainGame
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) { // called from MainGame
         this.name = name;
     }
 
-    public int getColor() {
-        return int;
+    public String getColor() { // called from MainGame
+        System.out.println(color);
+        return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(String color) { // called from MainGame
         this.color = color;
+        System.out.println(color);
     }
 
-    //still need the takeTurn method that is void with parameter of a Tank
+    public Player() {
+        this.name = "Unidentified User"
+        this.color = "Red"
+    }
+
+    // still need the takeTurn method that is void with parameter of a Tank
 }
