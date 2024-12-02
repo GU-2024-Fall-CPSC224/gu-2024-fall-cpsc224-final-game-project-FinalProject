@@ -5,10 +5,10 @@
  * Project Description:
  * 
  * 
- * Contributors:
+ * Contributors: Christian Carrington
  * 
  * 
- * Copyright: 2023
+ * Copyright: 2024
  */
 package edu.gonzaga;
 
@@ -16,7 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
+import org.dyn4j.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -29,14 +29,14 @@ import java.awt.event.ActionEvent;
 /** Main program class for launching your team's program. */
 public class MainGame {
     private JFrame frame = new JFrame(); // the frame that opens when the program is run
-    // panels in the border layout: 
+    // panels in the border layout:
     private JPanel northPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
     private JPanel southPanel = new JPanel();
     private JPanel centerNorthPanel = new JPanel();
     private JPanel centerSouthPanel = new JPanel();
     private JPanel instructionsPanel = new JPanel();
-    // the label that goes at the bottom: 
+    // the label that goes at the bottom:
     private JLabel title = new JLabel("TANKS");
     private JLabel names = new JLabel("By Christain Carrington, Abby Fewel, and Ayden Humphries");
     // buttons that go in the middle, in panel 5:
@@ -59,33 +59,34 @@ public class MainGame {
             }
         });
     }
-        
+
     public void formattingIntroScreen() {
         setUpButtonListeners(); // to make Start and How to Play buttons listen
 
-        //formats the frame:
+        // formats the frame:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // defaults settings
         frame.setSize(750, 750);
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
-        northPanel.setBackground(Color.GREEN); // colors 
+        northPanel.setBackground(Color.GREEN); // colors
         centerPanel.setBackground(Color.lightGray);
         southPanel.setBackground(Color.white);
         northPanel.setPreferredSize(new Dimension(100, 100)); // dimensions of panels
         centerPanel.setPreferredSize(new Dimension(100, 100));
         southPanel.setPreferredSize(new Dimension(100, 100));
-        frame.add(northPanel,BorderLayout.NORTH);
-        frame.add(centerPanel,BorderLayout.CENTER);
-        frame.add(southPanel,BorderLayout.SOUTH);
-        title.setFont(new Font("Algerian", Font.BOLD, 75)); // formats the title "TANKS" 
+        frame.add(northPanel, BorderLayout.NORTH);
+        frame.add(centerPanel, BorderLayout.CENTER);
+        frame.add(southPanel, BorderLayout.SOUTH);
+        title.setFont(new Font("Algerian", Font.BOLD, 75)); // formats the title "TANKS"
         northPanel.add(title);
         southPanel.add(names);
-        centerPanel.add(centerNorthPanel,BorderLayout.NORTH); // putting border layout in center panel
-        centerPanel.add(centerSouthPanel,BorderLayout.SOUTH);
+        centerPanel.add(centerNorthPanel, BorderLayout.NORTH); // putting border layout in center panel
+        centerPanel.add(centerSouthPanel, BorderLayout.SOUTH);
         ImageIcon tankStartScreenIcon = new ImageIcon("tank_intro_screen.jpg");
         tankPicture.setIcon(tankStartScreenIcon);
         centerNorthPanel.add(tankPicture);
-        //centerNorthPanel.setIconImage(tankPicture.getImage()); // STILL WORKING ON GETTING THIS PICTURE TO UPLOAD RIGHT :)
+        // centerNorthPanel.setIconImage(tankPicture.getImage()); // STILL WORKING ON
+        // GETTING THIS PICTURE TO UPLOAD RIGHT :)
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
     }
@@ -95,7 +96,8 @@ public class MainGame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (actionEvent.getSource() == howToPlay) { // STILL WORKING ON THIS
-                    // this will open a frame that will have a file that has all of the instructions written out
+                    // this will open a frame that will have a file that has all of the instructions
+                    // written out
                     ImageIcon howToPlayIcon = new ImageIcon("how_to_play.png"); // new icon with instructions
                     howToPlayFrameIcon.setIcon(howToPlayIcon); // set the icon for this label
                     instructionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
