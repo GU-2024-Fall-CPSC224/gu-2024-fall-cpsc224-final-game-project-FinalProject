@@ -23,8 +23,8 @@ public class Player {
     }
 
     public Player() {
-        this.name = "Unidentified User"
-        this.color = "Red"
+        this.name = "Unidentified User";
+        this.color = "Red";
     }
 
     // still need the takeTurn method that is void with parameter of a Tank

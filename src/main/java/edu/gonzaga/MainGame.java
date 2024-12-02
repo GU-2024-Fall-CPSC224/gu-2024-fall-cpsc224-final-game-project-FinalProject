@@ -60,8 +60,8 @@ public class MainGame {
 
     JTextField player1NameTextField = new JTextField();
     JTextField player2NameTextField = new JTextField();
-    // Player player1 = new Player();
-    // Player player2 = new Player();
+    Player player1 = new Player();
+    Player player2 = new Player();
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
