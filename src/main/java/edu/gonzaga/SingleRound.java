@@ -24,11 +24,15 @@ public class SingleRound {
 
     // fold cards
     public void foldCard(int currentPlayerIndex) {
-        saveChipsRaise[currentPlayerIndex] = 0;
-        activePlayers--;
-        System.out.println("Active players remaining: " + activePlayers);
+        Player currentPlayer = players.get(currentPlayerIndex);
+        if (currentPlayer.isActive()) {
+            currentPlayer.setActive(false);
+            saveChipsRaise[currentPlayerIndex] = 0;
+            activePlayers--;
+            System.out.println("Player " + currentPlayer.getName() + " has folded. Active players remaining: " + activePlayers);
+        }
 
-        if (activePlayers == 1 || currentPlayerIndex == players.size() - 1) {
+        if (activePlayers == 1) {
             checkWinner();
         }
     }
@@ -117,7 +121,7 @@ public class SingleRound {
             if (player.isActive()) {
                 if (activePlayerRaise == null) {
                     activePlayerRaise = saveChipsRaise[i];
-                } else if (saveChipsRaise[i] != activePlayerRaise) {
+                } else if (!activePlayerRaise.equals(saveChipsRaise[i])) {
                     return false;
                 }
             }
@@ -160,10 +164,18 @@ public class SingleRound {
         return currentPlayerIndex;
     }
 
-
+    public ArrayList<Player> getActivePlayersList() {
+        ArrayList<Player> activePlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player.isActive() && player.getChips() > 0) {
+                activePlayers.add(player);
+            }
+        }
+        return activePlayers;
+    }
 
     public int getActivePlayers() {
-        return activePlayers;
+        return getActivePlayersList().size();
     }
 
     public int raiseChipsDialog(Player currentPlayer) {
@@ -230,5 +242,9 @@ public class SingleRound {
 
         raiseDialog.setVisible(true);
         return chipsRaised[0];
+    }
+
+    public int getPot() {
+        return pot;
     }
 }

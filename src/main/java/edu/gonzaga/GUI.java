@@ -237,7 +237,7 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= players.size()) {
+            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
@@ -274,7 +274,7 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= players.size()) {
+            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
@@ -311,7 +311,7 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= players.size()) {
+            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
@@ -339,7 +339,7 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= players.size()) {
+            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
@@ -473,14 +473,15 @@ public class GUI {
     // check if players can do the next turn
     private boolean checkNextTurn() {
         int maxRaise = round.getMaxRaise();
-        // check if every active players already put same chips into the pot
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
+        ArrayList<Player> activePlayers = round.getActivePlayersList();
 
-            if(player.isActive() && round.getRaiseChips(i) != maxRaise) {
+        for (Player player : activePlayers) {
+            int playerIndex = players.indexOf(player);
+            if (round.getRaiseChips(playerIndex) != maxRaise) {
                 return false;
             }
         }
+
         return true;
     }
 
