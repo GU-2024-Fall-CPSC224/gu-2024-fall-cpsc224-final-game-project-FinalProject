@@ -80,19 +80,26 @@ public class Player {
 
     public void setChips(int chips) {}
 
-    // Draw cards from the deck
-    public ArrayList<ArrayList<Object>> drawCards(Cards deck, JLabel[] cardLabels) {
-        hand.clear();
+    // Draw cards from the deck and store in hand
+    public ArrayList<ArrayList<Object>> drawCards(Cards deck) {
+        hand.clear(); // Clear previous hand
         for (int i = 0; i < 2; i++) {
             ArrayList<Object> drawnCard = deck.drawTheCard(); // Draw a card from the deck
             if (drawnCard != null) {
                 hand.add(drawnCard); // Add the card to the player's hand
-                ImageIcon cardImage = deck.getCardImage(drawnCard); // Get the card's image
-                cardLabels[i].setIcon(cardImage); // Update the corresponding card label
             }
         }
-        return hand;
+        return hand; // Return the generated hand
     }
+
+    // Display the stored hand using cardLabels
+    public void displayHand(Cards deck, JLabel[] cardLabels) {
+        for (int i = 0; i < hand.size(); i++) {
+            ImageIcon cardImage = deck.getCardImage(hand.get(i)); // Get the card's image
+            cardLabels[i].setIcon(cardImage); // Update the corresponding card label
+        }
+    }
+
 
     // Get the player's hand
     public ArrayList<ArrayList<Object>> getHand() {
@@ -136,23 +143,5 @@ public class Player {
     public void resetDecision(){
         this.chipsChange.setText("Decision: ");
     }
-
-    public void viewCards(Cards deck) {
-        if (isActive) {
-            JPanel cardDisplayPanel = new JPanel();
-            cardDisplayPanel.setLayout(new FlowLayout());
-            for (ArrayList<Object> card : hand) {
-                ImageIcon cardImage = deck.getCardImage(card);
-                if (cardImage != null) {
-                    JLabel cardLabel = new JLabel(cardImage);
-                    cardDisplayPanel.add(cardLabel);
-                }
-            }
-            JOptionPane.showMessageDialog(null, cardDisplayPanel, "Your Cards", JOptionPane.PLAIN_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "You are inactive or have folded!", "Alert", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
 }
 
