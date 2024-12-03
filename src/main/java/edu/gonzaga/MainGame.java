@@ -5,7 +5,6 @@
  * Project Description: Tanks is a two player game that uses physics to aim and fire at the
  * opponent until health completely runs out for a player. 
  * 
- * 
  * Contributors: Abby Fewel, Ayden Humphries, Christian Carrington
  * 
  *  
@@ -19,6 +18,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import org.dyn4j.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;

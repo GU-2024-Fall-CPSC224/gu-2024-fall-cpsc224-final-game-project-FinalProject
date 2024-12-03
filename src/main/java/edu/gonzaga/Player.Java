@@ -22,5 +22,10 @@ public class Player {
         System.out.println(color);
     }
 
+    public Player() {
+        this.name = "Unidentified User";
+        this.color = "Red";
+    }
+
     // still need the takeTurn method that is void with parameter of a Tank
 }
