@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUI {
+    JFrame splashScreenFrame;
+
     JFrame mainWindowFrame;
     JPanel rolePanel;
     JPanel playerPanel;
@@ -44,6 +46,43 @@ public class GUI {
         potChips = 0;
         playTurn = 0;
         cardBackImage = new CardBackImage(imagePath);
+
+
+    }
+
+    void setSplashScreen() {
+        splashScreenFrame = new JFrame("Dogs Playing Poker ... THE GAME!");
+        splashScreenFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        splashScreenFrame.setSize(1200, 700);
+        splashScreenFrame.setResizable(false);
+        splashScreenFrame.setLocationRelativeTo(null);
+
+        ImageIcon backgroundImage = new ImageIcon("media/SplashScreen.png");
+
+        JPanel splashPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        splashPanel.setLayout(null);
+
+        JButton startButton = new JButton();
+        startButton.setBounds(505, 475, 170, 35);
+        startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        startButton.setOpaque(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setBorderPainted(false);
+        startButton.addActionListener(e -> {
+            splashScreenFrame.dispose();
+            setGUI();
+            mainWindowFrame.setVisible(true);
+        });
+
+        splashPanel.add(startButton);
+        splashScreenFrame.add(splashPanel);
+        splashScreenFrame.setVisible(true);
     }
 
     void setGUI(){
