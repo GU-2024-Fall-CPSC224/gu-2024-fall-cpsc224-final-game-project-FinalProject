@@ -6,6 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.AudioInputStream;
+import java.io.File;
+import java.io.IOException;
+
 public class GUI {
     JFrame splashScreenFrame;
 
@@ -36,6 +43,10 @@ public class GUI {
     Cards deck;
     SingleRound round;
     MutipleTurn mutipleTurn;
+
+    // music
+    Clip splashClip;
+    Clip mainClip;
 
     public GUI() {
         roleImage = new RoleImage("media/poker rules.png");
@@ -76,6 +87,7 @@ public class GUI {
         startButton.setBorderPainted(false);
         startButton.addActionListener(e -> {
             splashScreenFrame.dispose();
+            stopAudio(splashClip); // STOP SONG ON CLOSE
             setGUI();
             mainWindowFrame.setVisible(true);
         });
@@ -83,6 +95,8 @@ public class GUI {
         splashPanel.add(startButton);
         splashScreenFrame.add(splashPanel);
         splashScreenFrame.setVisible(true);
+
+        playAudio("media/chopin_reduced.wav", true, 0.0f); // PLAY SPLASH SONG
     }
 
     void setGUI(){
@@ -123,6 +137,8 @@ public class GUI {
         this.mainWindowFrame.getContentPane().add(pokerContainerPanel, BorderLayout.SOUTH);
         this.mainWindowFrame.getContentPane().add(this.reminder, BorderLayout.NORTH);
         this.mainWindowFrame.getContentPane().add(this.gamePanel, BorderLayout.CENTER);
+
+        playAudio("media/jazz_reduced.wav", false, -16.0f);
     }
 
     private JPanel getRolePanel() {
@@ -130,7 +146,7 @@ public class GUI {
         JPanel rolePanel = new JPanel();
 
         // set up the role
-        rolePanel.setLayout(new BoxLayout(rolePanel, BoxLayout.Y_AXIS));
+        rolePanel.setLayout(new BoxLayout(rolePanel, BoxLayout.Y_AXIS)); 
         rolePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel imageLabel = new JLabel(roleImage.getRoleImage());
         imageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -632,6 +648,35 @@ public class GUI {
         mainWindowFrame.repaint();
         mainWindowFrame.setVisible(true);
         System.out.println("Done in GUI app");
+    }
+
+    // AUDIO FUNCTIONS
+    private void playAudio(String filePath, boolean isSplash, float volume) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            // set volume
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume);
+
+            clip.start();
+            if (isSplash) {
+                splashClip = clip;
+            } else {
+                mainClip = clip;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void stopAudio(Clip clip) {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
     }
 }
 
