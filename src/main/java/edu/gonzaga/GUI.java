@@ -253,6 +253,7 @@ public class GUI {
                 currentNum++;
             }
 
+
             for(JLabel cardLabel : cardLabels){
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
