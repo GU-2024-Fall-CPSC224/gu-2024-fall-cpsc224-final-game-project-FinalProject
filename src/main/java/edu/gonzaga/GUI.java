@@ -163,9 +163,11 @@ public class GUI {
         for (int i = 0; i < playerCount; i++) {
             Player player = new Player("Player " + (i + 1), chips, "media/profile.png");
             players.add(player);
-            ArrayList<ArrayList<Object>> hand = new ArrayList<>();
 
+            // Draw cards for the player and store in playersHands
+            ArrayList<ArrayList<Object>> hand = player.drawCards(deck);
             playersHands.add(hand);
+
             playerPanel.add(player.getPlayerPanel());
         }
 
@@ -210,30 +212,22 @@ public class GUI {
         JButton checkCard = new JButton("Check Cards");
 
         checkCard.addActionListener(e -> {
-            if (checkCard.isEnabled()) {
-                // Draw two cards for the current player
-                ArrayList<ArrayList<Object>> currentHand = players.get(currentPlayerIndex).drawCards(deck, cardLabels);
-                playersHands.set(currentPlayerIndex, currentHand); // Update the player's hand in playersHands
+            Player currentPlayer = players.get(currentPlayerIndex);
 
-                // after check cards, player can make decision
-                // player can not check chips if anyone raise chips
-                int maxRaise = round.getMaxRaise();
-                if(maxRaise > 0){
-                    check.setEnabled(false);
-                }else{
-                    check.setEnabled(true);
-                }
-                call.setEnabled(true);
-                raise.setEnabled(true);
-                fold.setEnabled(true);
+            // Use the player's displayHand method to update card labels
+            currentPlayer.displayHand(deck, cardLabels);
 
-                // Change button to "Next Player"
-                checkCard.setEnabled(false);
+            // Enable action buttons
+            int maxRaise = round.getMaxRaise();
+            check.setEnabled(maxRaise <= 0);
+            call.setEnabled(true);
+            raise.setEnabled(true);
+            fold.setEnabled(true);
 
-            } else {
-                // All players have taken their turn
-                checkCard.setEnabled(false); // Disable the button when done
-            }
+            checkCard.setEnabled(false); // Disable after displaying cards
+
+            // Log the displayed hand for debugging
+            System.out.println("Player " + currentPlayer.getName() + "'s hand displayed: " + playersHands.get(currentPlayerIndex));
         });
 
         // player can make choice
@@ -243,23 +237,24 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if(checkNextTurn() && currentNum >= players.size()){
-                mutipleTurn.nextTurn();
+            if (checkNextTurn() && currentNum >= players.size()) {
                 currentNum = 0;
+                mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
+
+                // Reset to the first player for the new turn
+                currentPlayerIndex = round.nextPlayer(true);
+                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
+            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+                currentPlayerIndex = round.nextPlayer(false);
+                updatePokerPanel(players.get(currentPlayerIndex));
+                currentNum++;
             }
 
             for(JLabel cardLabel : cardLabels){
                 cardLabel.setIcon(cardBackImage.getBackImage());
-            }
-
-            // next player
-            if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                currentPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(currentPlayerIndex));
-                currentNum++;
             }
         });
 
@@ -278,31 +273,31 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if(checkNextTurn() && currentNum >= players.size()){
+            if (checkNextTurn() && currentNum >= players.size()) {
                 currentNum = 0;
-                mutipleTurn.nextTurn();
-                currentNum = 0;
+                mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
+
+                // Reset to the first player for the new turn
+                currentPlayerIndex = round.nextPlayer(true);
+                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
+            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+                currentPlayerIndex = round.nextPlayer(false);
+                updatePokerPanel(players.get(currentPlayerIndex));
+                currentNum++;
             }
 
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
                 cardLabel.setIcon(cardBackImage.getBackImage());
             }
-
-            // next player
-            if (round.getActivePlayers() > 1) {
-                currentPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(currentPlayerIndex));
-                System.out.println("Next Player: " + players.get(currentPlayerIndex).getName());
-                currentNum++;
-            }
         });
 
         raise.addActionListener(e -> {
             int chipsToRaise = round.raiseChips(currentPlayerIndex);
+
             if(chipsToRaise > 0){
                 int totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
                 int updateChips = player.makeDecision("raise", chipsToRaise, totalRaisedChips, playersHands, currentPlayerIndex);
@@ -310,28 +305,30 @@ public class GUI {
                 potLabelText.setText("Pot: " + round.changePot(chipsToRaise));
             }else{
                 System.out.println("No chips raised");
+                return;
             }
 
             updatePokerPanel(player);
 
-            if(checkNextTurn() && currentNum >= players.size()){
-                mutipleTurn.nextTurn();
+            if (checkNextTurn() && currentNum >= players.size()) {
+                currentNum = 0;
+                mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
+
+                // Reset to the first player for the new turn
+                currentPlayerIndex = round.nextPlayer(true);
+                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
+            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+                currentPlayerIndex = round.nextPlayer(false);
+                updatePokerPanel(players.get(currentPlayerIndex));
+                currentNum++;
             }
 
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
                 cardLabel.setIcon(cardBackImage.getBackImage());
-            }
-
-            // next player
-            if (round.getActivePlayers() > 1) {
-                currentPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(currentPlayerIndex));
-                System.out.println("Next Player: " + players.get(currentPlayerIndex).getName());
-                currentNum++;
             }
         });
 
@@ -341,24 +338,25 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if(checkNextTurn() && currentNum >= players.size()){
+            if (checkNextTurn() && currentNum >= players.size()) {
                 currentNum = 0;
-                mutipleTurn.nextTurn();
+                mutipleTurn.nextTurn(); // Proceed to the next turn
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
+
+                // Reset to the first player for the new turn
+                currentPlayerIndex = round.nextPlayer(true);
+                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
+            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+                currentPlayerIndex = round.nextPlayer(false);
+                updatePokerPanel(players.get(currentPlayerIndex));
+                currentNum++;
             }
 
             // flip the card to be back
             for (JLabel cardLabel : cardLabels) {
                 cardLabel.setIcon(cardBackImage.getBackImage());
-            }
-
-            // next player
-            if (round.getActivePlayers() > 1) {
-                currentPlayerIndex = round.nextPlayer();
-                updatePokerPanel(players.get(currentPlayerIndex));
-                currentNum++;
             }
         });
 
@@ -368,20 +366,6 @@ public class GUI {
         optionPanel.add(raise);
         optionPanel.add(fold);
         optionPanel.add(checkCard);
-
-        // player must check cards first only for first turn
-        if(playTurn == 0){
-            check.setEnabled(false);
-            call.setEnabled(false);
-            raise.setEnabled(false);
-            fold.setEnabled(false);
-        }else{
-            call.setEnabled(true);
-            raise.setEnabled(true);
-            fold.setEnabled(true);
-            check.setEnabled(true);
-            checkCard.setEnabled(false);
-        }
 
 
         // Add pokerPanel and optionPanel to newPanel
@@ -501,6 +485,8 @@ public class GUI {
 
     // reset player decision for new turn
     public void resetPlayerDecisions(){
+        currentNum = 0;
+        currentPlayerIndex = 0;
         for (Player player : players) {
             if (player.isActive()) {
                 player.resetDecision();

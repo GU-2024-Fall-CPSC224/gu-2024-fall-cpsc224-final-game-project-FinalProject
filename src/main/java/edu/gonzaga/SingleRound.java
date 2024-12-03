@@ -147,13 +147,19 @@ public class SingleRound {
     }
 
     // switch to next player
-    public int nextPlayer() {
-        do {
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-            System.out.println("Next player index: " + currentPlayerIndex + " (" + players.get(currentPlayerIndex).getName() + ")");
-        } while (!players.get(currentPlayerIndex).isActive());
+    public int nextPlayer(boolean isNewTurn) {
+        if (isNewTurn) {
+            currentPlayerIndex = 0; // Reset to the first player
+            System.out.println("New turn started. Starting from player index: " + currentPlayerIndex);
+        } else {
+            do {
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                System.out.println("Next player index: " + currentPlayerIndex + " (" + players.get(currentPlayerIndex).getName() + ")");
+            } while (!players.get(currentPlayerIndex).isActive());
+        }
         return currentPlayerIndex;
     }
+
 
 
     public int getActivePlayers() {
