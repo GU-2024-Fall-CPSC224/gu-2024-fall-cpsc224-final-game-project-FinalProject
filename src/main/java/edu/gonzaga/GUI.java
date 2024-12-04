@@ -206,10 +206,10 @@ public class GUI {
         // set up the main window
         this.mainWindowFrame = new JFrame("Poker Game");
         this.mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.mainWindowFrame.setSize(1300, 1000);
         this.mainWindowFrame.setResizable(true);
-        this.mainWindowFrame.setLocation(100, 100);
         this.mainWindowFrame.setLayout(new BorderLayout());
+
+        this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         String imagePath = "media/table.png";
         File imageFile = new File(imagePath);
