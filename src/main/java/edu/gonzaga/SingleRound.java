@@ -10,11 +10,18 @@ public class SingleRound {
     private ArrayList<Player> players;
     private int currentPlayerIndex;
     private int activePlayers;
+    private int playTurn;
+    private int flippedCardsCount;
+    private int nextStartPlayerIndex;
+
 
     public SingleRound(ArrayList<Player> players) {
         this.players = players;
         this.currentPlayerIndex = 0;
         this.activePlayers = players.size();
+        this.playTurn = 0;
+        this.flippedCardsCount = 0;
+        this.nextStartPlayerIndex = 0;
         saveChipsRaise = new int[players.size()];
         for (int i = 0; i < saveChipsRaise.length; i++) {
             saveChipsRaise[i] = 0;
@@ -246,5 +253,45 @@ public class SingleRound {
 
     public int getPot() {
         return pot;
+    }
+
+    public boolean checkAllIn() {
+        for (Player player : players) {
+            if (player.isActive() && player.getChips() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Start a new round
+    public void startNewRound(Cards deck, int nextStartPlayerIndex) {
+        System.out.println("Setting up a new round...");
+        deck.initializeDeck();
+        resetChipsRaise();
+        playTurn = 0;
+        flippedCardsCount = 0;
+        pot = 0; // Reset the pot
+
+        // Update players' status and draw new cards
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+
+            if (player.getChips() > 0) {
+                player.setActive(true);
+                player.clearHand(); // Clear old cards
+                ArrayList<ArrayList<Object>> newHand = player.drawCards(deck); // Draw new cards
+                System.out.println(player.getName() + "'s new hand: " + newHand);
+            } else {
+                player.setActive(false); // Mark inactive players
+                player.setName("LOSE");
+                System.out.println(player.getName() + " is out of the game.");
+            }
+        }
+
+        currentPlayerIndex = nextStartPlayerIndex; // Start from the next dealer
+        this.nextStartPlayerIndex = (nextStartPlayerIndex + 1) % players.size(); // Rotate dealer to the next player
+
+        System.out.println("New round setup complete.");
     }
 }

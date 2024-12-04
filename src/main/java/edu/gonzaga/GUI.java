@@ -2,8 +2,6 @@ package edu.gonzaga;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUI {
@@ -29,6 +27,7 @@ public class GUI {
     int potChips;
     int[] playerChips;
     int playTurn;
+    int nextStartPlayerIndex;
     ArrayList<ArrayList<ArrayList<Object>>> playersHands; // Each player has a hand (list of cards)
 
     Cards deck;
@@ -237,17 +236,15 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
+            // Check if players can advance
+            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
                 currentNum = 0;
-                mutipleTurn.nextTurn(); // Proceed to the next turn
+                mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
-
-                // Reset to the first player for the new turn
                 currentPlayerIndex = round.nextPlayer(true);
-                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
-            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -274,17 +271,15 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
+            // Check if players can advance
+            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
                 currentNum = 0;
-                mutipleTurn.nextTurn(); // Proceed to the next turn
+                mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
-
-                // Reset to the first player for the new turn
                 currentPlayerIndex = round.nextPlayer(true);
-                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
-            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -311,17 +306,21 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
+            // check if player all in
+            if (round.checkAllIn()) {
+                mutipleTurn.nextTurn(true);
+                return;
+            }
+
+            // Check if players can advance
+            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
                 currentNum = 0;
-                mutipleTurn.nextTurn(); // Proceed to the next turn
+                mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
-
-                // Reset to the first player for the new turn
                 currentPlayerIndex = round.nextPlayer(true);
-                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
-            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -339,17 +338,15 @@ public class GUI {
 
             updatePokerPanel(player);
 
-            if (checkNextTurn() && currentNum >= round.getActivePlayers() - 1) {
+            // Check if players can advance
+            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
                 currentNum = 0;
-                mutipleTurn.nextTurn(); // Proceed to the next turn
+                mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
-
-                // Reset to the first player for the new turn
                 currentPlayerIndex = round.nextPlayer(true);
-                System.out.println("New round started. Starting from: " + players.get(currentPlayerIndex).getName());
-            }else if(round.getActivePlayers() > 1 || currentNum < players.size()){
+            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -481,7 +478,6 @@ public class GUI {
                 return false;
             }
         }
-
         return true;
     }
 
