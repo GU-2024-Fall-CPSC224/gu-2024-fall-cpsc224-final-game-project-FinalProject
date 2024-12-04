@@ -10,8 +10,6 @@ public class Tank {
     private Integer shotCount = 0;
     private Integer trajectory;
     private Integer health;
-    private Integer moveRight;
-    private Integer moveLeft;
     private Boolean moved;
 
     public Tank() {
