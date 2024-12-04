@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 public class ToPlay {
     String name;
     String color;
+    boolean easyOrHard = true; // true is easy, false is hard, default is easy
 
     public ToPlay() {
         this.name = "Unidentified User";
@@ -55,6 +56,8 @@ public class ToPlay {
     JButton green = new JButton();
     JButton blue = new JButton();
     JButton pink = new JButton();
+    JButton easy = new JButton("Easy");
+    JButton hard = new JButton("Hard");
     // image that also goes in the middle, in panel 4:
     private JLabel tankPicture = new JLabel();
     private JLabel howToPlayFrameIcon = new JLabel();
@@ -146,8 +149,12 @@ public class ToPlay {
         green.setBackground(Color.green);
         blue.setBackground(Color.blue);
         pink.setBackground(Color.pink);
+        easy.setBackground(Color.lightGray);
+        hard.setBackground(Color.lightGray);
         JLabel player1Color = new JLabel("Player #1 Color: ");
         JLabel player2Color = new JLabel("Player #2 Color: ");
+        JLabel difficultyLabel = new JLabel("Select Difficulty: ");
+        JPanel difficultJPanel = new JPanel();
         JPanel player1ColorPanel = new JPanel();
         JPanel player2ColorPanel = new JPanel();
         player1ColorPanel.add(player1Color);
@@ -158,8 +165,12 @@ public class ToPlay {
         player2ColorPanel.add(orange);
         player2ColorPanel.add(green);
         player2ColorPanel.add(pink);
+        difficultJPanel.add(difficultyLabel);
+        difficultJPanel.add(easy);
+        difficultJPanel.add(hard);
         startingPanelCenter.add(player1ColorPanel, BorderLayout.WEST);
         startingPanelCenter.add(player2ColorPanel, BorderLayout.EAST);
+        startingPanelCenter.add(difficultJPanel, BorderLayout.SOUTH);
     }
 
     public String getPlayer1Name() { // called from MainGame
@@ -258,6 +269,16 @@ public class ToPlay {
                 System.out.println("Done with the color action listener method");
             }
         };
+        ActionListener difficultyListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (actionEvent.getSource() == easy) {
+                    easyOrHard = true;
+                } else if (actionEvent.getSource() == hard) {
+                    easyOrHard = false;
+                }
+            }
+        };
         ActionListener continueListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -271,8 +292,11 @@ public class ToPlay {
                             g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
                         }
                     };
-
-                    // Set up the game frame
+                    System.out.println("Difficulty is set to " + easyOrHard);
+                    setPlayer1Name(player1NameTextField.getText());
+                    System.out.println(getPlayer1Name());
+                    setPlayer2Name(player2NameTextField.getText());
+                    System.out.println(getPlayer2Name());
                     gameFrame.setIconImage(new ImageIcon("background.png").getImage());
                     gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     gameFrame.setSize(820, 800);
@@ -292,6 +316,8 @@ public class ToPlay {
         blue.addActionListener(colorButtonsListener);
         pink.addActionListener(colorButtonsListener);
         continueButton.addActionListener(continueListener);
+        easy.addActionListener(difficultyListener);
+        hard.addActionListener(difficultyListener);
     }
 
     // when adding action listener for continue, set the names again in case users
