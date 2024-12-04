@@ -10,6 +10,9 @@ public class Tank {
     private Integer shotCount = 0;
     private Integer trajectory;
     private Integer health;
+    private Integer moveRight;
+    private Integer moveLeft;
+    private Boolean moved;
 
     public Tank() {
         health = 100;
@@ -67,12 +70,11 @@ public class Tank {
         return this.yCord;
     }
 
-  public Integer getTrajectory() {
+    public Integer getTrajectory() {
         return this.trajectory;
     }
 
-
-    //Setters
+    // Setters
     public void setHealth(Integer healthSet) {
         health = healthSet;
     }
@@ -110,5 +112,29 @@ public class Tank {
     public int hit() {
         // returning 0 for now
         return 0;
+    }
+
+    public Integer moveMeLeft() {
+        if (this.xCord < 5) {
+            this.xCord = 0;
+        } else {
+            this.xCord -= 5;
+        }
+        moved = true;
+        return xCord;
+    }
+
+    public Integer moveMeRight() {
+        if (this.xCord > 195) {
+            this.xCord = 200;
+        } else {
+            this.xCord += 5;
+        }
+        moved = true;
+        return xCord;
+    }
+
+    public Boolean getMoved() {
+        return moved;
     }
 }
