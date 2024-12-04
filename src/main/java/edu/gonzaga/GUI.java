@@ -56,7 +56,6 @@ public class GUI {
     private int startingChips;
 
     public GUI() {
-        roleImage = new RoleImage("media/poker rules.png");
         players = new ArrayList<>();
         playersHands = new ArrayList<>();
         currentPlayerIndex = 0;
@@ -212,36 +211,56 @@ public class GUI {
         this.mainWindowFrame.setLocation(100, 100);
         this.mainWindowFrame.setLayout(new BorderLayout());
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel("media/table.png");
-        backgroundPanel.setLayout(new BorderLayout());
-        this.mainWindowFrame.setContentPane(backgroundPanel);
+        String imagePath = "media/table.png";
+        File imageFile = new File(imagePath);
+        if (!imageFile.exists()) {
+            System.err.println("Background image not found: " + imagePath);
+            return;
+        } else {
+            System.out.println("Background image found: " + imagePath);
+        }
 
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel(imagePath);
+        backgroundPanel.setLayout(new BorderLayout());
 
         // set up role panel
 
         // set up player panel
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+        playerPanel.setOpaque(false);
+
         for (Player player : players) {
-            playerPanel.add(player.getPlayerPanel());
+            JPanel playerPanelComponent = player.getPlayerPanel();
+            playerPanelComponent.setOpaque(false);
+            playerPanel.add(playerPanelComponent);
             player.setNameEditable(false);
         }
 
         // set up poker panel
         pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         pokerContainerPanel.add(new JLabel("Waiting for players..."));
+        pokerContainerPanel.setOpaque(false);
 
         // set up game panel
         gamePanel = getGamePanel();
+        gamePanel.setOpaque(false);
 
         // set up game reminder
         reminder = getReminder();
+        reminder.setOpaque(false);
 
         // input all panels in main window
-        this.mainWindowFrame.getContentPane().add(this.playerPanel, BorderLayout.EAST);
-        this.mainWindowFrame.getContentPane().add(pokerContainerPanel, BorderLayout.SOUTH);
-        this.mainWindowFrame.getContentPane().add(this.reminder, BorderLayout.NORTH);
-        this.mainWindowFrame.getContentPane().add(this.gamePanel, BorderLayout.CENTER);
+        backgroundPanel.add(this.playerPanel, BorderLayout.EAST);
+        backgroundPanel.add(pokerContainerPanel, BorderLayout.SOUTH);
+        backgroundPanel.add(this.reminder, BorderLayout.NORTH);
+        backgroundPanel.add(this.gamePanel, BorderLayout.CENTER);
+
+        this.mainWindowFrame.setContentPane(backgroundPanel);
+
+        this.mainWindowFrame.revalidate();
+        this.mainWindowFrame.repaint();
 
         playAudio("media/jazz_reduced.wav", false, -16.0f);
     }
@@ -275,6 +294,7 @@ public class GUI {
 
         playerPanel.revalidate();
         playerPanel.repaint();
+        playerPanel.setOpaque(false);
     }
 
     private void updatePokerPanel(Player player) {
@@ -287,9 +307,11 @@ public class GUI {
     private JPanel getPokerPanel(Player player) {
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BorderLayout());
+        newPanel.setOpaque(false);
 
         // Panel for player's cards
         JPanel pokerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pokerPanel.setOpaque(false);
         JLabel[] cardLabels = new JLabel[2]; // Labels for the two cards
 
         // Initialize with card backs
@@ -479,6 +501,7 @@ public class GUI {
     private JPanel getGamePanel() {
         // Main panel to hold the start button initially
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setOpaque(false);
 
         // Initialize river cards with card back images
         ArrayList<JLabel> riverCards = new ArrayList<>();
@@ -496,6 +519,7 @@ public class GUI {
 
         // Set up the game view
         JPanel gamePanel = new JPanel();
+        gamePanel.setOpaque(false);
         gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
 
         // Add vertical glue to center content
@@ -503,12 +527,14 @@ public class GUI {
 
         // Create the river panel for card display
         JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        cardPanel.setOpaque(false);
         for (JLabel card : riverCards) {
             cardPanel.add(card); // Add all river cards (back side) to the panel
         }
 
         // Panel for displaying pot information
         JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        potPanel.setOpaque(false);
         potLabelText = new JLabel("Pot: 0");
         potPanel.add(potLabelText);
 
