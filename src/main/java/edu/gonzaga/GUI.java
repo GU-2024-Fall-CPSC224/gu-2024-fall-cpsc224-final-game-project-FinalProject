@@ -18,7 +18,6 @@ public class GUI {
     JFrame splashScreenFrame;
 
     JFrame mainWindowFrame;
-    JPanel rolePanel;
     JPanel playerPanel;
     JPanel gamePanel;
     JPanel reminder;
@@ -182,6 +181,9 @@ public class GUI {
                 players.add(player);
                 System.out.println("Player " + (i + 1) + " name: " + playerNameFields[i].getText());
             }
+
+            round = new SingleRound(players);
+
             nameDialog.dispose();
             splashScreenFrame.dispose();
             stopAudio(splashClip); // STOP SONG ON CLOSE
@@ -207,17 +209,23 @@ public class GUI {
         this.mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainWindowFrame.setSize(1300, 1000);
         this.mainWindowFrame.setResizable(true);
-
         this.mainWindowFrame.setLocation(100, 100);
         this.mainWindowFrame.setLayout(new BorderLayout());
 
+        BackgroundPanel backgroundPanel = new BackgroundPanel("media/table.png");
+        backgroundPanel.setLayout(new BorderLayout());
+        this.mainWindowFrame.setContentPane(backgroundPanel);
+
 
         // set up role panel
-        rolePanel = getRolePanel();
 
         // set up player panel
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+        for (Player player : players) {
+            playerPanel.add(player.getPlayerPanel());
+            player.setNameEditable(false);
+        }
 
         // set up poker panel
         pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -230,7 +238,6 @@ public class GUI {
         reminder = getReminder();
 
         // input all panels in main window
-        this.mainWindowFrame.getContentPane().add(this.rolePanel, BorderLayout.WEST);
         this.mainWindowFrame.getContentPane().add(this.playerPanel, BorderLayout.EAST);
         this.mainWindowFrame.getContentPane().add(pokerContainerPanel, BorderLayout.SOUTH);
         this.mainWindowFrame.getContentPane().add(this.reminder, BorderLayout.NORTH);
@@ -239,85 +246,23 @@ public class GUI {
         playAudio("media/jazz_reduced.wav", false, -16.0f);
     }
 
-    private JPanel getRolePanel() {
-        JPanel newPanel = new JPanel(new BorderLayout());
-        JPanel rolePanel = new JPanel();
-
-        // set up the role
-        rolePanel.setLayout(new BoxLayout(rolePanel, BoxLayout.Y_AXIS)); 
-        rolePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JLabel imageLabel = new JLabel(roleImage.getRoleImage());
-        imageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        rolePanel.add(imageLabel);
-
-        // set up chips
-        JPanel chipsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel chipsLabel = new JLabel("Chips (100 - 999):");
-        chipsField = new JTextField(5);
-        chipsField.setPreferredSize(new Dimension(100, 25));
-        chipsPanel.add(chipsLabel);
-        chipsPanel.add(chipsField);
-        chipsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        rolePanel.add(chipsPanel);
-
-        // set up the panel for player number
-        JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel playerLabel = new JLabel("Players (2 - 8):");
-        playerField = new JTextField(5);
-        playerField.setPreferredSize(new Dimension(100, 25));
-        playerPanel.add(playerLabel);
-        playerPanel.add(playerField);
-        playerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        rolePanel.add(playerPanel);
-
-        // set up ok button
-        okPlayerButton = new JButton("OK");
-
-        okPlayerButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        okPlayerButton.addActionListener(e -> getPlayerPanel());
-
-        rolePanel.add(Box.createVerticalStrut(10));
-        rolePanel.add(okPlayerButton);
-        newPanel.add(rolePanel, BorderLayout.NORTH);
-
-        return newPanel;
-    }
-
-
     private void getPlayerPanel() {
         int chips;
         int playerCount;
-        try {
-            chips = Integer.parseInt(chipsField.getText());
-            playerCount = Integer.parseInt(playerField.getText());
-        } catch (NumberFormatException ex) {
-            startAlert();
-            return;
-        }
-
-        // Validate the input values for chips and player count
-        if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
             
-            startAlert();
-            return;
-        }
+        chips = startingChips;
+        playerCount = numPlayers;
+        
         playerChips = new int[playerCount];
         for(int i = 0; i < playerCount; i++) {
             playerChips[i] = chips;
         }
 
-        nameAlert();
         playerPanel.removeAll();
         playerPanel.setPreferredSize(new Dimension(300, 1000));
 
-        players.clear();
         playersHands.clear();
-
-        for (int i = 0; i < playerCount; i++) {
-            Player player = new Player("Player " + (i + 1), chips, "media/profile.png");
-            players.add(player);
-
+        for (Player player : players) {
             // Draw cards for the player and store in playersHands
             ArrayList<ArrayList<Object>> hand = player.drawCards(deck);
             playersHands.add(hand);
@@ -535,90 +480,52 @@ public class GUI {
         // Main panel to hold the start button initially
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        // Set up the start panel with a Start button
-        JPanel startPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton startButton = new JButton("Start");
-        startButton.setPreferredSize(new Dimension(200, 100));
-        startPanel.add(startButton);
+        // Initialize river cards with card back images
+        ArrayList<JLabel> riverCards = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            riverCards.add(new JLabel(cardBackImage.getBackImage()));
+        }
 
-        // Add the start panel to the main panel
-        mainPanel.add(startPanel, BorderLayout.CENTER);
+        // Initialize MutipleTurn
+        mutipleTurn = new MutipleTurn(deck, players, round, riverCards);
 
-        // Action listener for the Start button
-        startButton.addActionListener(e -> {
-            int chips;
-            int playerCount;
+        // Update poker panel for the first player
+        if (!players.isEmpty()) {
+            updatePokerPanel(players.get(0));
+        }
 
-            // Parse and validate chips and player count input
-            try {
-                chips = Integer.parseInt(chipsField.getText());
-                playerCount = Integer.parseInt(playerField.getText());
-            } catch (NumberFormatException ex) {
-                startAlert();
-                return;
-            }
+        // Set up the game view
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
 
-            if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
-                startAlert();
-                return;
-            }
+        // Add vertical glue to center content
+        gamePanel.add(Box.createVerticalGlue());
 
-            // Disable name editing and input fields after starting the game
-            for (Player player : players) {
-                player.setNameEditable(false);
-            }
-            playerField.setEditable(false);
-            chipsField.setEditable(false);
-            okPlayerButton.setEnabled(false);
+        // Create the river panel for card display
+        JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        for (JLabel card : riverCards) {
+            cardPanel.add(card); // Add all river cards (back side) to the panel
+        }
 
-            // Initialize river cards with card back images
-            ArrayList<JLabel> riverCards = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                riverCards.add(new JLabel(cardBackImage.getBackImage()));
-            }
+        // Panel for displaying pot information
+        JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        potLabelText = new JLabel("Pot: 0");
+        potPanel.add(potLabelText);
 
-            // Initialize MutipleTurn
-            mutipleTurn = new MutipleTurn(deck, players, round, riverCards);
+        // Add cardPanel and potPanel to gamePanel
+        gamePanel.add(cardPanel);
+        gamePanel.add(Box.createVerticalStrut(10)); // Space between cards and pot
+        gamePanel.add(potPanel);
+        gamePanel.add(Box.createVerticalGlue());
 
-            // Remove the start panel
-            mainPanel.remove(startPanel);
+        // Add gamePanel to mainPanel
+        mainPanel.add(gamePanel, BorderLayout.CENTER);
 
-            // Update poker panel for the first player
-            if (!players.isEmpty()) {
-                updatePokerPanel(players.get(0));
-            }
+        // Refresh UI
+        mainPanel.revalidate();
+        mainPanel.repaint();
 
-            // Set up the game view
-            JPanel gamePanel = new JPanel();
-            gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
-
-            // Add vertical glue to center content
-            gamePanel.add(Box.createVerticalGlue());
-
-            // Create the river panel for card display
-            JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            for (JLabel card : riverCards) {
-                cardPanel.add(card); // Add all river cards (back side) to the panel
-            }
-
-            // Panel for displaying pot information
-            JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            potLabelText = new JLabel("Pot: 0");
-            potPanel.add(potLabelText);
-
-            // Add cardPanel and potPanel to gamePanel
-            gamePanel.add(cardPanel);
-            gamePanel.add(Box.createVerticalStrut(10)); // Space between cards and pot
-            gamePanel.add(potPanel);
-            gamePanel.add(Box.createVerticalGlue());
-
-            // Add gamePanel to mainPanel
-            mainPanel.add(gamePanel, BorderLayout.CENTER);
-
-            // Refresh UI
-            mainPanel.revalidate();
-            mainPanel.repaint();
-        });
+        getPlayerPanel();
 
         return mainPanel;
     }
@@ -673,6 +580,7 @@ public class GUI {
         playerPanel.removeAll();
         for(Player player : players){
             playerPanel.add(player.getPlayerPanel());
+            player.setNameEditable(false);
         }
 
         playerPanel.revalidate();
