@@ -303,12 +303,22 @@ public class WinnerCheck {
     }
 
     private String extractSuit(Object card) {
-        // Extract suit from the card, which is a list [Suit, Value]
-        return (String) ((ArrayList<Object>) card).get(0);
+        if (card instanceof ArrayList<?>) {
+            ArrayList<?> cardList = (ArrayList<?>) card;
+            if (!cardList.isEmpty() && cardList.get(0) instanceof String) {
+                return (String) cardList.get(0);
+            }
+        }
+        throw new IllegalArgumentException("Invalid card format");
     }
 
     private int extractValue(Object card) {
-        // Extract value from the card, which is a list [Suit, Value]
-        return (Integer) ((ArrayList<Object>) card).get(1);
+        if (card instanceof ArrayList<?>) {
+            ArrayList<?> cardList = (ArrayList<?>) card;
+            if (cardList.size() > 1 && cardList.get(1) instanceof Integer) {
+                return (Integer) cardList.get(1);
+            }
+        }
+        throw new IllegalArgumentException("Invalid card format");
     }
 }
