@@ -19,6 +19,33 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+//Geometry and Shape creation
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.util.List;
+
+//Dyn4j Physics imports
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Vector2;
+import org.dyn4j.world.World;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.dynamics.joint.FrictionJoint;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
+import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.Interval;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Ray;
+import org.dyn4j.geometry.Vector2;
+import org.dyn4j.world.DetectFilter;
+import org.dyn4j.world.World;
+import org.dyn4j.world.result.RaycastResult;
+
+
 public class ToPlay {
     String name;
     String color;
