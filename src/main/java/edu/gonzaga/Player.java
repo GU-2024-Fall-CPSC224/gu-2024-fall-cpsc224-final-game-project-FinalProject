@@ -123,8 +123,6 @@ public class Player {
         if (decision.equals("fold")) {
             System.out.println("Player " + this.getName() + " folded.");
             this.chipsChange.setText("Decision: fold ");
-            this.setName("Fold");
-            setActive(false);
         }
         else if(decision.equals("call")){
             this.chipsChange.setText("Decision: call " + totalRaisedChips);

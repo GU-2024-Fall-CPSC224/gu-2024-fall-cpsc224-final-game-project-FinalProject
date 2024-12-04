@@ -93,6 +93,13 @@ public class MutipleTurn {
         }
     }
 
+    public void checkSingleWinner() {
+        ArrayList<Player> activePlayers = getActivePlayersList();
+        Player winner = activePlayers.get(0);
+        winner.updateChips(winner.getChips() + singleRound.getPot());
+        singleRound.resetPot(); // Reset pot after chips are updated
+    }
+
     // Check winner or determine winner by points
     public void checkWinner(ArrayList<Object> riverCardsSave) {
         int pot = singleRound.getPot();
@@ -105,14 +112,6 @@ public class MutipleTurn {
         }
 
         System.out.println("Active players: " + activePlayers.size());
-
-        if (activePlayers.size() == 1) {
-            Player winner = activePlayers.get(0);
-            JOptionPane.showMessageDialog(null, winner.getName() + " wins the pot!");
-            winner.updateChips(winner.getChips() + pot);
-            promptNewRound();
-            return;
-        }
 
         // Calculate scores for active players
         int highestPoints = 0;
@@ -202,6 +201,14 @@ public class MutipleTurn {
         flippedCardsCount = 0;
 
         initializeRiverCards();
+
+        for (Player player : players) {
+            if (!"LOSE".equals(player.getName())) {
+                player.setActive(true);
+            } else {
+                player.setActive(false);
+            }
+        }
 
         for (JLabel riverCard : riverCards) {
             riverCard.revalidate();

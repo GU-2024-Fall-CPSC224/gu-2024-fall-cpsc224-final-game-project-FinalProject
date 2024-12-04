@@ -117,6 +117,10 @@ public class SingleRound {
         return pot;
     }
 
+    public int resetPot(){
+        return pot = 0;
+    }
+
     public int getRaiseChips(int currentPlayerIndex) {
         return saveChipsRaise[currentPlayerIndex];
     }

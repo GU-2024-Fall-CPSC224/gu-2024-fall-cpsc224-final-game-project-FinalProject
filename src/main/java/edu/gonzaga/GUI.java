@@ -358,14 +358,18 @@ public class GUI {
             updatePokerPanel(player);
 
             // Check if players can advance
-            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
+            if (round.checkAllIn() || (checkNextTurn() && currentNum > round.getActivePlayers() - 1)) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
                 currentPlayerIndex = round.nextPlayer(true);
-            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                while(!player.isActive()){
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                }
+                System.out.println("currentPlayerIndex: " + currentPlayerIndex);
+            } else if (round.getActivePlayers() > 1 || currentNum <= players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -393,14 +397,18 @@ public class GUI {
             updatePokerPanel(player);
 
             // Check if players can advance
-            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
+            if (round.checkAllIn() || (checkNextTurn() && currentNum > round.getActivePlayers() - 1)) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
                 currentPlayerIndex = round.nextPlayer(true);
-            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                while(!player.isActive()){
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                }
+                System.out.println("currentPlayerIndex: " + currentPlayerIndex);
+            } else if (round.getActivePlayers() > 1 || currentNum <= players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -434,14 +442,18 @@ public class GUI {
             }
 
             // Check if players can advance
-            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
+            if (round.checkAllIn() || (checkNextTurn() && currentNum > round.getActivePlayers() - 1)) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
                 currentPlayerIndex = round.nextPlayer(true);
-            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                while(!player.isActive()){
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                }
+                System.out.println("currentPlayerIndex: " + currentPlayerIndex);
+            } else if (round.getActivePlayers() > 1 || currentNum <= players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -456,18 +468,28 @@ public class GUI {
         fold.addActionListener(e -> {
             player.makeDecision("fold", 0, 0, playersHands, currentPlayerIndex);
             round.foldCard(currentPlayerIndex);
+            if (round.getActivePlayers() == 1) {
+                mutipleTurn.checkSingleWinner();
+                updatePokerPanel(players.get(currentPlayerIndex));
+                potLabelText.setText("Pot: " + round.resetPot());
+                mutipleTurn.promptNewRound();
+            }
 
             updatePokerPanel(player);
 
             // Check if players can advance
-            if (round.checkAllIn() || (checkNextTurn() && currentNum >= round.getActivePlayers() - 1)) {
+            if (round.checkAllIn() || (checkNextTurn() && currentNum > round.getActivePlayers() - 1)) {
                 currentNum = 0;
                 mutipleTurn.nextTurn(false);
                 resetPlayerDecisions();
                 round.resetChipsRaise();
                 playTurn++;
                 currentPlayerIndex = round.nextPlayer(true);
-            } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                while(!player.isActive()){
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                }
+                System.out.println("currentPlayerIndex: " + currentPlayerIndex);
+            } else if (round.getActivePlayers() > 1 || currentNum <= players.size()) {
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
