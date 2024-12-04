@@ -86,7 +86,7 @@ public class GUI {
         splashPanel.setLayout(null);
 
         numPlayersField = new JTextField();
-        numPlayersField.setBounds(660, 365, 100, 30);
+        numPlayersField.setBounds(665, 370, 100, 30);
         numPlayersField.setOpaque(false);
         numPlayersField.setCursor(new Cursor(Cursor.HAND_CURSOR));
         numPlayersField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
@@ -94,7 +94,7 @@ public class GUI {
         splashPanel.add(numPlayersField);
 
         startingChipsField = new JTextField();
-        startingChipsField.setBounds(610, 420, 150, 30); // Set location and size
+        startingChipsField.setBounds(615, 425, 150, 30); // Set location and size
         startingChipsField.setOpaque(false);
         startingChipsField.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startingChipsField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
