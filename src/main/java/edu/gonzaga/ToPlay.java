@@ -179,18 +179,18 @@ public class ToPlay {
     public void gameOverScreen() {
         JLabel gameOverLabel = new JLabel("GAME OVER");
         gameOverLabel.setFont(new Font("Algerian", Font.BOLD, 100));
-        JPanel gameOverScreenPanel = new JPanel();
+        JPanel gameOverScreenPanel = new JPanel(new BorderLayout());
         gameOverFrame.setBackground(Color.black);
         gameOverLabel.setForeground(Color.red);
-        JLabel winnerLabel = new JLabel();
+        JLabel winnerLabel = new JLabel("Player 1 wins!");
         if (player1Tank.getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
         } else if (player2Tank.getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
         }
         winnerLabel.setForeground(Color.white);
-        gameOverScreenPanel.add(gameOverLabel);
-        gameOverScreenPanel.add(winnerLabel);
+        gameOverScreenPanel.add(gameOverLabel, BorderLayout.NORTH);
+        gameOverScreenPanel.add(winnerLabel, BorderLayout.CENTER);
         gameOverScreenPanel.setBackground(Color.black);
         gameOverFrame.add(gameOverScreenPanel);
         gameOverFrame.setSize(820, 800);
@@ -247,10 +247,10 @@ public class ToPlay {
                     howToPlayFrameIcon.setIcon(howToPlayIcon); // set the icon for this label
                     instructionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     instructionsFrame.setSize(820, 800);
-                    instructionsFrame.setLayout(new BorderLayout()); // Use a simple layout
-                    instructionsPanel.setLayout(new BorderLayout()); // Let the image fill the panel
-                    instructionsPanel.add(howToPlayFrameIcon, BorderLayout.CENTER); // Add the icon to the center
-                    instructionsFrame.add(instructionsPanel, BorderLayout.CENTER); // Add the panel to the frame
+                    instructionsFrame.setLayout(new BorderLayout());
+                    instructionsPanel.setLayout(new BorderLayout());
+                    instructionsPanel.add(howToPlayFrameIcon, BorderLayout.CENTER); // adding to center
+                    instructionsFrame.add(instructionsPanel, BorderLayout.CENTER);
                     instructionsFrame.setVisible(true);
                 } else if (actionEvent.getSource() == start) {
                     JPanel startingPanelCenter = new JPanel();
