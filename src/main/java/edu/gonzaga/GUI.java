@@ -48,6 +48,12 @@ public class GUI {
     Clip splashClip;
     Clip mainClip;
 
+    // splash screen
+    private JTextField numPlayersField;
+    private JTextField startingChipsField;
+    private int numPlayers;
+    private int startingChips;
+
     public GUI() {
         roleImage = new RoleImage("media/poker rules.png");
         players = new ArrayList<>();
@@ -79,6 +85,22 @@ public class GUI {
         };
         splashPanel.setLayout(null);
 
+        numPlayersField = new JTextField();
+        numPlayersField.setBounds(660, 365, 100, 30);
+        numPlayersField.setOpaque(false);
+        numPlayersField.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        numPlayersField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
+
+        splashPanel.add(numPlayersField);
+
+        startingChipsField = new JTextField();
+        startingChipsField.setBounds(610, 420, 150, 30); // Set location and size
+        startingChipsField.setOpaque(false);
+        startingChipsField.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        startingChipsField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
+
+        splashPanel.add(startingChipsField);
+
         JButton startButton = new JButton();
         startButton.setBounds(505, 475, 170, 35);
         startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -86,10 +108,9 @@ public class GUI {
         startButton.setContentAreaFilled(false);
         startButton.setBorderPainted(false);
         startButton.addActionListener(e -> {
-            splashScreenFrame.dispose();
-            stopAudio(splashClip); // STOP SONG ON CLOSE
-            setGUI();
-            mainWindowFrame.setVisible(true);
+            if (validateInputs()) {
+                showPlayerNameInputDialog(numPlayers);
+            }
         });
 
         splashPanel.add(startButton);
@@ -97,6 +118,78 @@ public class GUI {
         splashScreenFrame.setVisible(true);
 
         playAudio("media/chopin_reduced.wav", true, 0.0f); // PLAY SPLASH SONG
+    }
+
+    private boolean validateInputs() { // used in splash screen for detecting inputs
+        try {
+            numPlayers = Integer.parseInt(numPlayersField.getText());
+            startingChips = Integer.parseInt(startingChipsField.getText());
+    
+            if (numPlayers < 2 || numPlayers > 6) {
+                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 2 and 6.");
+                return false;
+            }
+    
+            if (startingChips < 100 || startingChips > 999) {
+                JOptionPane.showMessageDialog(splashScreenFrame, "Starting chips must be between 100 and 999.");
+                return false;
+            }
+    
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(splashScreenFrame, "Please enter valid numbers.");
+            return false;
+        }
+    }
+    
+    private void showPlayerNameInputDialog(int numPlayers) {
+        JDialog nameDialog = new JDialog(splashScreenFrame, "Enter Player Names", true);
+        nameDialog.setSize(400, 300);
+        nameDialog.setLayout(new BorderLayout());
+    
+        BackgroundPanel backgroundPanel = new BackgroundPanel("media/felt.png");
+        backgroundPanel.setLayout(new GridLayout(numPlayers + 1, 2, 10, 10)); // +1 for the OK button
+        backgroundPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding
+    
+        JTextField[] playerNameFields = new JTextField[numPlayers];
+    
+        for (int i = 0; i < numPlayers; i++) {
+            JLabel label = new JLabel("Player " + (i + 1) + ":");
+            label.setForeground(Color.WHITE); // Set text color to white
+            JTextField textField = new JTextField("Player " + (i + 1));
+            textField.setForeground(Color.WHITE);
+            textField.setOpaque(false);
+            textField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
+            playerNameFields[i] = textField;
+            backgroundPanel.add(label);
+            backgroundPanel.add(textField);
+        }
+    
+        JButton okButton = new JButton("OK");
+        okButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        okButton.setOpaque(false);
+        okButton.setContentAreaFilled(false);
+        okButton.setBorderPainted(false);
+        okButton.setForeground(Color.WHITE); // Set text color to white
+        okButton.setFont(new Font("Arial", Font.BOLD, 16)); // Set font
+        okButton.addActionListener(e -> {
+            for (int i = 0; i < numPlayers; i++) {
+                // Save player names or do something with them
+                System.out.println("Player " + (i + 1) + " name: " + playerNameFields[i].getText());
+            }
+            nameDialog.dispose();
+            splashScreenFrame.dispose();
+            stopAudio(splashClip); // STOP SONG ON CLOSE
+            setGUI();
+            mainWindowFrame.setVisible(true);
+        });
+    
+        backgroundPanel.add(new JLabel()); // Empty cell to align the OK button
+        backgroundPanel.add(okButton);
+    
+        nameDialog.add(backgroundPanel, BorderLayout.CENTER);
+        nameDialog.setLocationRelativeTo(splashScreenFrame);
+        nameDialog.setVisible(true);
     }
 
     void setGUI(){
