@@ -34,6 +34,7 @@ public class ToPlay {
 
     private JFrame frame = new JFrame(); // the frame that opens when the program is run
     private JFrame gameFrame = new JFrame();
+    private JFrame gameOverFrame = new JFrame();
 
     // panels in the border layout:
     private JPanel northPanel = new JPanel();
@@ -69,6 +70,8 @@ public class ToPlay {
     String player2name = "Unidentifiable Player";
     String player1Color = " ";
     String player2Color = " ";
+    Tank player1Tank = new Tank();
+    Tank player2Tank = new Tank();
 
     /**
      * This method formats the start screen that has an image of a tank, a title,
@@ -171,6 +174,28 @@ public class ToPlay {
         startingPanelCenter.add(player1ColorPanel, BorderLayout.WEST);
         startingPanelCenter.add(player2ColorPanel, BorderLayout.EAST);
         startingPanelCenter.add(difficultJPanel, BorderLayout.SOUTH);
+    }
+
+    public void gameOverScreen() {
+        JLabel gameOverLabel = new JLabel("GAME OVER");
+        gameOverLabel.setFont(new Font("Algerian", Font.BOLD, 100));
+        JPanel gameOverScreenPanel = new JPanel();
+        gameOverFrame.setBackground(Color.black);
+        gameOverLabel.setForeground(Color.red);
+        JLabel winnerLabel = new JLabel();
+        if (player1Tank.getHealth() == 0) {
+            winnerLabel.setText(player2name + "wins!");
+        } else if (player2Tank.getHealth() == 0) {
+            winnerLabel.setText(player2name + "wins!");
+        }
+        winnerLabel.setForeground(Color.white);
+        gameOverScreenPanel.add(gameOverLabel);
+        gameOverScreenPanel.add(winnerLabel);
+        gameOverScreenPanel.setBackground(Color.black);
+        gameOverFrame.add(gameOverScreenPanel);
+        gameOverFrame.setSize(820, 800);
+        gameOverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        gameOverFrame.setVisible(true);
     }
 
     public String getPlayer1Name() { // called from MainGame
