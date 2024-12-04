@@ -67,12 +67,11 @@ public class Tank {
         return this.yCord;
     }
 
-  public Integer getTrajectory() {
+    public Integer getTrajectory() {
         return this.trajectory;
     }
 
-
-    //Setters
+    // Setters
     public void setHealth(Integer healthSet) {
         health = healthSet;
     }

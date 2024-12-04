@@ -6,6 +6,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+
 import org.dyn4j.*;
 
 import javax.swing.BoxLayout;
@@ -29,6 +32,8 @@ public class ToPlay {
     }
 
     private JFrame frame = new JFrame(); // the frame that opens when the program is run
+    private JFrame gameFrame = new JFrame();
+
     // panels in the border layout:
     private JPanel northPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
@@ -42,6 +47,8 @@ public class ToPlay {
     // buttons that go in the middle, in panel 5:
     private JButton start = new JButton("Start");
     private JButton howToPlay = new JButton("How to Play");
+    private JButton continueButton = new JButton("Continue");
+
     JButton red = new JButton();
     JButton orange = new JButton();
     JButton yellow = new JButton();
@@ -112,7 +119,6 @@ public class ToPlay {
         startingPanelNorth.add(startLabel); // add the label to the north panel
         startingFrame.add(startingPanelNorth, BorderLayout.NORTH);
         startingFrame.add(startingPanelSouth, BorderLayout.SOUTH);
-        JButton continueButton = new JButton("Continue");
         startingPanelSouth.add(continueButton);
         // set up the border layout in the center panel
         startingPanelCenter.setLayout(new BorderLayout());
@@ -252,6 +258,29 @@ public class ToPlay {
                 System.out.println("Done with the color action listener method");
             }
         };
+        ActionListener continueListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (actionEvent.getSource() == continueButton) {
+                    // Create a custom JPanel with a background image
+                    JPanel panelWithBackground = new JPanel(new GridLayout(200, 200)) {
+                        @Override
+                        protected void paintComponent(Graphics g) {
+                            super.paintComponent(g);
+                            ImageIcon backgroundImage = new ImageIcon("background.png");
+                            g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+                        }
+                    };
+
+                    // Set up the game frame
+                    gameFrame.setIconImage(new ImageIcon("background.png").getImage());
+                    gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    gameFrame.setSize(820, 800);
+                    gameFrame.add(panelWithBackground); // Add the custom panel with background
+                    gameFrame.setVisible(true);
+                }
+            }
+        };
         start.addActionListener(buttonListener);
         howToPlay.addActionListener(buttonListener);
         player1NameTextField.addActionListener(textListener);
@@ -262,6 +291,7 @@ public class ToPlay {
         green.addActionListener(colorButtonsListener);
         blue.addActionListener(colorButtonsListener);
         pink.addActionListener(colorButtonsListener);
+        continueButton.addActionListener(continueListener);
     }
 
     // when adding action listener for continue, set the names again in case users
