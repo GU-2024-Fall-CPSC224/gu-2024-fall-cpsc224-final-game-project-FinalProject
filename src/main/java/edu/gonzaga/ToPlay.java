@@ -245,9 +245,9 @@ public class ToPlay {
                 } else if (actionEvent.getSource() == pink) {
                     setPlayer2Color("0xed7ef6, pink");
                 }
-                System.out.println(getPlayer1Name() + "'s color has been set to " +
+                System.out.println(getPlayer1Name() + "'s color is now set to " +
                         getPlayer1Color());
-                System.out.println(getPlayer2Name() + "'s color has been set to " +
+                System.out.println(getPlayer2Name() + "'s color is now set to " +
                         getPlayer2Color());
                 System.out.println("Done with the color action listener method");
             }
