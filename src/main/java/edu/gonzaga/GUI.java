@@ -180,7 +180,7 @@ public class GUI {
             nameDialog.dispose();
             splashScreenFrame.dispose();
             stopAudio(splashClip); // STOP SONG ON CLOSE
-            setGUI();
+            runGUI();
             mainWindowFrame.setVisible(true);
         });
     
