@@ -78,8 +78,6 @@ public class Player {
         return chips;
     }
 
-    public void setChips(int chips) {}
-
     // Draw cards from the deck and store in hand
     public ArrayList<ArrayList<Object>> drawCards(Cards deck) {
         hand.clear(); // Clear previous hand
@@ -112,6 +110,10 @@ public class Player {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public void clearHand() {
+        hand.clear(); // Clear the player's hand
     }
 
     // make decision

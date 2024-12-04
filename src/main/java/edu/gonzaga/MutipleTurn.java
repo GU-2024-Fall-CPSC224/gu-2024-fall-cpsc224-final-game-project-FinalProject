@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class MutipleTurn {
+    private CardBackImage cardBackImage;
     private Cards card;
     private int playTurn;
     private ArrayList<JLabel> riverCards;
@@ -11,6 +12,7 @@ public class MutipleTurn {
     private ArrayList<Player> players;
     private SingleRound singleRound;
     private int flippedCardsCount;
+    private int nextStartPlayerIndex;
 
     public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards) {
         this.card = cards;
@@ -20,13 +22,15 @@ public class MutipleTurn {
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
+        cardBackImage = new CardBackImage("media/purple_back.jpg");
+        this.nextStartPlayerIndex = 0; // Start with the first player as the dealer
     }
 
     // Calculate active players
     public ArrayList<Player> getActivePlayersList() {
         ArrayList<Player> activePlayers = new ArrayList<>();
         for (Player player : players) {
-            if (player.isActive() && player.getChips() > 0) {
+            if (player.isActive()) {
                 activePlayers.add(player);
             }
         }
@@ -34,11 +38,23 @@ public class MutipleTurn {
     }
 
     // Next turn
-    public void nextTurn() {
-        if (!singleRound.checkRaiseChips()) {
-            return;
+    public void nextTurn(boolean allIn) {
+        if (allIn) {
+            System.out.println("All players are All-In. Automatically running through turns...");
+            while (playTurn <= 3) {
+                executeTurn();
+                playTurn++;
+            }
+        } else {
+            if (!singleRound.checkRaiseChips()) {
+                return;
+            }
+            executeTurn();
+            playTurn++;
         }
+    }
 
+    private void executeTurn() {
         switch (playTurn) {
             case 0:
                 flipCards(3);
@@ -53,11 +69,9 @@ public class MutipleTurn {
             default:
                 System.out.println("No more turns.");
         }
-
-        playTurn++;
+        System.out.println("Executed turn " + playTurn);
     }
 
-    // Second turn, flip 3 cards
     private void flipCards(int count) {
         for (int i = 0; i < count && flippedCardsCount < riverCards.size(); i++) {
             flipNextRiverCard();
@@ -86,6 +100,7 @@ public class MutipleTurn {
 
         if (activePlayers.isEmpty()) {
             System.out.println("No active players remaining.");
+            promptNewRound();
             return;
         }
 
@@ -95,6 +110,7 @@ public class MutipleTurn {
             Player winner = activePlayers.get(0);
             JOptionPane.showMessageDialog(null, winner.getName() + " wins the pot!");
             winner.updateChips(winner.getChips() + pot);
+            promptNewRound();
             return;
         }
 
@@ -130,12 +146,72 @@ public class MutipleTurn {
         int share = pot / winners.size();
         int remainder = pot % winners.size();
 
+        StringBuilder winnerMessage = new StringBuilder();
         for (int i = 0; i < winners.size(); i++) {
             Player winner = winners.get(i);
             int playerShare = share + (remainder > 0 ? 1 : 0);
             remainder--;
             winner.updateChips(winner.getChips() + playerShare);
-            JOptionPane.showMessageDialog(null, winner.getName() + " wins " + playerShare + " chips!");
+            winnerMessage.append(winner.getName()).append(" wins ").append(playerShare).append(" chips!\n");
+        }
+
+        JOptionPane.showMessageDialog(null, winnerMessage.toString());
+
+        // Ask if players want to start a new round
+        promptNewRound();
+    }
+
+    public void promptNewRound() {
+        for (Player player : players) {
+            if (player.getChips() <= 0) {
+                player.setActive(false);
+                player.setName("LOSE");
+                System.out.println(player.getName() + " is out of the game.");
+            }
+        }
+
+        int response = JOptionPane.showConfirmDialog(
+                null,
+                "Do you want to play another round?",
+                "New Round",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (response == JOptionPane.YES_OPTION) {
+            resetForNewRound();
+        } else {
+            System.out.println("Game over. Thanks for playing!");
+            System.exit(0);
         }
     }
+
+
+    public void initializeRiverCards() {
+        for (JLabel riverCard : riverCards) {
+            riverCard.setIcon(cardBackImage.getBackImage());
+        }
+        riverCardsSave.clear();
+        flippedCardsCount = 0;
+        System.out.println("River cards have been reset to back images.");
+    }
+
+    private void resetForNewRound() {
+        card.initializeDeck();
+        playTurn = -1;
+        riverCardsSave.clear();
+        flippedCardsCount = 0;
+
+        initializeRiverCards();
+
+        for (JLabel riverCard : riverCards) {
+            riverCard.revalidate();
+            riverCard.repaint();
+        }
+
+        singleRound.startNewRound(card, nextStartPlayerIndex);
+        nextStartPlayerIndex = (nextStartPlayerIndex + 1) % players.size();
+
+        System.out.println("New round started with next dealer: " + players.get(nextStartPlayerIndex).getName());
+    }
 }
+
