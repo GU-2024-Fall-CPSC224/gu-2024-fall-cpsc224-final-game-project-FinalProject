@@ -1,6 +1,7 @@
 package edu.gonzaga;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,7 @@ public class GUI {
     // splash screen
     private JTextField numPlayersField;
     private JTextField startingChipsField;
+
     private int numPlayers;
     private int startingChips;
 
@@ -109,6 +111,7 @@ public class GUI {
         startButton.setBorderPainted(false);
         startButton.addActionListener(e -> {
             if (validateInputs()) {
+                // showExitScreen();
                 showPlayerNameInputDialog(numPlayers);
             }
         });
@@ -117,7 +120,7 @@ public class GUI {
         splashScreenFrame.add(splashPanel);
         splashScreenFrame.setVisible(true);
 
-        playAudio("media/chopin_reduced.wav", true, 0.0f); // PLAY SPLASH SONG
+        playAudio("media/gta_reduced.wav", true, 0.0f); // PLAY SPLASH SONG
     }
 
     private boolean validateInputs() { // used in splash screen for detecting inputs
@@ -173,8 +176,10 @@ public class GUI {
         okButton.setForeground(Color.WHITE); // Set text color to white
         okButton.setFont(new Font("Arial", Font.BOLD, 16)); // Set font
         okButton.addActionListener(e -> {
+            players.clear();
             for (int i = 0; i < numPlayers; i++) {
-                // Save player names or do something with them
+                Player player = new Player(playerNameFields[i].getText(), startingChips, "media/profile.png");
+                players.add(player);
                 System.out.println("Player " + (i + 1) + " name: " + playerNameFields[i].getText());
             }
             nameDialog.dispose();
@@ -293,6 +298,7 @@ public class GUI {
 
         // Validate the input values for chips and player count
         if (chips < 100 || chips > 999 || playerCount < 2 || playerCount > 8) {
+            
             startAlert();
             return;
         }
@@ -771,5 +777,19 @@ public class GUI {
             clip.close();
         }
     }
+
+    // EXIT SCREEN
+
+    private void showExitScreen() {
+    JDialog exitDialog = new JDialog(splashScreenFrame, "Exit Screen", true);
+    exitDialog.setSize(700, 500);
+    exitDialog.setLayout(new BorderLayout());
+
+    ExitScreen exitScreen = new ExitScreen();
+    exitDialog.add(exitScreen, BorderLayout.CENTER);
+
+    exitDialog.setLocationRelativeTo(splashScreenFrame);
+    exitDialog.setVisible(true);
+}
 }
 
