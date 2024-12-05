@@ -11,6 +11,10 @@ public class SingleRound {
     private int currentPlayerIndex;
     private int activePlayers;
     private int dealer;
+    private int smallBlind = 10;
+    private int bigBlind = 20;
+    private int smallBlindIndex;
+    private int bigBlindIndex;
 
 
     public SingleRound(ArrayList<Player> players) {
@@ -23,6 +27,26 @@ public class SingleRound {
         }
         this.dealer = 0;
     }
+
+    public void initializeBlinds(int dealerIndex) {
+        smallBlindIndex = (dealerIndex + 1) % players.size();
+        bigBlindIndex = (dealerIndex + 2) % players.size();
+
+        Player smallBlindPlayer = players.get(smallBlindIndex);
+        Player bigBlindPlayer = players.get(bigBlindIndex);
+
+        smallBlindPlayer.updateChips(smallBlindPlayer.getChips() - smallBlind);
+        bigBlindPlayer.updateChips(bigBlindPlayer.getChips() - bigBlind);
+
+        pot += smallBlind + bigBlind;
+
+        updatePlayerBlindAndDealerStatus();
+
+        System.out.println("Small Blind: " + smallBlindPlayer.getName() + " (" + smallBlind + " chips)");
+        System.out.println("Big Blind: " + bigBlindPlayer.getName() + " (" + bigBlind + " chips)");
+    }
+
+
 
     // fold cards
     public void foldCard(int currentPlayerIndex) {
@@ -294,11 +318,29 @@ public class SingleRound {
         System.out.println("Dealer updated to: " + players.get(dealer).getName());
     }
 
-    public void updateDealerName(){
+    public void updatePlayerBlindAndDealerStatus() {
         for (int i = 0; i < players.size(); i++) {
-            players.get(i).updateDealerStatus(i == dealer);
+            // Get the current player
+            Player player = players.get(i);
+
+            // Construct the status string
+            StringBuilder statusBuilder = new StringBuilder();
+            if (i == dealer) {
+                statusBuilder.append("(Dealer) ");
+            }
+            if (i == smallBlindIndex) {
+                statusBuilder.append("(Small Blinder) ");
+            }
+            if (i == bigBlindIndex) {
+                statusBuilder.append("(Big Blinder) ");
+            }
+
+            // Update the player's display name
+            player.updateNameWithStatus(statusBuilder.toString());
         }
     }
+
+
 
     public int getDealer() {
         return dealer;

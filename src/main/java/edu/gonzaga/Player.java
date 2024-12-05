@@ -62,12 +62,9 @@ public class Player {
         nameField.setEditable(nameEditable);
     }
 
-    public void updateDealerStatus(boolean isDealer) {
-        if (isDealer) {
-            nameField.setText("(dealer) " + name);
-        } else {
-            nameField.setText(" " + name);
-        }
+    public void updateNameWithStatus(String status) {
+        // Ensure that the name remains consistent
+        nameField.setText(status + name);
     }
 
     // return player's name
