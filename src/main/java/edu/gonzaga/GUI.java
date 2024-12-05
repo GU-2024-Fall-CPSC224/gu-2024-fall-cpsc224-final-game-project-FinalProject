@@ -220,8 +220,6 @@ public class GUI {
                 System.out.println("Player " + (i + 1) + " name: " + playerNameFields[i].getText());
             }
 
-            players.get(0).updateDealerStatus(true);
-
             round = new SingleRound(players);
 
             nameDialog.dispose();
@@ -449,7 +447,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                updateReminder(currentPlayer.getName()+ " has checked (0) " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
+                updateReminder(currentPlayer.getName()+ " has checked (0) " + totalRaisedChips + " next player " + players.get((currentPlayerIndex + 1) % players.size()).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -491,7 +489,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                updateReminder(currentPlayer.getName()+ " has called to " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
+                updateReminder(currentPlayer.getName()+ " has called to " + totalRaisedChips + " next player " + players.get((currentPlayerIndex + 1) % players.size()).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -538,7 +536,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                updateReminder(currentPlayer.getName()+ " has raised chips to " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
+                updateReminder(currentPlayer.getName()+ " has raised chips to " + totalRaisedChips + " next player " + players.get((currentPlayerIndex + 1) % players.size()).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -569,9 +567,6 @@ public class GUI {
                 return;
             }
 
-            updateReminder(currentPlayer.getName() + " has fold.");
-
-
             updatePokerPanel(player);
 
             // Check if players can advance
@@ -586,7 +581,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                updateReminder(currentPlayer.getName()+ " has fold." + " next player " + players.get(currentPlayerIndex + 1).getName());
+                updateReminder(currentPlayer.getName()+ " has fold." + " next player " + players.get((currentPlayerIndex + 1) % players.size()).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -781,9 +776,72 @@ public class GUI {
         }
     }
 
+
+    private void startAlert(){
+        JDialog startDialog = new JDialog(mainWindowFrame, "Game Alert", true);
+        startDialog.setSize(600, 100);
+        startDialog.setLocationRelativeTo(mainWindowFrame);
+
+        JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel alert = new JLabel("Please set up correct chips and player number on the left side before you start game" , SwingConstants.CENTER);
+        JLabel alertNextLine = new JLabel("(after you start game, you can not change player name, chips and player number)", SwingConstants.CENTER);
+        alertPanel.add(alert);
+        alertPanel.add(alertNextLine);
+
+        // Create an OK button to close the dialog
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> startDialog.dispose());
+
+        // Add message and button to the dialog
+        startDialog.setLayout(new BorderLayout());
+        startDialog.add(alertPanel, BorderLayout.CENTER);
+        startDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Show the dialog
+        startDialog.setVisible(true);
+    }
+
+    private void nameAlert(){
+        JDialog nameDialog = new JDialog(mainWindowFrame, "Name Alert", true);
+        nameDialog.setSize(600, 100);
+        nameDialog.setLocationRelativeTo(mainWindowFrame);
+
+        JLabel alert = new JLabel("Please input your name on the right side, after start game, you can not change your name!!!!", SwingConstants.CENTER);
+
+        // Create an OK button to close the dialog
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> nameDialog.dispose());
+
+        // Add message and button to the dialog
+        nameDialog.setLayout(new BorderLayout());
+        nameDialog.add(alert, BorderLayout.CENTER);
+        nameDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Show the dialog
+        nameDialog.setVisible(true);
+    }
+
+    private void updatePlayerPanels() {
+        playerPanel.removeAll();
+
+        for (Player player : players) {
+            playerPanel.add(player.getPlayerPanel()); // 
+        }
+
+        playerPanel.revalidate();
+        playerPanel.repaint();
+    }
+
+
     void runGUI(){
         System.out.println("Starting GUI app");
         setGUI();
+        // Initialize dealer and blinds
+        round.initializeBlinds(round.getDealer());
+        round.updatePlayerBlindAndDealerStatus();
+
+        updatePlayerPanels();
+
         mainWindowFrame.revalidate();
         mainWindowFrame.repaint();
         mainWindowFrame.setVisible(true);

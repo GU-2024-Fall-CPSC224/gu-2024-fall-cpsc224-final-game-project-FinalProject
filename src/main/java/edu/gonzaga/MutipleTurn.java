@@ -311,7 +311,7 @@ public class MutipleTurn {
 
         // Pass the current dealer to startNewRound
         int newDealer = singleRound.startNewRound(deck, singleRound.getDealer());
-        singleRound.updateDealerName();
+        singleRound.initializeBlinds(newDealer);
         playTurn = -1;
 
         System.out.println("New round started with next dealer: " + players.get(newDealer).getName() + ", new play turn: " + playTurn);
