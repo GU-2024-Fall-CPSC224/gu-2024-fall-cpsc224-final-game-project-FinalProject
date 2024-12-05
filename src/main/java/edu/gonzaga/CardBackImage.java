@@ -14,7 +14,7 @@ public class CardBackImage {
             BufferedImage currPicture;
             System.out.println("Loading image: " + imagesPath);
             currPicture = ImageIO.read(new File(imagesPath));
-            Image dimg = currPicture.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+            Image dimg = currPicture.getScaledInstance(170, 255, Image.SCALE_SMOOTH);
             backImage = new ImageIcon(dimg);
         } catch (Exception e) {
             e.printStackTrace();

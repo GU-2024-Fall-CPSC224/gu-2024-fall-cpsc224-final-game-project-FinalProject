@@ -28,7 +28,7 @@ public class Cards {
                     String filename = imagesPath + "/" + i + suit + ".jpg";
                     System.out.println("Loading image: " + filename);
                     currPicture = ImageIO.read(new File(filename));
-                    Image dimg = currPicture.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+                    Image dimg = currPicture.getScaledInstance(170, 255, Image.SCALE_SMOOTH);
                     ImageIcon scaledImage = new ImageIcon(dimg);
                     cards.add(new SingleCard(getSuitName(suit), i, scaledImage)); // Add Card object to the cards list
                 } catch (IOException e) {

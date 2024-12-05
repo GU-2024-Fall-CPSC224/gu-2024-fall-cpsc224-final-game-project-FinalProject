@@ -25,7 +25,7 @@ public class GUI {
     RoleImage roleImage;
     JButton okPlayerButton;
 
-    String imagePath = "media/purple_back.jpg";
+    String imagePath = "media/card3.png";
     CardBackImage cardBackImage;
     JLabel potLabelText;
 
@@ -209,7 +209,16 @@ public class GUI {
         this.mainWindowFrame.setResizable(true);
         this.mainWindowFrame.setLayout(new BorderLayout());
 
-        this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        // Check if full-screen mode is supported
+        if (gd.isFullScreenSupported()) {
+            this.mainWindowFrame.setUndecorated(true); // Remove window decorations
+            gd.setFullScreenWindow(this.mainWindowFrame); // Set the JFrame to full-screen mode
+        } else {
+            System.err.println("Full-screen mode not supported");
+            this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fallback to maximized window
+        }
 
         String imagePath = "media/table.png";
         File imageFile = new File(imagePath);
@@ -251,9 +260,30 @@ public class GUI {
         reminder = getReminder();
         reminder.setOpaque(false);
 
+        JPanel containerPanel = new JPanel();
+        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+        containerPanel.setOpaque(false);
+
+        JPanel verticalPaddingPanel = new JPanel();
+        verticalPaddingPanel.setOpaque(false);
+        verticalPaddingPanel.setPreferredSize(new Dimension(0, 200));
+
+        JPanel horizontalPaddingPanel = new JPanel();
+        horizontalPaddingPanel.setOpaque(false);
+        horizontalPaddingPanel.setPreferredSize(new Dimension(228, 0));
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new BorderLayout());
+        wrapperPanel.setOpaque(false);
+        wrapperPanel.add(horizontalPaddingPanel, BorderLayout.WEST);
+        wrapperPanel.add(pokerContainerPanel, BorderLayout.CENTER);
+
+        containerPanel.add(wrapperPanel);
+        containerPanel.add(verticalPaddingPanel);
+
         // input all panels in main window
         backgroundPanel.add(this.playerPanel, BorderLayout.EAST);
-        backgroundPanel.add(pokerContainerPanel, BorderLayout.SOUTH);
+        backgroundPanel.add(containerPanel, BorderLayout.SOUTH);
         backgroundPanel.add(this.reminder, BorderLayout.NORTH);
         backgroundPanel.add(this.gamePanel, BorderLayout.CENTER);
 
@@ -310,7 +340,7 @@ public class GUI {
         newPanel.setOpaque(false);
 
         // Panel for player's cards
-        JPanel pokerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel pokerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         pokerPanel.setOpaque(false);
         JLabel[] cardLabels = new JLabel[2]; // Labels for the two cards
 
@@ -530,6 +560,7 @@ public class GUI {
         cardPanel.setOpaque(false);
         for (JLabel card : riverCards) {
             cardPanel.add(card); // Add all river cards (back side) to the panel
+            cardPanel.add(Box.createHorizontalStrut(10));
         }
 
         // Panel for displaying pot information
@@ -544,7 +575,12 @@ public class GUI {
         gamePanel.add(potPanel);
         gamePanel.add(Box.createVerticalGlue());
 
+        JPanel paddingPanel = new JPanel();
+        paddingPanel.setOpaque(false);
+        paddingPanel.setPreferredSize(new Dimension(550, 0));
+
         // Add gamePanel to mainPanel
+        mainPanel.add(paddingPanel, BorderLayout.WEST);
         mainPanel.add(gamePanel, BorderLayout.CENTER);
 
         // Refresh UI
