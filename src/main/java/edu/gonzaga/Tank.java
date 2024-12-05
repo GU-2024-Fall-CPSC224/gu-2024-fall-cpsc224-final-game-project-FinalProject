@@ -38,6 +38,15 @@ public class Tank extends Rectangle {
         this.color = color;
     }
 
+    // Getter and Setter for XCord
+    public int getXCord(){
+        return xCoordinate; 
+    }
+
+    public void setXCord(int xCord){
+        this.xCoordinate = xCord; 
+    }
+
     // Reduce health when hit
     public void hit(int damage) {
         this.health -= damage;
@@ -49,6 +58,6 @@ public class Tank extends Rectangle {
     @Override
     public String toString() {
         return "Tank [width=" + this.getWidth() + ", height=" + this.getHeight() + 
-               ", health=" + health + ", color=" + color + "]";
+               ", health=" + health + ", color=" + color  + ", X Coordinate=" + this.getXCord() + "]";
     }
 }

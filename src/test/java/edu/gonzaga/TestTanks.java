@@ -7,7 +7,7 @@ class TankTest {
 
     @Test
     void testConstructor() {
-        Tank tank = new Tank(2.0, 1.0, 100, "red");
+        Tank tank = new Tank(2.0, 1.0, 100, "red",100);
 
         // Verify initial values
         assertEquals(2.0, tank.getWidth(), "Width should be 2.0");
@@ -18,7 +18,7 @@ class TankTest {
 
     @Test
     void testSetAndGetHealth() {
-        Tank tank = new Tank(2.0, 1.0, 100, "red");
+        Tank tank = new Tank(2.0, 1.0, 100, "red",100);
 
         // Change health
         tank.setHealth(80);
@@ -35,7 +35,7 @@ class TankTest {
 
     @Test
     void testSetAndGetColor() {
-        Tank tank = new Tank(2.0, 1.0, 100, "red");
+        Tank tank = new Tank(2.0, 1.0, 100, "red",100);
 
         // Change color
         tank.setColor("blue");
@@ -48,7 +48,7 @@ class TankTest {
 
     @Test
     void testHit() {
-        Tank tank = new Tank(2.0, 1.0, 100, "red");
+        Tank tank = new Tank(2.0, 1.0, 100, "red", 100);
 
         // Take damage
         tank.hit(30);
@@ -65,9 +65,9 @@ class TankTest {
 
     @Test
     void testToString() {
-        Tank tank = new Tank(2.0, 1.0, 100, "red");
+        Tank tank = new Tank(2.0, 1.0, 100, "red",100);
 
-        String expected = "Tank [width=2.0, height=1.0, health=100, color=red]";
+        String expected = "Tank [width=2.0, height=1.0, health=100, color=red , X Coordinate=100]";
         assertEquals(expected, tank.toString(), "toString should match expected format");
 
         // Update values and recheck

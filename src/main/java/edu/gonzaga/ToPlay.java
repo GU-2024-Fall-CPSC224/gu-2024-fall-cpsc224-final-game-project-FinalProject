@@ -324,6 +324,7 @@ public class ToPlay {
         array_Tank.add(new Tank(10,10, 100, "Red", 100));
         array_Tank.add(new Tank(10, 10, 100, "Green", 500)); 
         
+
     }
 
 }
