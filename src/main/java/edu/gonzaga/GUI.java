@@ -468,15 +468,15 @@ public class GUI {
             round.foldCard(currentPlayerIndex);
 
             if (round.getActivePlayers() == 1) {
-                ArrayList<Player> activePlayers = mutipleTurn.getActivePlayersList();
-                Player winner = activePlayers.get(0);
-                JOptionPane.showMessageDialog(null, winner.getName() + " wins the pot!");
-
-                winner.updateChips(winner.getChips() + round.getPot());
-
-                updatePokerPanel(players.get(currentPlayerIndex));
-                potLabelText.setText("Pot: 0" );
-                mutipleTurn.promptNewRound();
+                currentNum = 0;
+                mutipleTurn.updateRound(round);
+                mutipleTurn.singlePlayer();
+                resetPlayerDecisions();
+                round.resetChipsRaise();
+                countTurn = round.getActivePlayers() - 1;
+                currentPlayerIndex = round.nextPlayer(true);
+                System.out.println("currentPlayerIndex: " + currentPlayerIndex);
+                potLabelText.setText("Pot: 0");
                 return;
             }
 
