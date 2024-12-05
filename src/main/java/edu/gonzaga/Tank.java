@@ -1,170 +1,171 @@
 package edu.gonzaga;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Rectangle;
-import org.dyn4j.geometry.Vector2;
 
-public class Tank extends Rectangle {
-    private Integer xCord;
-    private Integer yCord;
-    private String color;
-    private Integer shotCount = 0;
-    private Integer trajectory;
-    private Integer health;
-    private Boolean moved;
+public class Tank {
     private Body body;
+    private Body barrel;
+    private int health;
+    private int xCord;
+    private int yCord;
+    private String color;
 
-    // Constructor for creating a Tank with default settings
+    // Dimensions for the tank body and barrel
+    private double bodyWidth = 50;
+    private double bodyHeight = 30;
+    private double barrelWidth = 30;
+    private double barrelHeight = 10;
+
+    public Tank(int xCord, int yCord, int health, String color) {
+        this.xCord = xCord;
+        this.yCord = yCord;
+        this.health = health;
+        this.color = color;
+
+        // Create the tank body with specified dimensions
+        this.body = new Body();
+        Rectangle tankShape = new Rectangle(bodyWidth, bodyHeight);
+        this.body.addFixture(new BodyFixture(tankShape));
+        //this.body.setMass(); // Set the mass for physics simulation
+        this.body.translate(xCord, yCord);
+
+        // Create the barrel with specified dimensions
+        this.barrel = new Body();
+        Rectangle barrelShape = new Rectangle(barrelWidth, barrelHeight);
+        this.barrel.addFixture(new BodyFixture(barrelShape));
+        //this.barrel.setMass();
+        this.barrel.translate(xCord, yCord + bodyHeight / 2 + barrelHeight / 2); // Position it above the tank
+    }
+
+    // Constructors with default dimensions
+    public Tank(String color) {
+        this(0, 0, 100, color);
+    }
+
+    public Tank(int xCord, int yCord, String color) {
+        this(xCord, yCord, 100, color);
+    }
+
     public Tank() {
-        super(10, 10); // Default width and height of the rectangle
-        this.health = 100;
-        this.xCord = 0;
-        this.yCord = 0;
-        this.color = "Red";
-        initializeBody();
+        this(100, 0, 100, "Red");
     }
 
-    // Constructor that allows for all inputs
-    public Tank(Integer healthSet, Integer x, Integer y, String colorSet) {
-        super(10, 10); // Default width and height of the rectangle
-        this.health = healthSet;
-        this.xCord = x;
-        this.yCord = y;
-        this.color = colorSet;
-        initializeBody();
+    // Getters and Setters for dimensions
+    public double getBodyWidth() {
+        return bodyWidth;
     }
 
-    // Constructor to change only the health
-    public Tank(Integer healthSet) {
-        super(10, 10); // Default width and height of the rectangle
-        this.health = healthSet;
-        this.xCord = 0;
-        this.yCord = 0;
-        this.color = "Red";
-        initializeBody();
+    public void setBodyWidth(double bodyWidth) {
+        this.bodyWidth = bodyWidth;
+        recreateBody(); // Update the body with new dimensions
     }
 
-    // Constructor to change only the coordinates
-    public Tank(Integer x, Integer y) {
-        super(10, 10); // Default width and height of the rectangle
-        this.health = 100;
-        this.xCord = x;
-        this.yCord = y;
-        this.color = "Red";
-        initializeBody();
+    public double getBodyHeight() {
+        return bodyHeight;
     }
 
-    // Constructor to change only the color
-    public Tank(String colorSet) {
-        super(10, 10); // Default width and height of the rectangle
-        this.health = 100;
-        this.xCord = 0;
-        this.yCord = 0;
-        this.color = colorSet;
-        initializeBody();
+    public void setBodyHeight(double bodyHeight) {
+        this.bodyHeight = bodyHeight;
+        recreateBody(); // Update the body with new dimensions
     }
 
-    // Initialize the body with a rectangle in the physics world
-    private void initializeBody() {
-        body = new Body();
-        body.addFixture(this);
-        body.setMass(org.dyn4j.geometry.MassType.NORMAL);
-        body.translate(new Vector2(this.xCord, this.yCord));
+    public double getBarrelWidth() {
+        return barrelWidth;
     }
 
-    // Getters and Setters
+    public void setBarrelWidth(double barrelWidth) {
+        this.barrelWidth = barrelWidth;
+        recreateBarrel(); // Update the barrel with new dimensions
+    }
+
+    public double getBarrelHeight() {
+        return barrelHeight;
+    }
+
+    public void setBarrelHeight(double barrelHeight) {
+        this.barrelHeight = barrelHeight;
+        recreateBarrel(); // Update the barrel with new dimensions
+    }
+
+    // Method to recreate the tank body with updated dimensions
+    private void recreateBody() {
+        this.body.removeAllFixtures();
+        Rectangle tankShape = new Rectangle(bodyWidth, bodyHeight);
+        this.body.addFixture(new BodyFixture(tankShape));
+       // this.body.setMass();
+    }
+
+    // Method to recreate the barrel with updated dimensions
+    private void recreateBarrel() {
+        this.barrel.removeAllFixtures();
+        Rectangle barrelShape = new Rectangle(barrelWidth, barrelHeight);
+        this.barrel.addFixture(new BodyFixture(barrelShape));
+        //this.barrel.setMass();
+    }
+
+    // Method to create a revolute joint for the barrel
+    public RevoluteJoint createBarrelJoint() {
+        return new RevoluteJoint(this.body, this.barrel, this.body.getWorldCenter());
+    }
+
+    // Getters and Setters for other properties
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getXCord() {
+        return xCord;
+    }
+
+    public void setXCord(int xCord) {
+        this.xCord = xCord;
+    }
+
+    public int getYCord() {
+        return yCord;
+    }
+
+    public void setYCord(int yCord) {
+        this.yCord = yCord;
+    }
+
     public String getColor() {
-        return this.color;
+        return color;
     }
 
-    public Integer getHealth() {
-        return this.health;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public Integer getXCord() {
-        return this.xCord;
+    public Body getBody() {
+        return body;
     }
 
-    public Integer getYCord() {
-        return this.yCord;
+    public Body getBarrel() {
+        return barrel;
     }
 
-    public Integer getTrajectory() {
-        return this.trajectory;
+    // Methods for moving the tank
+    public void moveMeLeft() {
+        this.xCord -= 5;
+        this.body.translate(-5, 0);
+        this.barrel.translate(-5, 0); // Move the barrel along with the tank
     }
 
-    public Body getBody(){
-        return this.body; 
+    public void moveMeRight() {
+        this.xCord += 5;
+        this.body.translate(5, 0);
+        this.barrel.translate(5, 0); // Move the barrel along with the tank
     }
 
-    // Setters
-    public void setHealth(Integer healthSet) {
-        health = healthSet;
-    }
-
-    public void setXCord(Integer xSet) {
-        xCord = xSet;
-        body.translate(new Vector2(xCord, yCord));
-    }
-
-    public void setYCord(Integer ySet) {
-        yCord = ySet;
-        body.translate(new Vector2(xCord, yCord));
-    }
-
-    public void setColor(String colorSet) {
-        color = colorSet;
-    }
-
-    public void setTrajectory(Integer x) {
-        trajectory = x;
-    }
-
-    public Boolean getMoved() {
-        return moved;
-    }
-
-    // This method will move the tank left
-    public Integer moveMeLeft() {
-        if (this.xCord < 5) {
-            this.xCord = 0;
-        } else {
-            this.xCord -= 5;
-        }
-        moved = true;
-        body.translate(new Vector2(-5, 0));
-        return xCord;
-    }
-
-    // This method will move the tank right
-    public Integer moveMeRight() {
-        if (this.xCord > 195) {
-            this.xCord = 200;
-        } else {
-            this.xCord += 5;
-        }
-        moved = true;
-        body.translate(new Vector2(5, 0));
-        return xCord;
-    }
-
-    // Paints the tank with its current color (override the default rendering)
-    public void paint(Graphics2D g) {
-        g.setColor(Color.getColor(this.color, Color.RED)); // Set the color of the tank
-        g.fillRect(this.xCord, this.yCord, (int)this.getWidth(), (int)this.getHeight());
-    }
-
-    // Additional functionality for firing, hitting, and other actions can be added here
-    public int fire() {
-        // Returning 0 until artillery mechanics are added
-        return 0;
-    }
-
-    public int hit( int hit) {
-        // Returning 0 for now (add hit detection logic later)
-        return 0;
+    public void hit(int damage) {
+        this.health = Math.max(0, this.health - damage);
     }
 }

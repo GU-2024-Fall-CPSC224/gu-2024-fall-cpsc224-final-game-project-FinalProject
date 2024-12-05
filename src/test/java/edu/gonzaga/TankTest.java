@@ -12,14 +12,14 @@ public class TankTest {
     @BeforeEach
     public void setUp() {
         // This runs before each test
-        tank = new Tank(100, 10, 10, "Red");
+        tank = new Tank(100, 10, 100, "Red");
     }
 
     @Test
     public void testTankConstructor() {
         // Test if the constructor correctly initializes the tank's properties
         assertEquals(100, tank.getHealth(), "Health should be initialized to 100");
-        assertEquals(10, tank.getXCord(), "X coordinate should be initialized to 10");
+        assertEquals(100, tank.getXCord(), "X coordinate should be initialized to 100");
         assertEquals(10, tank.getYCord(), "Y coordinate should be initialized to 10");
         assertEquals("Red", tank.getColor(), "Color should be initialized to Red");
     }
@@ -42,14 +42,16 @@ public class TankTest {
     public void testMoveLeft() {
         // Test moving the tank left
         tank.moveMeLeft();
-        assertEquals(5, tank.getXCord(), "X coordinate should be decremented by 5 after moving left");
+        assertEquals(95, tank.getXCord(), "X coordinate should be decremented by 5 after moving left");
+        assertEquals(95, tank.getBody().getTransform().getTranslationX(), "Body's X coordinate should match tank's X coordinate");
     }
 
     @Test
     public void testMoveRight() {
         // Test moving the tank right
         tank.moveMeRight();
-        assertEquals(15, tank.getXCord(), "X coordinate should be incremented by 5 after moving right");
+        assertEquals(105, tank.getXCord(), "X coordinate should be incremented by 5 after moving right");
+        assertEquals(105, tank.getBody().getTransform().getTranslationX(), "Body's X coordinate should match tank's X coordinate");
     }
 
     @Test
@@ -116,6 +118,6 @@ public class TankTest {
     public void testMoveAndUpdateBodyPosition() {
         // Test if moving the tank updates the body position
         tank.moveMeRight();
-       // assertEquals(tank.getXCord(), tank.getBody().getTransform().getTranslationX(), "Body's X coordinate should match tank's X coordinate");
+        assertEquals(tank.getXCord(), tank.getBody().getTransform().getTranslationX(), "Body's X coordinate should match tank's X coordinate");
     }
 }
