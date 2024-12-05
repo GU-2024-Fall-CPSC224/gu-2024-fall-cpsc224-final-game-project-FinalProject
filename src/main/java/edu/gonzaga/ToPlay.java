@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+
 import org.dyn4j.*;
 
 import javax.swing.BoxLayout;
@@ -26,6 +27,10 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 //Dyn4j Physics imports
 import org.dyn4j.dynamics.Body;
@@ -38,12 +43,29 @@ import org.dyn4j.dynamics.joint.FrictionJoint;
 import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.Interval;
+import org.dyn4j.geometry.Circle;
+import org.dyn4j.geometry.Convex;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Rectangle;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Ray;
 import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.DetectFilter;
 import org.dyn4j.world.World;
 import org.dyn4j.world.result.RaycastResult;
+import org.dyn4j.collision.AxisAlignedBounds;
+import org.dyn4j.collision.Bounds;
+import org.dyn4j.dynamics.contact.ContactConstraint;
+import org.dyn4j.dynamics.contact.SolvedContact;
+import org.dyn4j.dynamics.joint.DistanceJoint;
+import org.dyn4j.dynamics.joint.Joint;
+import org.dyn4j.dynamics.joint.PinJoint;
+import org.dyn4j.geometry.AABB;
+import org.dyn4j.geometry.Transform;
+import org.dyn4j.geometry.Vector2;
+import org.dyn4j.world.World;
+import org.dyn4j.world.WorldCollisionData;
+
 
 
 public class ToPlay {
@@ -293,5 +315,10 @@ public class ToPlay {
 
     // when adding action listener for continue, set the names again in case users
     // do not press 'Enter'
+    public void createWorld(){
+        World world = new World(); 
+        world.setGravity(Vector2.create(0.0, -9.8));
+        
+    }
 
 }

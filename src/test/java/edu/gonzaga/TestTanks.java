@@ -1,102 +1,79 @@
 package edu.gonzaga;
 
-import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-class TestTanks {
+class TankTest {
+
     @Test
-    void testTankColor() {
-        Tank t = new Tank();
-        String expected = "Red";
-        Assertions.assertEquals(expected, t.getColor());
+    void testConstructor() {
+        Tank tank = new Tank(2.0, 1.0, 100, "red");
+
+        // Verify initial values
+        assertEquals(2.0, tank.getWidth(), "Width should be 2.0");
+        assertEquals(1.0, tank.getHeight(), "Height should be 1.0");
+        assertEquals(100, tank.getHealth(), "Health should be 100");
+        assertEquals("red", tank.getColor(), "Color should be red");
     }
 
     @Test
-    void testTankHealth() {
-        Tank t = new Tank();
-        Integer expectedHealth = 100;
-        assertEquals(expectedHealth, t.getHealth());
+    void testSetAndGetHealth() {
+        Tank tank = new Tank(2.0, 1.0, 100, "red");
+
+        // Change health
+        tank.setHealth(80);
+        assertEquals(80, tank.getHealth(), "Health should be 80");
+
+        // Set health to zero
+        tank.setHealth(0);
+        assertEquals(0, tank.getHealth(), "Health should be 0");
+
+        // Set health to a negative value
+        tank.setHealth(-10);
+        assertEquals(-10, tank.getHealth(), "Health should allow negative values");
     }
 
     @Test
-    void testTankXCordAndYCord() {
-        Tank t = new Tank();
-        Integer expectedXCord = 0;
-        Integer expectedYCord = 0;
-        assertEquals(expectedXCord, t.getXCord());
-        assertEquals(expectedYCord, t.getYCord());
+    void testSetAndGetColor() {
+        Tank tank = new Tank(2.0, 1.0, 100, "red");
 
+        // Change color
+        tank.setColor("blue");
+        assertEquals("blue", tank.getColor(), "Color should be blue");
+
+        // Set to an empty color
+        tank.setColor("");
+        assertEquals("", tank.getColor(), "Color should be an empty string");
     }
 
     @Test
-    void testSetTankHealth() {
-        Tank t = new Tank();
-        t.setHealth(200);
-        Integer expectedHealth = 200;
-        assertEquals(expectedHealth, t.getHealth());
+    void testHit() {
+        Tank tank = new Tank(2.0, 1.0, 100, "red");
+
+        // Take damage
+        tank.hit(30);
+        assertEquals(70, tank.getHealth(), "Health should decrease by 30");
+
+        // Take more damage
+        tank.hit(50);
+        assertEquals(20, tank.getHealth(), "Health should decrease by 50");
+
+        // Take excessive damage
+        tank.hit(25);
+        assertEquals(0, tank.getHealth(), "Health should not go below 0");
     }
 
     @Test
-    void testSetXAndYCord() {
-        Tank t = new Tank();
-        t.setXCord(4);
-        t.setYCord(5);
-        Integer expectedY = 5;
-        Integer expectedX = 4;
+    void testToString() {
+        Tank tank = new Tank(2.0, 1.0, 100, "red");
 
-        assertEquals(expectedX, t.getXCord());
-        assertEquals(expectedY, t.getYCord());
-    }
+        String expected = "Tank [width=2.0, height=1.0, health=100, color=red]";
+        assertEquals(expected, tank.toString(), "toString should match expected format");
 
-    @Test
-    void testSetColor() {
-        Tank t = new Tank();
-        t.setColor("Green");
-        String expectedColor = "Green";
-
-        assertEquals(expectedColor, t.getColor());
-    }
-
-    @Test
-    void testConstructorHealth() {
-        Tank t = new Tank(200);
-        Integer expectedHealth = 200;
-        Integer expectedX = 0;
-        Integer expectedY = 0;
-        String expectedColor = "Red";
-
-        assertEquals(expectedColor, t.getColor());
-        assertEquals(expectedHealth, t.getHealth());
-        assertEquals(expectedX, t.getXCord());
-        assertEquals(expectedY, t.getYCord());
-    }
-
-    @Test
-    void testConstructorXAndYCord() {
-        Tank t = new Tank(10, 20);
-        Integer expectedHealth = 100;
-        Integer expectedX = 10;
-        Integer expectedY = 20;
-        String expectedColor = "Red";
-
-        assertEquals(expectedColor, t.getColor());
-        assertEquals(expectedHealth, t.getHealth());
-        assertEquals(expectedX, t.getXCord());
-        assertEquals(expectedY, t.getYCord());
-    }
-
-    @Test
-    void testConstructorColor() {
-        Tank t = new Tank("Green");
-        Integer expectedHealth = 100;
-        Integer expectedX = 0;
-        Integer expectedY = 0;
-        String expectedColor = "Green";
-
-        assertEquals(expectedColor, t.getColor());
-        assertEquals(expectedHealth, t.getHealth());
-        assertEquals(expectedX, t.getXCord());
-        assertEquals(expectedY, t.getYCord());
+        // Update values and recheck
+        tank.setHealth(80);
+        tank.setColor("blue");
+        expected = "Tank [width=2.0, height=1.0, health=80, color=blue]";
+        assertEquals(expected, tank.toString(), "toString should match updated format");
     }
 }
