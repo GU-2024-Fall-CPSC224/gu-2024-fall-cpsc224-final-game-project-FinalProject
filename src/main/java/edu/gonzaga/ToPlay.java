@@ -1,19 +1,15 @@
 package edu.gonzaga;
 
-import java.util.ArrayList;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-
-import org.dyn4j.*;
-import org.dyn4j.world.*;
-import org.dyn4j.world.listener.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,8 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import org.dyn4j.world.World;
 
 public class ToPlay {
     String name;
@@ -347,6 +342,8 @@ public class ToPlay {
                     gameFrame.add(panelWithBackground); // Add the custom panel with background
                     gameFrame.setLocation(50, 20);
                     gameFrame.setVisible(true);
+
+                    createWorld();
                 }
             }
         };
