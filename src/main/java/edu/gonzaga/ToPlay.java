@@ -1,5 +1,7 @@
 package edu.gonzaga;
 
+import java.util.ArrayList;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -71,6 +73,7 @@ import org.dyn4j.world.WorldCollisionData;
 public class ToPlay {
     String name;
     String color;
+    public ArrayList <Tank> array_Tank = new ArrayList<>(); 
 
     public ToPlay() {
         this.name = "Unidentified User";
@@ -318,7 +321,7 @@ public class ToPlay {
     public void createWorld(){
         World world = new World(); 
         world.setGravity(Vector2.create(0.0, -9.8));
-        
+
     }
 
 }
