@@ -78,31 +78,37 @@ public class ToPlay {
      * two buttons, and author names.
      */
     public void formattingIntroScreen() {
-        setUpButtonListeners(); // to make Start and How to Play buttons listen
-        // formats the frame:
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // defaults settings
-        frame.setSize(700, 700);
+        setUpButtonListeners(); // Setup listeners for buttons
+
+        // Frame setup
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1500, 950);
         frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
-        northPanel.setBackground(Color.GREEN); // colors
-        centerPanel.setBackground(Color.lightGray);
-        southPanel.setBackground(Color.white);
-        northPanel.setPreferredSize(new Dimension(100, 70)); // dimensions of panels
-        centerPanel.setPreferredSize(new Dimension(100, 100));
-        southPanel.setPreferredSize(new Dimension(100, 50));
-        frame.add(northPanel, BorderLayout.NORTH);
-        frame.add(centerPanel, BorderLayout.CENTER);
-        frame.add(southPanel, BorderLayout.SOUTH);
-        title.setFont(new Font("Algerian", Font.BOLD, 50));
-        northPanel.add(title);
-        southPanel.add(names);
-        centerPanel.add(centerNorthPanel, BorderLayout.NORTH); // putting border layout in center panel
-        centerPanel.add(centerSouthPanel, BorderLayout.SOUTH);
-        ImageIcon tankStartScreenIcon = new ImageIcon("tank_intro_screen.jpg");
+
+        // Load image
+        JLabel tankPicture = new JLabel();
+        ImageIcon tankStartScreenIcon = new ImageIcon("tank_intro_screen.png");
         tankPicture.setIcon(tankStartScreenIcon);
-        centerNorthPanel.add(tankPicture);
+        tankPicture.setSize(1500, 850);
+        tankPicture.setHorizontalAlignment(JLabel.CENTER);
+
+        // Add components
+        frame.add(tankPicture, BorderLayout.CENTER); // Add image in the center
+        frame.add(centerSouthPanel, BorderLayout.SOUTH); // Buttons in the south panel
+        centerSouthPanel.setSize(1500, 100);
+        centerSouthPanel.setBackground(Color.lightGray);
+        start.setBackground(new Color(0x134511));
+        howToPlay.setBackground(new Color(0x134511));
+        start.setForeground(Color.white);
+        howToPlay.setForeground(Color.white);
+
         centerSouthPanel.add(start);
         centerSouthPanel.add(howToPlay);
+
+        // Make frame visible
+        frame.setVisible(true);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void formattingStartScreenPlayerText(JPanel startingPanelCenter) {
@@ -142,6 +148,7 @@ public class ToPlay {
         startingFrame.setSize(500, 280);
         startingFrame.add(startingPanelCenter, BorderLayout.CENTER);
         startingFrame.add(startingPanelSouth, BorderLayout.SOUTH);
+        startingFrame.setLocation(500, 300);
         startingFrame.setVisible(true);
     }
 
@@ -177,23 +184,30 @@ public class ToPlay {
     }
 
     public void gameOverScreen() {
+        JLabel gameOverLabelBackground = new JLabel();
+        ImageIcon gameOverIcon = new ImageIcon("game_over.png");
+        gameOverLabelBackground.setIcon(gameOverIcon);
+        gameOverLabelBackground.setSize(1100, 700);
+        gameOverLabelBackground.setHorizontalAlignment(JLabel.CENTER);
         JLabel gameOverLabel = new JLabel("GAME OVER");
         gameOverLabel.setFont(new Font("Algerian", Font.BOLD, 100));
         JPanel gameOverScreenPanel = new JPanel(new BorderLayout());
         gameOverFrame.setBackground(Color.black);
         gameOverLabel.setForeground(Color.red);
-        JLabel winnerLabel = new JLabel("Player 1 wins!");
+        JLabel winnerLabel = new JLabel("Player 1 wins!"); // this is just a default
         if (player1Tank.getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
         } else if (player2Tank.getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
         }
         winnerLabel.setForeground(Color.white);
-        gameOverScreenPanel.add(gameOverLabel, BorderLayout.NORTH);
-        gameOverScreenPanel.add(winnerLabel, BorderLayout.CENTER);
-        gameOverScreenPanel.setBackground(Color.black);
+        // gameOverScreenPanel.add(gameOverLabel, BorderLayout.NORTH);
+        // gameOverScreenPanel.add(winnerLabel, BorderLayout.CENTER);
+        // gameOverScreenPanel.setBackground(Color.black);
+        gameOverScreenPanel.add(gameOverLabelBackground, BorderLayout.CENTER);
         gameOverFrame.add(gameOverScreenPanel);
-        gameOverFrame.setSize(820, 800);
+        gameOverFrame.setSize(1200, 800);
+        gameOverFrame.setLocation(90, 75);
         gameOverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gameOverFrame.setVisible(true);
     }
@@ -324,8 +338,9 @@ public class ToPlay {
                     System.out.println(getPlayer2Name());
                     gameFrame.setIconImage(new ImageIcon("background.png").getImage());
                     gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    gameFrame.setSize(820, 800);
+                    gameFrame.setSize(1400, 850);
                     gameFrame.add(panelWithBackground); // Add the custom panel with background
+                    gameFrame.setLocation(50, 20);
                     gameFrame.setVisible(true);
                 }
             }
