@@ -13,14 +13,19 @@ public class Cards {
     ArrayList<SingleCard> cards; // List of Card objects
     ArrayList<ArrayList<Object>> deckOfCards; // Deck for game logic
 
-    public Cards(String imagesPath) {
+    // for scaling
+    private GUI gui;
+
+    public Cards(String imagesPath, GUI gui) {
         cards = new ArrayList<>(52); // Initialize the cards list
         deckOfCards = new ArrayList<>();
-        loadImages(imagesPath);
+        loadImages(imagesPath, gui);
         initializeDeck();
     }
 
-    void loadImages(String imagesPath) {
+    void loadImages(String imagesPath, GUI gui) {
+        this.gui = gui;
+
         BufferedImage currPicture;
         for (int i = 1; i <= 13; i++) { // Card values
             for (char suit : new char[]{'S', 'C', 'D', 'H'}) { // Suits
@@ -28,7 +33,11 @@ public class Cards {
                     String filename = imagesPath + "/" + i + suit + ".jpg";
                     System.out.println("Loading image: " + filename);
                     currPicture = ImageIO.read(new File(filename));
-                    Image dimg = currPicture.getScaledInstance(170, 255, Image.SCALE_SMOOTH);
+
+                    int ScaledWidth = gui.getScaledWidth(170);
+                    int ScaledHeight = gui.getScaledHeight(225);
+
+                    Image dimg = currPicture.getScaledInstance(ScaledWidth, ScaledHeight, Image.SCALE_SMOOTH);
                     ImageIcon scaledImage = new ImageIcon(dimg);
                     cards.add(new SingleCard(getSuitName(suit), i, scaledImage)); // Add Card object to the cards list
                 } catch (IOException e) {

@@ -14,8 +14,9 @@ public class MutipleTurn {
     private SingleRound singleRound;
     private int flippedCardsCount;
     private JFrame mainWindowFrame;
+    private GUI gui;
 
-    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards, JFrame mainWindowFrame) {
+    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards, JFrame mainWindowFrame, GUI gui) {
         this.deck = cards;
         this.players = players;
         this.singleRound = singleRound;
@@ -23,7 +24,8 @@ public class MutipleTurn {
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
-        this.cardBackImage = new CardBackImage("media/card3.png");
+        this.gui = gui;
+        this.cardBackImage = new CardBackImage("media/card3.png", gui);
         this.mainWindowFrame = mainWindowFrame;
     }
 

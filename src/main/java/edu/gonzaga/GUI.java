@@ -15,6 +15,11 @@ import java.io.IOException;
 import javax.swing.border.Border;
 
 public class GUI {
+    // SCREEN SIZING CALCULATIONS
+    private Dimension screenSize;
+    private double widthRatio;
+    private double heightRatio;
+
     JFrame splashScreenFrame;
 
     JFrame mainWindowFrame;
@@ -59,16 +64,36 @@ public class GUI {
         currentPlayerIndex = 0;
         currentNum = 0; // Initialize the number of turns taken
         potChips = 0;
-        cardBackImage = new CardBackImage(imagePath);
         countTurn = 0;
         dealer = 0;
         totalRaisedChips = 0;
+
+        // SCREEN SIZE
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+        double baseWidth = 1920.0;
+        double baseHeight = 1080.0;
+
+        widthRatio = screenSize.getWidth() / baseWidth;
+        heightRatio = screenSize.getHeight() / baseHeight;
+
+        cardBackImage = new CardBackImage(imagePath, this);
+    }
+        // PROPER SCREEN SCALING
+    public int getScaledWidth(double baseWidth) {
+        return (int) (baseWidth * widthRatio);
+    }
+
+    public int getScaledHeight(double baseHeight) {
+        return (int) (baseHeight * heightRatio);
     }
 
     void setSplashScreen() {
         splashScreenFrame = new JFrame("Dogs Playing Poker ... THE GAME!");
         splashScreenFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        splashScreenFrame.setSize(1200, 700);
+        splashScreenFrame.setSize(
+            getScaledWidth(1200),
+            getScaledHeight(700)
+        );
         splashScreenFrame.setResizable(false);
         splashScreenFrame.setLocationRelativeTo(null);
 
@@ -84,7 +109,12 @@ public class GUI {
         splashPanel.setLayout(null);
 
         numPlayersField = new JTextField();
-        numPlayersField.setBounds(665, 370, 100, 30);
+        numPlayersField.setBounds(
+            getScaledWidth(665),
+            getScaledHeight(370),
+            getScaledWidth(100),
+            getScaledHeight(30)
+        );      //665, 370, 100, 30)
         numPlayersField.setOpaque(false);
         numPlayersField.setCursor(new Cursor(Cursor.HAND_CURSOR));
         numPlayersField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
@@ -92,7 +122,12 @@ public class GUI {
         splashPanel.add(numPlayersField);
 
         startingChipsField = new JTextField();
-        startingChipsField.setBounds(615, 425, 150, 30); // Set location and size
+        startingChipsField.setBounds(
+            getScaledWidth(615), 
+            getScaledHeight(425), 
+            getScaledWidth(150), 
+            getScaledHeight(30)
+        ); // Set location and size
         startingChipsField.setOpaque(false);
         startingChipsField.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startingChipsField.setBorder(new RoundedBorder(15, Color.BLACK, 2)); // Apply custom border
@@ -100,7 +135,12 @@ public class GUI {
         splashPanel.add(startingChipsField);
 
         JButton startButton = new JButton();
-        startButton.setBounds(505, 475, 170, 35);
+        startButton.setBounds(
+            getScaledWidth(505), 
+            getScaledHeight(475), 
+            getScaledWidth(170), 
+            getScaledHeight(35)
+        );
         startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startButton.setOpaque(false);
         startButton.setContentAreaFilled(false);
@@ -200,7 +240,7 @@ public class GUI {
 
     void setGUI(){
         // Initialize the deck
-        deck = new Cards("media");
+        deck = new Cards("media", this);
         deck.initializeDeck();
 
         // set up the main window
@@ -257,11 +297,17 @@ public class GUI {
 
         JPanel verticalPaddingPanel = new JPanel();
         verticalPaddingPanel.setOpaque(false);
-        verticalPaddingPanel.setPreferredSize(new Dimension(0, 200));
+        verticalPaddingPanel.setPreferredSize(new Dimension(
+            0, 
+            getScaledHeight(200)
+        ));
 
         JPanel horizontalPaddingPanel = new JPanel();
         horizontalPaddingPanel.setOpaque(false);
-        horizontalPaddingPanel.setPreferredSize(new Dimension(228, 0));
+        horizontalPaddingPanel.setPreferredSize(new Dimension(
+            getScaledWidth(228), 
+            0
+        ));
 
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new BorderLayout());
@@ -299,7 +345,11 @@ public class GUI {
         }
 
         playerPanel.removeAll();
-        playerPanel.setPreferredSize(new Dimension(300, 1000));
+        playerPanel.setPreferredSize(new Dimension(
+            getScaledWidth(300), 
+            getScaledHeight(1000)
+            
+        ));
 
         playersHands.clear();
         for (Player player : players) {
@@ -591,7 +641,7 @@ public class GUI {
         }
 
         // Initialize MutipleTurn
-        mutipleTurn = new MutipleTurn(deck, players, round, riverCards, mainWindowFrame);
+        mutipleTurn = new MutipleTurn(deck, players, round, riverCards, mainWindowFrame, this);
 
         // Update poker panel for the first player
         if (!players.isEmpty()) {
@@ -625,13 +675,13 @@ public class GUI {
 
         // Add cardPanel and potPanel to gamePanel
         gamePanel.add(cardPanel);
-        gamePanel.add(Box.createVerticalStrut(10)); // Space between cards and pot
+        gamePanel.add(Box.createVerticalStrut(getScaledHeight(10))); // Space between cards and pot
         gamePanel.add(potPanel);
         gamePanel.add(Box.createVerticalGlue());
 
         JPanel paddingPanel = new JPanel();
         paddingPanel.setOpaque(false);
-        paddingPanel.setPreferredSize(new Dimension(550, 0));
+        paddingPanel.setPreferredSize(new Dimension(getScaledWidth(550), 0));
 
         // Add gamePanel to mainPanel
         mainPanel.add(paddingPanel, BorderLayout.WEST);
@@ -704,7 +754,7 @@ public class GUI {
 
     private JPanel getNotification() {
         JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components
-        newPanel.setPreferredSize(new Dimension(300, 150));
+        newPanel.setPreferredSize(new Dimension(getScaledWidth(300), getScaledHeight(150)));
 
         notificationLabel = new JLabel("Welcome to poker game !!!!! Enjoy your time");
 
@@ -723,51 +773,6 @@ public class GUI {
         if (notificationLabel != null) {
             notificationLabel.setText(message);
         }
-    }
-
-
-    private void startAlert(){
-        JDialog startDialog = new JDialog(mainWindowFrame, "Game Alert", true);
-        startDialog.setSize(600, 100);
-        startDialog.setLocationRelativeTo(mainWindowFrame);
-
-        JPanel alertPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel alert = new JLabel("Please set up correct chips and player number on the left side before you start game" , SwingConstants.CENTER);
-        JLabel alertNextLine = new JLabel("(after you start game, you can not change player name, chips and player number)", SwingConstants.CENTER);
-        alertPanel.add(alert);
-        alertPanel.add(alertNextLine);
-
-        // Create an OK button to close the dialog
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(e -> startDialog.dispose());
-
-        // Add message and button to the dialog
-        startDialog.setLayout(new BorderLayout());
-        startDialog.add(alertPanel, BorderLayout.CENTER);
-        startDialog.add(okButton, BorderLayout.SOUTH);
-
-        // Show the dialog
-        startDialog.setVisible(true);
-    }
-
-    private void nameAlert(){
-        JDialog nameDialog = new JDialog(mainWindowFrame, "Name Alert", true);
-        nameDialog.setSize(600, 100);
-        nameDialog.setLocationRelativeTo(mainWindowFrame);
-
-        JLabel alert = new JLabel("Please input your name on the right side, after start game, you can not change your name!!!!", SwingConstants.CENTER);
-
-        // Create an OK button to close the dialog
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(e -> nameDialog.dispose());
-
-        // Add message and button to the dialog
-        nameDialog.setLayout(new BorderLayout());
-        nameDialog.add(alert, BorderLayout.CENTER);
-        nameDialog.add(okButton, BorderLayout.SOUTH);
-
-        // Show the dialog
-        nameDialog.setVisible(true);
     }
 
     void runGUI(){
@@ -812,7 +817,7 @@ public class GUI {
 
     private void showExitScreen() {
         JDialog exitDialog = new JDialog(splashScreenFrame, "Exit Screen", true);
-        exitDialog.setSize(700, 500);
+        exitDialog.setSize(getScaledWidth(700), getScaledHeight(500));
         exitDialog.setLayout(new BorderLayout());
 
         ExitScreen exitScreen = new ExitScreen();

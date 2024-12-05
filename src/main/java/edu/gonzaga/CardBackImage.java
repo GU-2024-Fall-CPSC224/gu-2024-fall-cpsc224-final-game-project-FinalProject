@@ -8,20 +8,26 @@ import java.io.File;
 
 public class CardBackImage {
     ImageIcon backImage;
+    private GUI gui; // PRIVATE GUI FOR SCALING
 
     void loadBack(String imagesPath) {
         try {
             BufferedImage currPicture;
             System.out.println("Loading image: " + imagesPath);
             currPicture = ImageIO.read(new File(imagesPath));
-            Image dimg = currPicture.getScaledInstance(170, 255, Image.SCALE_SMOOTH);
+
+            int ScaledWidth = gui.getScaledWidth(170);
+            int ScaledHeight = gui.getScaledHeight(225);
+
+            Image dimg = currPicture.getScaledInstance(ScaledWidth, ScaledHeight, Image.SCALE_SMOOTH);
             backImage = new ImageIcon(dimg);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public CardBackImage(String imagesPath) {
+    public CardBackImage(String imagesPath, GUI gui) {
+        this.gui = gui;
         loadBack(imagesPath);
     }
 
