@@ -62,6 +62,14 @@ public class Player {
         nameField.setEditable(nameEditable);
     }
 
+    public void updateDealerStatus(boolean isDealer) {
+        if (isDealer) {
+            nameField.setText("(dealer) " + name);
+        } else {
+            nameField.setText(" " + name);
+        }
+    }
+
     // return player's name
     public String getName() {
         return nameField.getText();
@@ -77,8 +85,6 @@ public class Player {
     public int getChips() {
         return chips;
     }
-
-    public void setChips(int chips) {}
 
     // Draw cards from the deck and store in hand
     public ArrayList<ArrayList<Object>> drawCards(Cards deck) {
@@ -114,33 +120,39 @@ public class Player {
         return isActive;
     }
 
+    public void clearHand() {
+        hand.clear(); // Clear the player's hand
+    }
+
+    public JLabel getChipsChangeLabel() {
+        return chipsChange;
+    }
+
     // make decision
-    public int makeDecision(String decision, int chipsChange, int totalRaisedChips, ArrayList<ArrayList<ArrayList<Object>>> playersHands, int currentPlayer) {
-        int updateChips = this.getChips();
-        // when player choose fold their cards
+    public int makeDecision(String decision, int chipsChange, int totalRaisedChips, Player currentPlayer) {
+        int updateChips = currentPlayer.getChips();
+
         if (decision.equals("fold")) {
-            System.out.println("Player " + this.getName() + " folded.");
-            this.chipsChange.setText("Decision: fold ");
-            this.setName("Fold");
-            setActive(false);
-        }
-        else if(decision.equals("call")){
-            this.chipsChange.setText("Decision: call " + totalRaisedChips);
-        }
-        else if(decision.equals("raise")){
+            System.out.println("Player " + currentPlayer.getName() + " folded.");
+            currentPlayer.getChipsChangeLabel().setText("Decision: fold ");
+            currentPlayer.setActive(false);
+        } else if (decision.equals("call")) {
+            currentPlayer.getChipsChangeLabel().setText("Decision: call " + totalRaisedChips); // 更新显示
+            System.out.println("Player " + currentPlayer.getName() + " calls with " + totalRaisedChips + " chips.");
+        } else if (decision.equals("raise")) {
             updateChips -= chipsChange;
-            this.updateChips(updateChips);
-            this.chipsChange.setText("Decision: raise " + totalRaisedChips);
-        }
-        // when player check (match 0 chips) or forget to make decision (default)
-        else{
-            System.out.println("Player " + this.getName() + " check");
-            this.chipsChange.setText("Decision: check " + 0);
+            currentPlayer.updateChips(updateChips);
+            currentPlayer.getChipsChangeLabel().setText("Decision: raise " + totalRaisedChips); // 更新显示
+            System.out.println("Player " + currentPlayer.getName() + " raises by " + totalRaisedChips + " chips.");
+        } else {
+            currentPlayer.getChipsChangeLabel().setText("Decision: check 0"); // 更新显示
+            System.out.println("Player " + currentPlayer.getName() + " checks.");
         }
         return updateChips;
     }
 
-    public void resetDecision(){
+
+    public void resetDecision() {
         this.chipsChange.setText("Decision: ");
     }
 }

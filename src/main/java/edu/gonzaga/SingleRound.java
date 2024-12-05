@@ -10,6 +10,8 @@ public class SingleRound {
     private ArrayList<Player> players;
     private int currentPlayerIndex;
     private int activePlayers;
+    private int dealer;
+
 
     public SingleRound(ArrayList<Player> players) {
         this.players = players;
@@ -19,7 +21,7 @@ public class SingleRound {
         for (int i = 0; i < saveChipsRaise.length; i++) {
             saveChipsRaise[i] = 0;
         }
-        this.pot = 0;
+        this.dealer = 0;
     }
 
     // fold cards
@@ -30,10 +32,6 @@ public class SingleRound {
             saveChipsRaise[currentPlayerIndex] = 0;
             activePlayers--;
             System.out.println("Player " + currentPlayer.getName() + " has folded. Active players remaining: " + activePlayers);
-        }
-
-        if (activePlayers == 1) {
-            checkWinner();
         }
     }
 
@@ -102,19 +100,35 @@ public class SingleRound {
                 maxRaise = chips;
             }
         }
+        System.out.println("run single round: " + getPot());
         return maxRaise;
     }
 
     public int changePot(int chipsRaise) {
         pot += chipsRaise;
+        System.out.println("ChangePot called. Chips added: " + chipsRaise + ", Pot now: " + pot);
         return pot;
     }
+
+    public int resetPot() {
+        System.out.println("ResetPot called. Previous value: " + pot);
+        int previousPot = pot;
+        pot = 0;
+        return previousPot;
+    }
+
+    public int getPot() {
+        System.out.println("GetPot called. Current value: " + pot);
+        return pot;
+    }
+
 
     public int getRaiseChips(int currentPlayerIndex) {
         return saveChipsRaise[currentPlayerIndex];
     }
 
     public boolean checkRaiseChips() {
+        System.out.println("check Raise Chips and pot: " + getPot());
         Integer activePlayerRaise = null;
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -135,27 +149,17 @@ public class SingleRound {
         }
         System.out.println("saveChipsRaise has been reset to 0 for all players.");
     }
-
-    // check the only one player is winner
-    public void checkWinner() {
-        System.out.println("Checking for winner...");
-        System.out.println("active player: " + activePlayers);
-        if (activePlayers == 1) {
-            for (Player player : players) {
-                if (player.isActive()) {
-                    JOptionPane.showMessageDialog(null, player.getName() + " wins the pot!");
-                    player.updateChips(player.getChips() + pot);
-                }
-            }
-        }
-    }
-
     // switch to next player
     public int nextPlayer(boolean isNewTurn) {
         if (isNewTurn) {
-            currentPlayerIndex = 0; // Reset to the first player
+            // Start from the first active player
+            currentPlayerIndex = dealer;
+            while (!players.get(currentPlayerIndex).isActive()) {
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            }
             System.out.println("New turn started. Starting from player index: " + currentPlayerIndex);
         } else {
+            // Move to the next active player
             do {
                 currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
                 System.out.println("Next player index: " + currentPlayerIndex + " (" + players.get(currentPlayerIndex).getName() + ")");
@@ -163,6 +167,7 @@ public class SingleRound {
         }
         return currentPlayerIndex;
     }
+
 
     public ArrayList<Player> getActivePlayersList() {
         ArrayList<Player> activePlayers = new ArrayList<>();
@@ -175,6 +180,7 @@ public class SingleRound {
     }
 
     public int getActivePlayers() {
+        System.out.println("getActivePlayers size " + getActivePlayersList().size());
         return getActivePlayersList().size();
     }
 
@@ -244,7 +250,57 @@ public class SingleRound {
         return chipsRaised[0];
     }
 
-    public int getPot() {
-        return pot;
+    public boolean checkAllIn() {
+        for (Player player : players) {
+            if (player.isActive() && player.getChips() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Start a new round
+    public int startNewRound(Cards deck, int currentDealer) {
+        System.out.println("Setting up a new round...");
+        deck.initializeDeck();
+        resetChipsRaise();
+        pot = 0; // Reset the pot
+
+        // Update players' status and draw new cards
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+
+            if (player.getChips() > 0) {
+                player.setActive(true);
+                player.clearHand(); // Clear old cards
+                ArrayList<ArrayList<Object>> newHand = player.drawCards(deck); // Draw new cards
+                System.out.println(player.getName() + "'s new hand: " + newHand);
+            } else {
+                player.setActive(false); // Mark inactive players
+                player.setName("LOSE");
+                System.out.println(player.getName() + " is out of the game.");
+            }
+        }
+        // Dealer moves to the next active player
+        updateDealer();
+        System.out.println("New dealer: " + players.get(dealer).getName());
+        return dealer;
+    }
+
+    public void updateDealer() {
+        do {
+            dealer = (dealer + 1) % players.size();
+        } while (!players.get(dealer).isActive());
+        System.out.println("Dealer updated to: " + players.get(dealer).getName());
+    }
+
+    public void updateDealerName(){
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).updateDealerStatus(i == dealer);
+        }
+    }
+
+    public int getDealer() {
+        return dealer;
     }
 }
