@@ -78,7 +78,8 @@ public class GUI {
 
         cardBackImage = new CardBackImage(imagePath, this);
     }
-        // PROPER SCREEN SCALING
+
+    // PROPER SCREEN SCALING
     public int getScaledWidth(double baseWidth) {
         return (int) (baseWidth * widthRatio);
     }
@@ -214,7 +215,7 @@ public class GUI {
         okButton.addActionListener(e -> {
             players.clear();
             for (int i = 0; i < numPlayers; i++) {
-                Player player = new Player(playerNameFields[i].getText(), startingChips, "media/profile.png");
+                Player player = new Player(playerNameFields[i].getText(), startingChips, "media/profile.png", this);
                 players.add(player);
                 System.out.println("Player " + (i + 1) + " name: " + playerNameFields[i].getText());
             }
@@ -299,7 +300,7 @@ public class GUI {
         verticalPaddingPanel.setOpaque(false);
         verticalPaddingPanel.setPreferredSize(new Dimension(
             0, 
-            getScaledHeight(200)
+            getScaledHeight(130)
         ));
 
         JPanel horizontalPaddingPanel = new JPanel();
@@ -683,7 +684,12 @@ public class GUI {
         paddingPanel.setOpaque(false);
         paddingPanel.setPreferredSize(new Dimension(getScaledWidth(550), 0));
 
+        JPanel verticalPaddingPanel = new JPanel();
+        verticalPaddingPanel.setOpaque(false);
+        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(100)));
+
         // Add gamePanel to mainPanel
+        mainPanel.add(verticalPaddingPanel, BorderLayout.NORTH);
         mainPanel.add(paddingPanel, BorderLayout.WEST);
         mainPanel.add(gamePanel, BorderLayout.CENTER);
 

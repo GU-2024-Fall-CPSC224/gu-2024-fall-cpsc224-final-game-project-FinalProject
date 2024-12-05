@@ -8,8 +8,10 @@ import java.io.File;
 
 public class Profile {
     private ImageIcon roleImage;
+    private GUI gui;
 
-    public Profile(String imagesPath) {
+    public Profile(String imagesPath, GUI gui) {
+        this.gui = gui;
         loadImages(imagesPath);
     }
 
@@ -20,7 +22,11 @@ public class Profile {
 
             System.out.println("Loading image: " + fileName);
             currPicture = ImageIO.read(new File(imagesPath));
-            Image dimg = currPicture.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+            
+            int ScaledWidth = gui.getScaledWidth(75);
+            int ScaledHeight = gui.getScaledHeight(75);
+
+            Image dimg = currPicture.getScaledInstance(ScaledWidth, ScaledHeight, Image.SCALE_SMOOTH);
             roleImage = new ImageIcon(dimg);
         }
         catch (Exception e) {

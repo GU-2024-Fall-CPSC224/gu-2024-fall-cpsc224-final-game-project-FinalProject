@@ -251,7 +251,7 @@ public class MutipleTurn {
         } else {
             System.out.println("Game over. Thanks for playing!");
 
-            JDialog exitDialog = new JDialog(mainWindowFrame, "Exit", true);
+            JDialog exitDialog = new JDialog(mainWindowFrame, "Results", true);
             exitDialog.setSize(700, 500);
             exitDialog.setLocationRelativeTo(mainWindowFrame);
             exitDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

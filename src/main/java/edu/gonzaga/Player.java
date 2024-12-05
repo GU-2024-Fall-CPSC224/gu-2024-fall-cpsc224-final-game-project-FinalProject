@@ -13,21 +13,24 @@ public class Player {
     private JLabel chipsLabel;
     private JLabel chipsChange;
     private ArrayList<ArrayList<Object>> hand;
+    private GUI gui;
 
-    public Player(String name, int chips, String profileImagePath) {
+    public Player(String name, int chips, String profileImagePath, GUI gui) {
         this.name = name;
         this.chips = chips;
         this.isActive = true;
         this.hand = new ArrayList<>();
-        initializePlayerPanel(profileImagePath);
+        initializePlayerPanel(profileImagePath, gui);
+
     }
 
     // initialize the player panel
-    private void initializePlayerPanel(String profileImagePath) {
+    private void initializePlayerPanel(String profileImagePath, GUI gui) {
+        this.gui = gui;
         playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         // set up the profile
-        Profile profile = new Profile(profileImagePath);
+        Profile profile = new Profile(profileImagePath, gui);
         JLabel iconLabel = new JLabel(profile.getRoleImage());
         playerPanel.add(iconLabel);
 
