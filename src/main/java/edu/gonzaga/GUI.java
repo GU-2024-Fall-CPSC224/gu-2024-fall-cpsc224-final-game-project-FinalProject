@@ -184,7 +184,7 @@ public class GUI {
     
     private void showPlayerNameInputDialog(int numPlayers) {
         JDialog nameDialog = new JDialog(splashScreenFrame, "Enter Player Names", true);
-        nameDialog.setSize(400, 300);
+        nameDialog.setSize(getScaledWidth(600), 450);
         nameDialog.setLayout(new BorderLayout());
     
         BackgroundPanel backgroundPanel = new BackgroundPanel("media/felt.png");
@@ -211,7 +211,7 @@ public class GUI {
         okButton.setContentAreaFilled(false);
         okButton.setBorderPainted(false);
         okButton.setForeground(Color.WHITE); // Set text color to white
-        okButton.setFont(new Font("Arial", Font.BOLD, 16)); // Set font
+        okButton.setFont(new Font("Serif", Font.BOLD, 24)); // Set font
         okButton.addActionListener(e -> {
             players.clear();
             for (int i = 0; i < numPlayers; i++) {
