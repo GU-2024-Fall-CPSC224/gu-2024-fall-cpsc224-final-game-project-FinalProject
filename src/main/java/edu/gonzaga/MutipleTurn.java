@@ -23,7 +23,7 @@ public class MutipleTurn {
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
-        this.cardBackImage = new CardBackImage("media/purple_back.jpg");
+        this.cardBackImage = new CardBackImage("media/card3.jpg");
         this.mainWindowFrame = mainWindowFrame;
     }
 

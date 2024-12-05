@@ -589,6 +589,7 @@ public class GUI {
         JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         potPanel.setOpaque(false);
         potLabelText = new JLabel("Pot: 0");
+        potLabelText.setForeground(Color.WHITE);
         potPanel.add(potLabelText);
         countTurn = round.getActivePlayers() - 1;
         System.out.println("countTurn: " + countTurn);
