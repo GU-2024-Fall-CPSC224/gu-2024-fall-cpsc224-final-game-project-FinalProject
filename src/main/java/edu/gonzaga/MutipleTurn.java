@@ -1,29 +1,34 @@
 package edu.gonzaga;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MutipleTurn {
     private CardBackImage cardBackImage;
-    private Cards card;
+    private Cards deck;
     private int playTurn;
     private ArrayList<JLabel> riverCards;
     private ArrayList<Object> riverCardsSave;
     private ArrayList<Player> players;
     private SingleRound singleRound;
     private int flippedCardsCount;
-    private int nextStartPlayerIndex;
+    private JFrame mainWindowFrame;
 
-    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards) {
-        this.card = cards;
+    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards, JFrame mainWindowFrame) {
+        this.deck = cards;
         this.players = players;
         this.singleRound = singleRound;
         this.riverCards = riverCards;
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
-        cardBackImage = new CardBackImage("media/purple_back.jpg");
-        this.nextStartPlayerIndex = 0; // Start with the first player as the dealer
+        this.cardBackImage = new CardBackImage("media/purple_back.jpg");
+        this.mainWindowFrame = mainWindowFrame;
+    }
+
+    public void updateRound(SingleRound singleRound) {
+            this.singleRound = singleRound;
     }
 
     // Calculate active players
@@ -39,6 +44,7 @@ public class MutipleTurn {
 
     // Next turn
     public void nextTurn(boolean allIn) {
+        System.out.println("all in pot: " + singleRound.getPot());
         if (allIn) {
             System.out.println("All players are All-In. Automatically running through turns...");
             while (playTurn <= 3) {
@@ -46,25 +52,33 @@ public class MutipleTurn {
                 playTurn++;
             }
         } else {
+            System.out.println("not all in pot: " + singleRound.getPot());
             if (!singleRound.checkRaiseChips()) {
                 return;
             }
+            System.out.println("turn: " + playTurn + " Pot: " + singleRound.getPot());
             executeTurn();
+            System.out.println("turn: " + playTurn + " Pot: " + singleRound.getPot());
             playTurn++;
         }
     }
 
     private void executeTurn() {
+        System.out.println("Before executeTurn: pot = " + singleRound.getPot() + "play turn: " + playTurn);
         switch (playTurn) {
             case 0:
+                System.out.println("current chips: " + singleRound.getPot());
                 flipCards(3);
                 break;
             case 1:
             case 2:
+                System.out.println("current chips: " + singleRound.getPot());
                 flipCards(1);
                 break;
             case 3:
+                System.out.println("current chips: " + singleRound.getPot());
                 checkWinner(riverCardsSave);
+
                 break;
             default:
                 System.out.println("No more turns.");
@@ -73,17 +87,19 @@ public class MutipleTurn {
     }
 
     private void flipCards(int count) {
+        System.out.println("Before flipCards: pot = " + singleRound.getPot());
         for (int i = 0; i < count && flippedCardsCount < riverCards.size(); i++) {
             flipNextRiverCard();
         }
+        System.out.println("After flipCards: pot = " + singleRound.getPot());
     }
 
     // Flip next card
     private void flipNextRiverCard() {
         if (flippedCardsCount < riverCards.size()) {
-            ArrayList<Object> drawCard = card.drawTheCard();
+            ArrayList<Object> drawCard = deck.drawTheCard();
             if (drawCard != null) {
-                ImageIcon cardImage = card.getCardImage(drawCard);
+                ImageIcon cardImage = deck.getCardImage(drawCard);
                 riverCards.get(flippedCardsCount).setIcon(cardImage);
                 riverCardsSave.add(drawCard);
                 flippedCardsCount++;
@@ -93,18 +109,12 @@ public class MutipleTurn {
         }
     }
 
-    public void checkSingleWinner() {
-        ArrayList<Player> activePlayers = getActivePlayersList();
-        Player winner = activePlayers.get(0);
-        winner.updateChips(winner.getChips() + singleRound.getPot());
-        singleRound.resetPot(); // Reset pot after chips are updated
-    }
-
     // Check winner or determine winner by points
     public void checkWinner(ArrayList<Object> riverCardsSave) {
         int pot = singleRound.getPot();
-        ArrayList<Player> activePlayers = getActivePlayersList();
+        System.out.println("Pot before distributing: " + pot);
 
+        ArrayList<Player> activePlayers = getActivePlayersList();
         if (activePlayers.isEmpty()) {
             System.out.println("No active players remaining.");
             promptNewRound();
@@ -142,21 +152,58 @@ public class MutipleTurn {
             return;
         }
 
+        // if everyone fold card before flip 5 cards in the river, so the last one will be winner
+        if (activePlayers.size() == 1) {
+            Player winner = activePlayers.get(0);
+            System.out.println("Only one active player remaining: " + winner.getName());
+
+            winner.updateChips(winner.getChips() + pot);
+            System.out.println(winner.getName() + " wins the pot of " + pot + " chips!");
+
+            JOptionPane.showMessageDialog(
+                    mainWindowFrame,
+                    winner.getName() + " wins the pot of " + pot + " chips!",
+                    "Winner",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            singleRound.resetPot();
+            promptNewRound();
+            return;
+        }
+
         int share = pot / winners.size();
         int remainder = pot % winners.size();
+        System.out.println("Each winner gets: " + share + " chips, remainder: " + remainder);
 
-        StringBuilder winnerMessage = new StringBuilder();
+        JPanel winnersPanel = new JPanel(new GridLayout(winners.size(), 1));
+
         for (int i = 0; i < winners.size(); i++) {
             Player winner = winners.get(i);
             int playerShare = share + (remainder > 0 ? 1 : 0);
             remainder--;
             winner.updateChips(winner.getChips() + playerShare);
-            winnerMessage.append(winner.getName()).append(" wins ").append(playerShare).append(" chips!\n");
+
+
+            JPanel handPanel = new JPanel(new FlowLayout());
+            for (ArrayList<Object> card : winner.getHand()) {
+                ImageIcon cardImage = deck.getCardImage(card);
+                handPanel.add(new JLabel(cardImage));
+            }
+
+            JPanel winnerPanel = new JPanel(new BorderLayout());
+            winnerPanel.add(new JLabel("Winner: " + winner.getName() + " (" + playerShare + " chips)"), BorderLayout.NORTH);
+            winnerPanel.add(handPanel, BorderLayout.CENTER);
+
+            winnersPanel.add(winnerPanel);
         }
 
-        JOptionPane.showMessageDialog(null, winnerMessage.toString());
+        JScrollPane scrollPane = new JScrollPane(winnersPanel);
+        JOptionPane.showMessageDialog(mainWindowFrame, scrollPane, "Winners and Their Hands", JOptionPane.PLAIN_MESSAGE);
 
         // Ask if players want to start a new round
+        singleRound.resetPot();
+
         promptNewRound();
     }
 
@@ -195,11 +242,6 @@ public class MutipleTurn {
     }
 
     private void resetForNewRound() {
-        card.initializeDeck();
-        playTurn = -1;
-        riverCardsSave.clear();
-        flippedCardsCount = 0;
-
         initializeRiverCards();
 
         for (Player player : players) {
@@ -215,10 +257,14 @@ public class MutipleTurn {
             riverCard.repaint();
         }
 
-        singleRound.startNewRound(card, nextStartPlayerIndex);
-        nextStartPlayerIndex = (nextStartPlayerIndex + 1) % players.size();
+        singleRound.resetPot();
 
-        System.out.println("New round started with next dealer: " + players.get(nextStartPlayerIndex).getName());
+        // Pass the current dealer to startNewRound
+        int newDealer = singleRound.startNewRound(deck, singleRound.getDealer());
+        singleRound.updateDealerName();
+        playTurn = -1;
+
+        System.out.println("New round started with next dealer: " + players.get(newDealer).getName() + ", new play turn: " + playTurn);
     }
 }
 
