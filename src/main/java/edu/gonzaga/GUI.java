@@ -24,6 +24,7 @@ public class GUI {
     String imagePath = "media/purple_back.jpg";
     CardBackImage cardBackImage;
     JLabel potLabelText;
+    JLabel notificationLabel;
 
     ArrayList<Player> players;
     int currentPlayerIndex;
@@ -32,6 +33,7 @@ public class GUI {
     int[] playerChips;
     int countTurn;
     int dealer;
+    int totalRaisedChips;
     ArrayList<ArrayList<ArrayList<Object>>> playersHands; // Each player has a hand (list of cards)
 
     Cards deck;
@@ -58,6 +60,7 @@ public class GUI {
         cardBackImage = new CardBackImage(imagePath);
         countTurn = 0;
         dealer = 0;
+        totalRaisedChips = 0;
     }
 
     void setSplashScreen() {
@@ -243,7 +246,7 @@ public class GUI {
         gamePanel.setOpaque(false);
 
         // set up game reminder
-        reminder = getReminder();
+        reminder = getNotification();
         reminder.setOpaque(false);
 
         // input all panels in main window
@@ -352,11 +355,14 @@ public class GUI {
             player.makeDecision("check", 0, 0, currentPlayer);
             round.checkChips(currentPlayerIndex);
 
+            updateReminder(currentPlayer.getName() + " has check.");
+
             updatePokerPanel(player);
 
             System.out.println("getActivePlayers()" + (round.getActivePlayers() - 1));
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
+                updateReminder(currentPlayer.getName() + " next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -367,6 +373,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                updateReminder(currentPlayer.getName()+ " has checked (0) " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -383,7 +390,7 @@ public class GUI {
             int callAmount = round.callChips(currentPlayerIndex);
             Player currentPlayer = players.get(currentPlayerIndex);
             if(callAmount > 0){
-                int totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
+                totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
                 int updateChips = player.makeDecision("call", callAmount, totalRaisedChips, currentPlayer);
                 playerChips[currentPlayerIndex] = updateChips;
                 potLabelText.setText("Pot: " + round.changePot(callAmount));
@@ -397,6 +404,7 @@ public class GUI {
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
+                updateReminder(currentPlayer.getName() + " next turn.");
                 currentNum = 0;
                 System.out.println("Before Next Turn, Check Pot: " + round.getPot());
                 mutipleTurn.updateRound(round);
@@ -407,6 +415,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                updateReminder(currentPlayer.getName()+ " has called to " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -423,8 +432,9 @@ public class GUI {
             int chipsToRaise = round.raiseChips(currentPlayerIndex);
 
             if(chipsToRaise > 0){
-                int totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
+                totalRaisedChips = round.getRaiseChips(currentPlayerIndex);
                 int updateChips = player.makeDecision("raise", chipsToRaise, totalRaisedChips, currentPlayer);
+                updateReminder(currentPlayer.getName() + " has raised chips to " + totalRaisedChips);
                 playerChips[currentPlayerIndex] = updateChips;
                 potLabelText.setText("Pot: " + round.changePot(chipsToRaise));
             }else{
@@ -442,6 +452,7 @@ public class GUI {
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
+                updateReminder(currentPlayer.getName() + " next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -451,6 +462,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                updateReminder(currentPlayer.getName()+ " has raised chips to " + totalRaisedChips + " next player " + players.get(currentPlayerIndex + 1).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -468,6 +480,7 @@ public class GUI {
             round.foldCard(currentPlayerIndex);
 
             if (round.getActivePlayers() == 1) {
+                updateReminder(currentPlayer.getName() + " next round.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.singlePlayer();
@@ -480,10 +493,14 @@ public class GUI {
                 return;
             }
 
+            updateReminder(currentPlayer.getName() + " has fold.");
+
+
             updatePokerPanel(player);
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
+                updateReminder(currentPlayer.getName() + " next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -493,6 +510,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
+                updateReminder(currentPlayer.getName()+ " has fold." + " next player " + players.get(currentPlayerIndex + 1).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -636,11 +654,11 @@ public class GUI {
         playerPanel.repaint();
     }
 
-    private JPanel getReminder() {
+    private JPanel getNotification() {
         JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components
         newPanel.setPreferredSize(new Dimension(300, 150));
 
-        JLabel reminderLabel = new JLabel("Initial Reminder Text");
+        notificationLabel = new JLabel("Initial Reminder Text");
 
         // Use GridBagConstraints to center the label
         GridBagConstraints gbc = new GridBagConstraints();
@@ -648,10 +666,17 @@ public class GUI {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER; // Center within the cell
 
-        newPanel.add(reminderLabel, gbc);
+        newPanel.add(notificationLabel, gbc);
 
         return newPanel;
     }
+
+    public void updateReminder(String message) {
+        if (notificationLabel != null) {
+            notificationLabel.setText(message);
+        }
+    }
+
 
     private void startAlert(){
         JDialog startDialog = new JDialog(mainWindowFrame, "Game Alert", true);
