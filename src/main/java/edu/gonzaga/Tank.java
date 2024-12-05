@@ -1,16 +1,13 @@
 package edu.gonzaga;
-/*
- * This is Tank class holds all information regarding Tanks the players will be controlling. 
- */
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.Rectangle;
+import org.dyn4j.geometry.Vector2;
 
-public class Tank {
+public class Tank extends Rectangle {
     private Integer xCord;
     private Integer yCord;
     private String color;
@@ -18,47 +15,67 @@ public class Tank {
     private Integer trajectory;
     private Integer health;
     private Boolean moved;
+    private Body body;
 
+    // Constructor for creating a Tank with default settings
     public Tank() {
-        health = 100;
-        xCord = 0;
-        yCord = 0;
-        color = "Red";
+        super(10, 10); // Default width and height of the rectangle
+        this.health = 100;
+        this.xCord = 0;
+        this.yCord = 0;
+        this.color = "Red";
+        initializeBody();
     }
 
-    // constructor that allows for all inputs
+    // Constructor that allows for all inputs
     public Tank(Integer healthSet, Integer x, Integer y, String colorSet) {
-        health = healthSet;
-        xCord = x;
-        yCord = y;
-        color = colorSet;
+        super(10, 10); // Default width and height of the rectangle
+        this.health = healthSet;
+        this.xCord = x;
+        this.yCord = y;
+        this.color = colorSet;
+        initializeBody();
     }
 
-    // constructor for just changing the health but all other default
+    // Constructor to change only the health
     public Tank(Integer healthSet) {
-        health = healthSet;
-        xCord = 0;
-        yCord = 0;
-        color = "Red";
+        super(10, 10); // Default width and height of the rectangle
+        this.health = healthSet;
+        this.xCord = 0;
+        this.yCord = 0;
+        this.color = "Red";
+        initializeBody();
     }
 
-    // constructor for just changing the coordinates but all other default
+    // Constructor to change only the coordinates
     public Tank(Integer x, Integer y) {
-        health = 100;
-        xCord = x;
-        yCord = y;
-        color = "Red";
+        super(10, 10); // Default width and height of the rectangle
+        this.health = 100;
+        this.xCord = x;
+        this.yCord = y;
+        this.color = "Red";
+        initializeBody();
     }
 
-    // constructor for just changing the color but all other defaults
+    // Constructor to change only the color
     public Tank(String colorSet) {
-        health = 100;
-        xCord = 0;
-        yCord = 0;
-        color = colorSet;
+        super(10, 10); // Default width and height of the rectangle
+        this.health = 100;
+        this.xCord = 0;
+        this.yCord = 0;
+        this.color = colorSet;
+        initializeBody();
     }
 
-    // Getters
+    // Initialize the body with a rectangle in the physics world
+    private void initializeBody() {
+        body = new Body();
+        body.addFixture(this);
+        body.setMass(org.dyn4j.geometry.MassType.NORMAL);
+        body.translate(new Vector2(this.xCord, this.yCord));
+    }
+
+    // Getters and Setters
     public String getColor() {
         return this.color;
     }
@@ -79,6 +96,10 @@ public class Tank {
         return this.trajectory;
     }
 
+    public Body getBody(){
+        return this.body; 
+    }
+
     // Setters
     public void setHealth(Integer healthSet) {
         health = healthSet;
@@ -86,10 +107,12 @@ public class Tank {
 
     public void setXCord(Integer xSet) {
         xCord = xSet;
+        body.translate(new Vector2(xCord, yCord));
     }
 
     public void setYCord(Integer ySet) {
         yCord = ySet;
+        body.translate(new Vector2(xCord, yCord));
     }
 
     public void setColor(String colorSet) {
@@ -100,25 +123,11 @@ public class Tank {
         trajectory = x;
     }
 
-    // This will change the x and y coordinates depending on how much the player
-    // moves
-    public void move() {
-
+    public Boolean getMoved() {
+        return moved;
     }
 
-    // This will fire the tank and increase shotcount, uses artillery
-    public int fire() {
-        // returning 0 until artillery is made and can be used
-        return 0;
-    }
-
-    // This will tell if we hit the tank by comparing the missle location with the
-    // location of enemy tank
-    public int hit() {
-        // returning 0 for now
-        return 0;
-    }
-
+    // This method will move the tank left
     public Integer moveMeLeft() {
         if (this.xCord < 5) {
             this.xCord = 0;
@@ -126,9 +135,11 @@ public class Tank {
             this.xCord -= 5;
         }
         moved = true;
+        body.translate(new Vector2(-5, 0));
         return xCord;
     }
 
+    // This method will move the tank right
     public Integer moveMeRight() {
         if (this.xCord > 195) {
             this.xCord = 200;
@@ -136,11 +147,24 @@ public class Tank {
             this.xCord += 5;
         }
         moved = true;
+        body.translate(new Vector2(5, 0));
         return xCord;
     }
 
-    public Boolean getMoved() {
-        return moved;
+    // Paints the tank with its current color (override the default rendering)
+    public void paint(Graphics2D g) {
+        g.setColor(Color.getColor(this.color, Color.RED)); // Set the color of the tank
+        g.fillRect(this.xCord, this.yCord, (int)this.getWidth(), (int)this.getHeight());
     }
 
+    // Additional functionality for firing, hitting, and other actions can be added here
+    public int fire() {
+        // Returning 0 until artillery mechanics are added
+        return 0;
+    }
+
+    public int hit( int hit) {
+        // Returning 0 for now (add hit detection logic later)
+        return 0;
+    }
 }

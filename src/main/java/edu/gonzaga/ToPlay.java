@@ -1,5 +1,7 @@
 package edu.gonzaga;
 
+import java.util.ArrayList;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import org.dyn4j.*;
+import org.dyn4j.world.*;
+import org.dyn4j.world.listener.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,6 +30,7 @@ public class ToPlay {
     String name;
     String color;
     boolean easyOrHard = true; // true is easy, false is hard, default is easy
+    ArrayList <Tank> tank_Array = new ArrayList<>(); // this is where we will store the tanks
 
     public ToPlay() {
         this.name = "Unidentified User";
@@ -360,6 +365,20 @@ public class ToPlay {
         hard.addActionListener(difficultyListener);
     }
 
+    public void createWorld(){
+        World world = new World();
+        Tank tank1  = new Tank(100, 100, 0, "Red");
+        Tank tank2 = new Tank(100, 500, 0, "Green"); 
+        addToTankArray(0, tank1);
+        addToTankArray(1, tank2); 
+
+
+
+    }
+
+    public void addToTankArray(int index, Tank tank){
+        this.tank_Array.add(index, tank);
+    }
     // when adding action listener for continue, set the names again in case users
     // do not press 'Enter'
 
