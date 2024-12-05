@@ -34,8 +34,8 @@ public class Cards {
                     System.out.println("Loading image: " + filename);
                     currPicture = ImageIO.read(new File(filename));
 
-                    int ScaledWidth = gui.getScaledWidth(170);
-                    int ScaledHeight = gui.getScaledHeight(225);
+                    int ScaledWidth = gui.getScaledWidth(155);
+                    int ScaledHeight = gui.getScaledHeight(230);
 
                     Image dimg = currPicture.getScaledInstance(ScaledWidth, ScaledHeight, Image.SCALE_SMOOTH);
                     ImageIcon scaledImage = new ImageIcon(dimg);

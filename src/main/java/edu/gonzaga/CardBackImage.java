@@ -16,8 +16,8 @@ public class CardBackImage {
             System.out.println("Loading image: " + imagesPath);
             currPicture = ImageIO.read(new File(imagesPath));
 
-            int ScaledWidth = gui.getScaledWidth(170);
-            int ScaledHeight = gui.getScaledHeight(225);
+            int ScaledWidth = gui.getScaledWidth(155);
+            int ScaledHeight = gui.getScaledHeight(230);
 
             Image dimg = currPicture.getScaledInstance(ScaledWidth, ScaledHeight, Image.SCALE_SMOOTH);
             backImage = new ImageIcon(dimg);
