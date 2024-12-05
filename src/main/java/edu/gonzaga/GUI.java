@@ -546,15 +546,18 @@ public class GUI {
     
     private JButton createCustomButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 18)); // Increase font size
+        button.setFont(new Font("Serif", Font.BOLD, 18)); // Use a more interesting, classy font
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(0, 123, 255));
         button.setOpaque(true);
-        button.setBorder(new RoundedBorder(15, new Color(0, 123, 255), 2));
+        button.setBorder(new RoundedBorder(15, Color.WHITE, 2)); // Change border color to white
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setFocusPainted(false);
         button.setContentAreaFilled(false);
-        button.setMargin(new Insets(15, 30, 15, 30)); // Increase padding inside the button
+        button.setMargin(new Insets(20, 40, 20, 40)); // Increase padding inside the button
+        button.setBorder(BorderFactory.createCompoundBorder(
+            button.getBorder(), 
+            BorderFactory.createEmptyBorder(10, 20, 10, 20))); // Add padding between text and border
         return button;
     }
 
