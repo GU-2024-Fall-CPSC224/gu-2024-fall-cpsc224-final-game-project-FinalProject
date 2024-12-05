@@ -12,6 +12,8 @@ import javax.sound.sampled.AudioInputStream;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.border.Border;
+
 public class GUI {
     JFrame splashScreenFrame;
 
@@ -202,18 +204,9 @@ public class GUI {
         this.mainWindowFrame = new JFrame("Poker Game");
         this.mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainWindowFrame.setResizable(true);
+        this.mainWindowFrame.setUndecorated(true);
+        this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.mainWindowFrame.setLayout(new BorderLayout());
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-        // Check if full-screen mode is supported
-        if (gd.isFullScreenSupported()) {
-            this.mainWindowFrame.setUndecorated(true); // Remove window decorations
-            gd.setFullScreenWindow(this.mainWindowFrame); // Set the JFrame to full-screen mode
-        } else {
-            System.err.println("Full-screen mode not supported");
-            this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fallback to maximized window
-        }
 
         String imagePath = "media/table.png";
         File imageFile = new File(imagePath);
@@ -348,14 +341,16 @@ public class GUI {
 
         // Panel for action buttons
         JPanel optionPanel = new JPanel();
-        optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.X_AXIS));
-        JButton check = new JButton("Check");
-        JButton call = new JButton("Call");
-        JButton raise = new JButton("Raise");
-        JButton fold = new JButton("Fold");
+        optionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 30));
+        optionPanel.setOpaque(false);
+
+        JButton check = createCustomButton("Check");
+        JButton call = createCustomButton("Call");
+        JButton raise = createCustomButton("Raise");
+        JButton fold = createCustomButton("Fold");
 
         // Button to reveal cards or switch to the next player
-        JButton checkCard = new JButton("Check Cards");
+        JButton checkCard = createCustomButton("Check Cards");
 
         checkCard.addActionListener(e -> {
             Player currentPlayer = players.get(currentPlayerIndex);
@@ -544,11 +539,24 @@ public class GUI {
 
         // Add pokerPanel and optionPanel to newPanel
         newPanel.add(pokerPanel, BorderLayout.NORTH);
-        newPanel.add(optionPanel, BorderLayout.SOUTH);
+        newPanel.add(optionPanel, BorderLayout.CENTER);
 
         return newPanel;
     }
-
+    
+    private JButton createCustomButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 18)); // Increase font size
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(0, 123, 255));
+        button.setOpaque(true);
+        button.setBorder(new RoundedBorder(15, new Color(0, 123, 255), 2));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        button.setMargin(new Insets(15, 30, 15, 30)); // Increase padding inside the button
+        return button;
+    }
 
     private JPanel getGamePanel() {
         // Main panel to hold the start button initially
@@ -784,6 +792,37 @@ public class GUI {
 
         exitDialog.setLocationRelativeTo(splashScreenFrame);
         exitDialog.setVisible(true);
+    }
+
+    public class RoundedBorder implements Border {
+        private int radius;
+        private Color color;
+        private int thickness;
+
+        public RoundedBorder(int radius, Color color, int thickness) {
+            this.radius = radius;
+            this.color = color;
+            this.thickness = thickness;
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(thickness, thickness, thickness, thickness);
+        }
+
+        @Override
+        public boolean isBorderOpaque() {
+            return true;
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(color);
+            g2d.setStroke(new BasicStroke(thickness));
+            g2d.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+            g2d.dispose();
+        }
     }
 }
 

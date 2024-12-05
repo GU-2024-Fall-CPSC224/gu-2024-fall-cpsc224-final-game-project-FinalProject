@@ -23,7 +23,7 @@ public class MutipleTurn {
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
-        this.cardBackImage = new CardBackImage("media/card3.jpg");
+        this.cardBackImage = new CardBackImage("media/card3.png");
         this.mainWindowFrame = mainWindowFrame;
     }
 
@@ -227,7 +227,34 @@ public class MutipleTurn {
             resetForNewRound();
         } else {
             System.out.println("Game over. Thanks for playing!");
-            System.exit(0);
+
+            JDialog exitDialog = new JDialog(mainWindowFrame, "Exit", true);
+            exitDialog.setSize(700, 500);
+            exitDialog.setLocationRelativeTo(mainWindowFrame);
+            exitDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+            // Create a layered pane to hold the background and button
+            JLayeredPane layeredPane = new JLayeredPane();
+            layeredPane.setPreferredSize(new Dimension(700, 500));
+
+            // Set the background image
+            JLabel backgroundLabel = new JLabel(new ImageIcon("media/exit.png"));
+            backgroundLabel.setBounds(0, 0, 700, 500);
+
+            // Create the OK button
+            JButton okButton = new JButton("OK");
+            okButton.setBounds(300, 450, 100, 30); // Position the button at the bottom center
+
+            // Add the background and button to the layered pane
+            layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+            layeredPane.add(okButton, JLayeredPane.PALETTE_LAYER);
+
+            // Add action listener to the OK button
+            okButton.addActionListener(e -> System.exit(0));
+
+            exitDialog.add(layeredPane);
+            exitDialog.pack();
+            exitDialog.setVisible(true);
         }
     }
 
