@@ -56,11 +56,33 @@ public class MutipleTurn {
             if (!singleRound.checkRaiseChips()) {
                 return;
             }
+
             System.out.println("turn: " + playTurn + " Pot: " + singleRound.getPot());
             executeTurn();
             System.out.println("turn: " + playTurn + " Pot: " + singleRound.getPot());
             playTurn++;
         }
+    }
+
+    public void singlePlayer() {
+        ArrayList<Player> activePlayers = getActivePlayersList();
+        Player winner = activePlayers.get(0);
+
+        winner.updateChips(winner.getChips() + singleRound.getPot());
+        System.out.println("Only one active player remaining: " + winner.getName());
+        System.out.println(winner.getName() + " wins the pot of " + singleRound.getPot() + " chips!");
+
+        JOptionPane.showMessageDialog(
+                null,
+                winner.getName() + " wins the pot of " + singleRound.getPot() + " chips!",
+                "Winner",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        singleRound.resetPot();
+        promptNewRound();
+        playTurn = 0;
+
     }
 
     private void executeTurn() {
@@ -78,7 +100,6 @@ public class MutipleTurn {
             case 3:
                 System.out.println("current chips: " + singleRound.getPot());
                 checkWinner(riverCardsSave);
-
                 break;
             default:
                 System.out.println("No more turns.");
