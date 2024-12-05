@@ -321,7 +321,9 @@ public class ToPlay {
     public void createWorld(){
         World world = new World(); 
         world.setGravity(Vector2.create(0.0, -9.8));
-
+        array_Tank.add(new Tank(10,10, 100, "Red", 100));
+        array_Tank.add(new Tank(10, 10, 100, "Green", 500)); 
+        
     }
 
 }

@@ -4,11 +4,20 @@ import org.dyn4j.geometry.Rectangle;
 public class Tank extends Rectangle {
     private int health;
     private String color;
+    private int xCoordinate; 
 
-    public Tank(double width, double height, int health, String color) {
+    public Tank(double width, double height, int health, String color, int xCord) {
         super(width, height); // Initialize the Rectangle with width and height
         this.health = health;
         this.color = color;
+        this.xCoordinate = xCord;
+    }
+
+    public Tank(int xCoordinate){
+        super(10, 10); 
+        this.health = 100; 
+        this.color = "Red"; 
+        this.xCoordinate = xCoordinate; 
     }
 
     // Getter and Setter for health
