@@ -387,7 +387,7 @@ public class GUI {
             System.out.println("getActivePlayers()" + (round.getActivePlayers() - 1));
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
-                updateReminder(currentPlayer.getName() + " next turn.");
+                updateReminder("next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -429,7 +429,7 @@ public class GUI {
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
-                updateReminder(currentPlayer.getName() + " next turn.");
+                updateReminder("next turn.");
                 currentNum = 0;
                 System.out.println("Before Next Turn, Check Pot: " + round.getPot());
                 mutipleTurn.updateRound(round);
@@ -477,7 +477,7 @@ public class GUI {
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
-                updateReminder(currentPlayer.getName() + " next turn.");
+                updateReminder("next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -525,7 +525,7 @@ public class GUI {
 
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
-                updateReminder(currentPlayer.getName() + " next turn.");
+                updateReminder("next turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -706,7 +706,7 @@ public class GUI {
         JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components
         newPanel.setPreferredSize(new Dimension(300, 150));
 
-        notificationLabel = new JLabel("Initial Reminder Text");
+        notificationLabel = new JLabel("Welcome to poker game !!!!! Enjoy your time");
 
         // Use GridBagConstraints to center the label
         GridBagConstraints gbc = new GridBagConstraints();
