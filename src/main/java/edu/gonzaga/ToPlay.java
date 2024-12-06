@@ -361,11 +361,12 @@ public class ToPlay {
 
     public void createWorld(){
         World world = new World();
+        Ground ground = new Ground(100,300);
         Tank tank1  = new Tank(100, 100, 0, "Red");
         Tank tank2 = new Tank(100, 500, 0, "Green"); 
         addToTankArray(0, tank1);
         addToTankArray(1, tank2); 
-        
+
 
 
 

@@ -11,9 +11,9 @@ public class Ground {
     private Color color; 
 
 
-    public Ground(){
+    public Ground(int width, int height){
         this.body = new Body(); 
-        Rectangle body = new Rectangle(0, 0);
+        Rectangle body = new Rectangle(width, height);
         this.body.setMassType(MassType.INFINITE);
     }
 
