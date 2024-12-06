@@ -3,13 +3,13 @@ package edu.gonzaga;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-
-import org.dyn4j.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,13 +19,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import org.dyn4j.world.World;
 
 public class ToPlay {
     String name;
     String color;
     boolean easyOrHard = true; // true is easy, false is hard, default is easy
+    ArrayList <Tank> tank_Array = new ArrayList<>(); // this is where we will store the tanks
 
     public ToPlay() {
         this.name = "Unidentified User";
@@ -70,9 +70,6 @@ public class ToPlay {
     String player2name = "Unidentifiable Player";
     String player1Color = " ";
     String player2Color = " ";
-    Tank player1Tank = new Tank();
-    Tank player2Tank = new Tank();
-
     /**
      * This method formats the start screen that has an image of a tank, a title,
      * two buttons, and author names.
@@ -195,9 +192,9 @@ public class ToPlay {
         gameOverFrame.setBackground(Color.black);
         gameOverLabel.setForeground(Color.red);
         JLabel winnerLabel = new JLabel("Player 1 wins!"); // this is just a default
-        if (player1Tank.getHealth() == 0) {
+        if (tank_Array.get(0).getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
-        } else if (player2Tank.getHealth() == 0) {
+        } else if (tank_Array.get(1).getHealth() == 0) {
             winnerLabel.setText(player2name + "wins!");
         }
         winnerLabel.setForeground(Color.white);
@@ -342,6 +339,8 @@ public class ToPlay {
                     gameFrame.add(panelWithBackground); // Add the custom panel with background
                     gameFrame.setLocation(50, 20);
                     gameFrame.setVisible(true);
+
+                    createWorld();
                 }
             }
         };
@@ -360,6 +359,27 @@ public class ToPlay {
         hard.addActionListener(difficultyListener);
     }
 
+    public void createWorld(){
+        World world = new World();
+        Ground ground = new Ground(100,300);
+        Tank tank1  = new Tank(100, 100, 0, "Red");
+        Tank tank2 = new Tank(100, 500, 0, "Green"); 
+        addToTankArray(0, tank1);
+        addToTankArray(1, tank2); 
+
+
+
+
+    }
+
+    public void addToTankArray(int index, Tank tank){
+        this.tank_Array.add(index, tank);
+    }
+
+   // public Tank getTankatIndex(int index){
+    //    this.tank_Array(index); 
+     //   return tank_Array(index); 
+    //}
     // when adding action listener for continue, set the names again in case users
     // do not press 'Enter'
 
