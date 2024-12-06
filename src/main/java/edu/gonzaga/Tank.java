@@ -205,4 +205,17 @@ public class Tank {
     public void hit(int damage) {
         this.health = Math.max(0, this.health - damage);
     }
+    
+    // Inside the Tank class, add the draw method
+public void draw(Graphics g) {
+    // Draw the body of the tank
+    g.setColor(this.bodyColor);
+    g.fillRect((int) this.xCord, (int) this.yCord, (int) this.bodyWidth, (int) this.bodyHeight);
+
+    // Draw the barrel of the tank
+    g.setColor(Color.BLACK);  // or another color for the barrel
+    g.fillRect((int) this.xCord, (int) (this.yCord + bodyHeight / 2 - barrelHeight / 2),
+            (int) this.barrelWidth, (int) this.barrelHeight);
+}
+
 }
