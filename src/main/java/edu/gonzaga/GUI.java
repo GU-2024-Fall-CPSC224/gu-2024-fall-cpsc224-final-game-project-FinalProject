@@ -165,8 +165,8 @@ public class GUI {
             numPlayers = Integer.parseInt(numPlayersField.getText());
             startingChips = Integer.parseInt(startingChipsField.getText());
     
-            if (numPlayers < 2 || numPlayers > 6) {
-                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 2 and 6.");
+            if (numPlayers < 3 || numPlayers > 6) {
+                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 3 and 6.");
                 return false;
             }
     
@@ -237,19 +237,19 @@ public class GUI {
         nameDialog.setVisible(true);
     }
 
-    void setGUI(){
+    void setGUI() {
         // Initialize the deck
         deck = new Cards("media", this);
         deck.initializeDeck();
-
-        // set up the main window
+    
+        // Set up the main window
         this.mainWindowFrame = new JFrame("Poker Game");
         this.mainWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainWindowFrame.setResizable(true);
         this.mainWindowFrame.setUndecorated(true);
         this.mainWindowFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.mainWindowFrame.setLayout(new BorderLayout());
-
+    
         String imagePath = "media/table.png";
         File imageFile = new File(imagePath);
         if (!imageFile.exists()) {
@@ -258,79 +258,85 @@ public class GUI {
         } else {
             System.out.println("Background image found: " + imagePath);
         }
-
-
+    
         BackgroundPanel backgroundPanel = new BackgroundPanel(imagePath);
         backgroundPanel.setLayout(new BorderLayout());
-
-        // set up role panel
-
-        // set up player panel
+    
+        // Set up role panel
+    
+        // Set up player panel
         playerPanel = new JPanel();
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
         playerPanel.setOpaque(false);
-
+    
         for (Player player : players) {
             JPanel playerPanelComponent = player.getPlayerPanel();
             playerPanelComponent.setOpaque(false);
             playerPanel.add(playerPanelComponent);
             player.setNameEditable(false);
         }
-
-        // set up poker panel
+    
+        JPanel playerPanelWrapper = new JPanel(new BorderLayout());
+        playerPanelWrapper.setOpaque(false);
+        playerPanelWrapper.setBorder(BorderFactory.createEmptyBorder(
+            0,               // top padding
+            0,               // left padding
+            0,               // bottom padding
+            getScaledWidth(80) // right padding
+        ));
+        playerPanelWrapper.add(playerPanel, BorderLayout.CENTER);
+    
+        // Set up poker panel
         pokerContainerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         pokerContainerPanel.add(new JLabel("Waiting for players..."));
         pokerContainerPanel.setOpaque(false);
-
-        // set up game panel
+    
+        // Set up game panel
         gamePanel = getGamePanel();
         gamePanel.setOpaque(false);
-
-        // set up game reminder
+    
+        // Set up game reminder
         reminder = getNotification();
         reminder.setOpaque(false);
-
-        JPanel containerPanel = new JPanel();
-        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
-        containerPanel.setOpaque(false);
-
+    
+        // Create a south container for poker panel and padding
+        JPanel southContainer = new JPanel(new BorderLayout());
+        southContainer.setOpaque(false);
+    
         JPanel verticalPaddingPanel = new JPanel();
         verticalPaddingPanel.setOpaque(false);
-        verticalPaddingPanel.setPreferredSize(new Dimension(
-            0, 
-            getScaledHeight(130)
-        ));
-
+        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(130)));
+    
         JPanel horizontalPaddingPanel = new JPanel();
         horizontalPaddingPanel.setOpaque(false);
-        horizontalPaddingPanel.setPreferredSize(new Dimension(
-            getScaledWidth(228), 
-            0
-        ));
-
-        JPanel wrapperPanel = new JPanel();
-        wrapperPanel.setLayout(new BorderLayout());
+        horizontalPaddingPanel.setPreferredSize(new Dimension(getScaledWidth(180), 0));
+    
+        JPanel wrapperPanel = new JPanel(new BorderLayout());
         wrapperPanel.setOpaque(false);
         wrapperPanel.add(horizontalPaddingPanel, BorderLayout.WEST);
         wrapperPanel.add(pokerContainerPanel, BorderLayout.CENTER);
-
-        containerPanel.add(wrapperPanel);
-        containerPanel.add(verticalPaddingPanel);
-
-        // input all panels in main window
-        backgroundPanel.add(this.playerPanel, BorderLayout.EAST);
-        backgroundPanel.add(containerPanel, BorderLayout.SOUTH);
-        backgroundPanel.add(this.reminder, BorderLayout.NORTH);
-        backgroundPanel.add(this.gamePanel, BorderLayout.CENTER);
-
+    
+        southContainer.add(wrapperPanel, BorderLayout.CENTER);
+        southContainer.add(verticalPaddingPanel, BorderLayout.SOUTH);
+    
+        // Add components to the background panel
+        backgroundPanel.add(southContainer, BorderLayout.SOUTH);
+        backgroundPanel.add(reminder, BorderLayout.NORTH);
+        backgroundPanel.add(gamePanel, BorderLayout.CENTER);
+        backgroundPanel.add(playerPanelWrapper, BorderLayout.EAST);
+    
+        // Ensure the EAST panel is at the front
+        backgroundPanel.setComponentZOrder(playerPanelWrapper, 0);
+    
+        // Finalize the main window
         this.mainWindowFrame.setContentPane(backgroundPanel);
-
         this.mainWindowFrame.revalidate();
         this.mainWindowFrame.repaint();
-
+    
+        // Play background audio
         playAudio("media/jazz_reduced.wav", false, -16.0f);
     }
-
+    
     private void getPlayerPanel() {
         int chips;
         int playerCount;
@@ -436,7 +442,7 @@ public class GUI {
             System.out.println("getActivePlayers()" + (round.getActivePlayers() - 1));
             // Check if players can advance
             if (round.checkAllIn() || (checkNextTurn() && currentNum >= countTurn)) {
-                updateReminder("next turn.");
+                updateReminder("Next Turn.");
                 currentNum = 0;
                 mutipleTurn.updateRound(round);
                 mutipleTurn.nextTurn(false);
@@ -447,7 +453,7 @@ public class GUI {
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
             } else if (round.getActivePlayers() > 1 || currentNum < players.size()) {
-                updateReminder(currentPlayer.getName()+ " has checked (0) " + totalRaisedChips + " next player " + players.get((currentPlayerIndex + 1) % players.size()).getName());
+                updateReminder(currentPlayer.getName()+ " has checked " + totalRaisedChips + ". Next player: " + players.get((currentPlayerIndex + 1) % players.size()).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
@@ -755,18 +761,22 @@ public class GUI {
 
     private JPanel getNotification() {
         JPanel newPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout to center components
-        newPanel.setPreferredSize(new Dimension(getScaledWidth(300), getScaledHeight(150)));
-
-        notificationLabel = new JLabel("Welcome to poker game !!!!! Enjoy your time");
-
-        // Use GridBagConstraints to center the label
+        newPanel.setPreferredSize(new Dimension(getScaledWidth(500), getScaledHeight(200))); // Increased size
+        newPanel.setOpaque(false); // Make panel background transparent
+    
+        notificationLabel = new JLabel("Welcome to poker! Enjoy your time");
+        notificationLabel.setForeground(Color.WHITE); // Set text color to white
+        notificationLabel.setFont(new Font("Serif", Font.BOLD, 20)); // Optional: Increase font size and make bold
+    
+        // Use GridBagConstraints to position the label
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER; // Center within the cell
-
+        gbc.anchor = GridBagConstraints.SOUTHEAST; // Align to bottom-right
+        gbc.insets = new Insets(0, getScaledWidth(140), 0, 0); // Add padding from bottom-right
+    
         newPanel.add(notificationLabel, gbc);
-
+    
         return newPanel;
     }
 
