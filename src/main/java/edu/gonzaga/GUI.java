@@ -514,6 +514,24 @@ public class GUI {
         });
 
         raise.addActionListener(e -> {
+            int playersWithChips = 0; // Count of active players with chips remaining
+            for (int i = 0; i < players.size(); i++) {
+                if (player.isActive() && player.getChips() > 0) {
+                    playersWithChips++;
+                }
+            }
+
+            // Check if raising is allowed
+            if (round.getActivePlayers() < 2 || playersWithChips < 2) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You cannot raise more chips since other players have gone all-in or lost all their chips.",
+                        "Invalid Action",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
             Player currentPlayer = players.get(currentPlayerIndex);
             int chipsToRaise = round.raiseChips(currentPlayerIndex);
 

@@ -239,7 +239,7 @@ public class MutipleTurn {
             }
         }
 
-        if(getActivePlayersList().size() == 1) {
+        if(getActivePlayersList().size() < 3) {
             showResult();
         }
 
@@ -318,7 +318,7 @@ public class MutipleTurn {
         initializeRiverCards();
 
         for (Player player : players) {
-            if (!"LOSE".equals(player.getName())) {
+            if (!(player.getName() + " (LOSE)").equals(player.getName())) {
                 player.setActive(true);
             } else {
                 player.setActive(false);

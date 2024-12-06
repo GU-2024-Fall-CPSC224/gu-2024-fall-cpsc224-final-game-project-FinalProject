@@ -305,7 +305,7 @@ public class SingleRound {
                 System.out.println(player.getName() + "'s new hand: " + newHand);
             } else {
                 player.setActive(false); // Mark inactive players
-                player.setName("LOSE");
+                player.setName((player.getName() + " (LOSE)"));
                 System.out.println(player.getName() + " is out of the game.");
             }
         }
