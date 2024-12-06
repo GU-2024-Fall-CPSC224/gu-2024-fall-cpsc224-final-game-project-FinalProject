@@ -1,9 +1,10 @@
 package edu.gonzaga;
-
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Rectangle;
+import java.awt.Graphics;
+import java.awt.Color;
 
 public class Tank {
     private Body body;
@@ -210,11 +211,11 @@ public class Tank {
 public void draw(Graphics g) {
     // Draw the body of the tank
     g.setColor(this.bodyColor);
-    g.fillRect((int) this.xCord, (int) this.yCord, (int) this.bodyWidth, (int) this.bodyHeight);
+    g.fillRect(this.xCord, this.yCord, (int) this.bodyWidth, (int) this.bodyHeight);
 
     // Draw the barrel of the tank
     g.setColor(Color.BLACK);  // or another color for the barrel
-    g.fillRect((int) this.xCord, (int) (this.yCord + bodyHeight / 2 - barrelHeight / 2),
+    g.fillRect(this.xCord, (int) (this.yCord + bodyHeight / 2 - barrelHeight / 2),
             (int) this.barrelWidth, (int) this.barrelHeight);
 }
 
