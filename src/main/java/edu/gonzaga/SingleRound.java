@@ -29,24 +29,52 @@ public class SingleRound {
     }
 
     public void initializeBlinds(int dealerIndex) {
+        for (Player player : players) {
+            // Reset player name by removing all possible appended labels, only if they exist
+            String originalName = player.getName();
+            if (originalName.contains("(OUT)") || originalName.contains("(Small Blinder)") || originalName.contains("(Big Blinder)")) {
+                originalName = originalName
+                        .replace("(OUT)", "")
+                        .replace("(Small Blinder)", "")
+                        .replace("(Big Blinder)", "");
+                player.setName(originalName); // Reset to original name only if modified
+            }
+        }
         smallBlindIndex = (dealerIndex + 1) % players.size();
         bigBlindIndex = (dealerIndex + 2) % players.size();
 
         Player smallBlindPlayer = players.get(smallBlindIndex);
         Player bigBlindPlayer = players.get(bigBlindIndex);
 
-        smallBlindPlayer.updateChips(smallBlindPlayer.getChips() - smallBlind);
-        bigBlindPlayer.updateChips(bigBlindPlayer.getChips() - bigBlind);
+        // Check if small blind player has enough chips
+        if (smallBlindPlayer.getChips() < smallBlind) {
+            System.out.println("Player " + smallBlindPlayer.getName() + " does not have enough chips for the small blind.");
+            smallBlindPlayer.setActive(false);
+            if (!smallBlindPlayer.getName().contains("OUT") && !smallBlindPlayer.getName().contains("LOSE")) {
+                smallBlindPlayer.setName(smallBlindPlayer.getName() + " OUT");
+            }
+        } else {
+            smallBlindPlayer.updateChips(smallBlindPlayer.getChips() - smallBlind);
+            pot += smallBlind;
+        }
 
-        pot += smallBlind + bigBlind;
+        if (bigBlindPlayer.getChips() < bigBlind) {
+            System.out.println("Player " + bigBlindPlayer.getName() + " does not have enough chips for the big blind.");
+            bigBlindPlayer.setActive(false);
+            if (!bigBlindPlayer.getName().contains("OUT") && !bigBlindPlayer.getName().contains("LOSE")) {
+                bigBlindPlayer.setName(bigBlindPlayer.getName() + " OUT");
+            }
+        } else {
+            bigBlindPlayer.updateChips(bigBlindPlayer.getChips() - bigBlind);
+            pot += bigBlind;
+        }
+
 
         updatePlayerBlindAndDealerStatus();
 
-        System.out.println("Small Blind: " + smallBlindPlayer.getName() + " (" + smallBlind + " chips)");
-        System.out.println("Big Blind: " + bigBlindPlayer.getName() + " (" + bigBlind + " chips)");
+        System.out.println("Small Blind: " + (smallBlindPlayer.isActive() ? smallBlindPlayer.getName() + " (" + smallBlind + " chips)" : "Inactive"));
+        System.out.println("Big Blind: " + (bigBlindPlayer.isActive() ? bigBlindPlayer.getName() + " (" + bigBlind + " chips)" : "Inactive"));
     }
-
-
 
     // fold cards
     public void foldCard(int currentPlayerIndex) {
@@ -305,7 +333,6 @@ public class SingleRound {
                 System.out.println(player.getName() + "'s new hand: " + newHand);
             } else {
                 player.setActive(false); // Mark inactive players
-                player.setName((player.getName() + " (LOSE)"));
                 System.out.println(player.getName() + " is out of the game.");
             }
         }

@@ -234,11 +234,34 @@ public class MutipleTurn {
         for (Player player : players) {
             if (player.getChips() <= 0) {
                 player.setActive(false);
-                player.setName(player.getName() + " (LOSE)");
-                System.out.println(player.getName() + " is out of the game.");
+
+                // Sanitize the player's name to avoid repeated "(LOSE)"
+                String sanitizedName = player.getName().replace("(LOSE)", "").trim();
+
+                // Append "(LOSE)" only if it hasn't already been appended
+                if (!player.getName().contains("(LOSE)")) {
+                    player.setName(sanitizedName + " (LOSE)");
+                    System.out.println(player.getName() + " is out of the game.");
+                }
+            } else {
+                // Remove "(LOSE)" if the player has chips again (optional logic)
+                if (player.getName().contains("(LOSE)")) {
+                    String sanitizedName = player.getName().replace("(LOSE)", "").trim();
+                    player.setName(sanitizedName);
+                }
             }
         }
 
+
+        for (Player player : players) {
+            if (!player.isActive() && player.getChips() > 0) {
+                player.setActive(true);
+            }
+            System.out.println(player.getName() + " has " + player.getChips() + " chips.");
+        }
+
+        getActivePlayersList();
+        System.out.println("Active player before check the result: " + getActivePlayersList().size());
         if(getActivePlayersList().size() < 3) {
             showResult();
         }
@@ -334,7 +357,7 @@ public class MutipleTurn {
         int newDealer = singleRound.startNewRound(deck);
         singleRound.initializeBlinds(newDealer);
         playTurn = -1;
-        potlabel.setText("Pot: 30");
+        potlabel.setText("Pot: " + singleRound.getPot());
 
         System.out.println("New round started with next dealer: " + players.get(newDealer).getName() + ", new play turn: " + playTurn);
     }

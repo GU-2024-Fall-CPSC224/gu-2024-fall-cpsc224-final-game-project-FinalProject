@@ -166,7 +166,7 @@ public class GUI {
             startingChips = Integer.parseInt(startingChipsField.getText());
     
             if (numPlayers < 3 || numPlayers > 6) {
-                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 2 and 6.");
+                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 3 and 6.");
                 return false;
             }
     
