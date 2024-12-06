@@ -61,8 +61,12 @@ public class SingleRound {
 
     // check 0 chip
     public void checkChips(int currentPlayerIndex) {
+
+        // If no raises, allow the player to check
         saveChipsRaise[currentPlayerIndex] = 0;
+        System.out.println("Player " + players.get(currentPlayerIndex).getName() + " checks.");
     }
+
 
     // raise chips
     public int raiseChips(int currentPlayerIndex) {
@@ -196,7 +200,7 @@ public class SingleRound {
     public ArrayList<Player> getActivePlayersList() {
         ArrayList<Player> activePlayers = new ArrayList<>();
         for (Player player : players) {
-            if (player.isActive() && player.getChips() > 0) {
+            if (player.isActive()) {
                 activePlayers.add(player);
             }
         }
@@ -284,11 +288,11 @@ public class SingleRound {
     }
 
     // Start a new round
-    public int startNewRound(Cards deck, int currentDealer) {
+    public int startNewRound(Cards deck) {
         System.out.println("Setting up a new round...");
         deck.initializeDeck();
         resetChipsRaise();
-        pot = 0; // Reset the pot
+        pot = getPot(); // Reset the pot
 
         // Update players' status and draw new cards
         for (int i = 0; i < players.size(); i++) {
@@ -301,7 +305,7 @@ public class SingleRound {
                 System.out.println(player.getName() + "'s new hand: " + newHand);
             } else {
                 player.setActive(false); // Mark inactive players
-                player.setName("LOSE");
+                player.setName((player.getName() + " (LOSE)"));
                 System.out.println(player.getName() + " is out of the game.");
             }
         }
@@ -339,8 +343,6 @@ public class SingleRound {
             player.updateNameWithStatus(statusBuilder.toString());
         }
     }
-
-
 
     public int getDealer() {
         return dealer;

@@ -166,7 +166,7 @@ public class GUI {
             startingChips = Integer.parseInt(startingChipsField.getText());
     
             if (numPlayers < 3 || numPlayers > 6) {
-                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 3 and 6.");
+                JOptionPane.showMessageDialog(splashScreenFrame, "Number of players must be between 2 and 6.");
                 return false;
             }
     
@@ -431,6 +431,18 @@ public class GUI {
 
         // player can make choice
         check.addActionListener(e -> {
+            // check if anyone raise the chips
+            int maxRaise = round.getMaxRaise();
+            if (maxRaise > 0) {
+                // Notify the player they cannot check because others have raised
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Other players have already raised the chips. You cannot check. Please call or raise to continue.",
+                        "Invalid Action",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
             Player currentPlayer = players.get(currentPlayerIndex);
             player.makeDecision("check", 0, 0, currentPlayer);
             round.checkChips(currentPlayerIndex);
@@ -508,6 +520,24 @@ public class GUI {
         });
 
         raise.addActionListener(e -> {
+            int playersWithChips = 0; // Count of active players with chips remaining
+            for (int i = 0; i < players.size(); i++) {
+                if (player.isActive() && player.getChips() > 0) {
+                    playersWithChips++;
+                }
+            }
+
+            // Check if raising is allowed
+            if (round.getActivePlayers() < 2 || playersWithChips < 2) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You cannot raise more chips since other players have gone all-in or lost all their chips.",
+                        "Invalid Action",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
             Player currentPlayer = players.get(currentPlayerIndex);
             int chipsToRaise = round.raiseChips(currentPlayerIndex);
 
@@ -569,7 +599,6 @@ public class GUI {
                 countTurn = round.getActivePlayers() - 1;
                 currentPlayerIndex = round.nextPlayer(true);
                 System.out.println("currentPlayerIndex: " + currentPlayerIndex);
-                potLabelText.setText("Pot: 0");
                 return;
             }
 
@@ -642,8 +671,10 @@ public class GUI {
             riverCards.add(new JLabel(cardBackImage.getBackImage()));
         }
 
+        potLabelText = new JLabel("Pot: 30");
+
         // Initialize MutipleTurn
-        mutipleTurn = new MutipleTurn(deck, players, round, riverCards, mainWindowFrame, this);
+        mutipleTurn = new MutipleTurn(deck, players, round, riverCards, mainWindowFrame, this, potLabelText);
 
         // Update poker panel for the first player
         if (!players.isEmpty()) {
@@ -669,7 +700,6 @@ public class GUI {
         // Panel for displaying pot information
         JPanel potPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         potPanel.setOpaque(false);
-        potLabelText = new JLabel("Pot: 0");
         potLabelText.setForeground(Color.WHITE);
         potPanel.add(potLabelText);
         countTurn = round.getActivePlayers() - 1;
@@ -711,7 +741,7 @@ public class GUI {
 
         for (Player player : activePlayers) {
             int playerIndex = players.indexOf(player);
-            if (round.getRaiseChips(playerIndex) != maxRaise) {
+            if (round.getRaiseChips(playerIndex) != maxRaise && player.getChips() > 0) {
                 return false;
             }
         }
