@@ -305,7 +305,7 @@ public class GUI {
     
         JPanel verticalPaddingPanel = new JPanel();
         verticalPaddingPanel.setOpaque(false);
-        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(130)));
+        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(140)));
     
         JPanel horizontalPaddingPanel = new JPanel();
         horizontalPaddingPanel.setOpaque(false);
@@ -717,7 +717,7 @@ public class GUI {
 
         JPanel verticalPaddingPanel = new JPanel();
         verticalPaddingPanel.setOpaque(false);
-        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(100)));
+        verticalPaddingPanel.setPreferredSize(new Dimension(0, getScaledHeight(50)));
 
         // Add gamePanel to mainPanel
         mainPanel.add(verticalPaddingPanel, BorderLayout.NORTH);
