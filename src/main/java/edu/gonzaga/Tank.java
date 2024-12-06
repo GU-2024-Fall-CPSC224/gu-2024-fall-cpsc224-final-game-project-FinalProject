@@ -3,6 +3,13 @@ package edu.gonzaga;
  * This is Tank class holds all information regarding Tanks the players will be controlling. 
  */
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 public class Tank {
     private Integer xCord;
     private Integer yCord;
@@ -129,4 +136,5 @@ public class Tank {
     public Boolean getMoved() {
         return moved;
     }
+
 }
