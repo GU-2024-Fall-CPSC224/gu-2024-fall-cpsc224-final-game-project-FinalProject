@@ -470,7 +470,7 @@ public class GUI {
                     notifyPlayer = (notifyPlayer + 1) % players.size();
                 } while (!players.get(notifyPlayer).isActive());
 
-                updateReminder(currentPlayer.getName()+ " has checked " + totalRaisedChips + ". Next player: " + players.get(notifyPlayer).getName());
+                updateReminder(currentPlayer.getName()+ " has checked 0" + ". Next player: " + players.get(notifyPlayer).getName());
                 currentPlayerIndex = round.nextPlayer(false);
                 updatePokerPanel(players.get(currentPlayerIndex));
                 currentNum++;
