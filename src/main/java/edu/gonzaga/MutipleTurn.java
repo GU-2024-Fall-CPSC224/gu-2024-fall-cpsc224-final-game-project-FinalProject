@@ -239,7 +239,7 @@ public class MutipleTurn {
             }
         }
 
-        if(getActivePlayersList().size() < 3) {
+        if(getActivePlayersList().size() < 2) {
             showResult();
         }
 
