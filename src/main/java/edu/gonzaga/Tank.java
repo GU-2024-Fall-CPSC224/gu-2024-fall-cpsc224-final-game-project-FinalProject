@@ -109,7 +109,8 @@ public class Tank {
 
     // Method to create a revolute joint for the barrel
     public RevoluteJoint createBarrelJoint() {
-        return new RevoluteJoint(this.body, this.barrel, this.body.getWorldCenter());
+        RevoluteJoint joint = new RevoluteJoint(this.body, this.barrel, this.body.getWorldCenter());
+        return joint;
     }
 
     // Getters and Setters for other properties
@@ -158,8 +159,12 @@ public class Tank {
     public Integer moveLeft() {
         if (this.xCord < 5) {
             this.xCord = 0;
+            this.body.translate(-this.xCord, 0);
+            this.barrel.translate(-this.xCord, 0); // Move the barrel along with the tank
         } else {
             this.xCord -= 5;
+            this.body.translate(-5, 0);
+            this.barrel.translate(-5, 0); // Move the barrel along with the tank
         }
         moved = true;
         return xCord;
@@ -168,8 +173,12 @@ public class Tank {
     public Integer moveRight() {
         if (this.xCord > 195) {
             this.xCord = 200;
+            this.body.translate(200 - this.xCord, 0);
+            this.barrel.translate(200 - this.xCord, 0); // Move the barrel along with the tank
         } else {
             this.xCord += 5;
+            this.body.translate(5, 0);
+            this.barrel.translate(5, 0); // Move the barrel along with the tank
         }
         moved = true;
         return xCord;
