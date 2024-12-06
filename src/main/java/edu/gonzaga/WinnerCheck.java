@@ -133,7 +133,7 @@ public class WinnerCheck {
             points = 0;
             for (int i = 0; i < valueAmount.length; i++) {
                 if (valueAmount[i] == 1) {
-                    points = (i + 2) * valueAmount[i];
+                    points += (i + 2) * valueAmount[i];
                 }
             }
         }
