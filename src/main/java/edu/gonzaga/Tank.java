@@ -93,12 +93,6 @@ public class Tank {
         trajectory = x;
     }
 
-    // This will change the x and y coordinates depending on how much the player
-    // moves
-    public void move() {
-
-    }
-
     // This will fire the tank and increase shotcount, uses artillery
     public int fire() {
         // returning 0 until artillery is made and can be used
@@ -112,7 +106,7 @@ public class Tank {
         return 0;
     }
 
-    public Integer moveMeLeft() {
+    public Integer moveLeft() {
         if (this.xCord < 5) {
             this.xCord = 0;
         } else {
@@ -122,7 +116,7 @@ public class Tank {
         return xCord;
     }
 
-    public Integer moveMeRight() {
+    public Integer moveRight() {
         if (this.xCord > 195) {
             this.xCord = 200;
         } else {
