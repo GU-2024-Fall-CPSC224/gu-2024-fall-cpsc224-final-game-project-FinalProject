@@ -135,6 +135,8 @@ public class Tank {
     public void setYCord(int yCord) {
         this.yCord = yCord;
     // This will fire the tank and increase shotcount, uses artillery
+    }
+
     public int fire() {
         // returning 0 until artillery is made and can be used
         return 0;
@@ -158,7 +160,7 @@ public class Tank {
         } else {
             this.xCord -= 5;
         }
-        moved = true;
+       // moved = true;
         return xCord;
     }
 
@@ -168,7 +170,7 @@ public class Tank {
         } else {
             this.xCord += 5;
         }
-        moved = true;
+       // moved = true;
         return xCord;
 
     }
@@ -194,3 +196,4 @@ public class Tank {
         this.health = Math.max(0, this.health - damage);
     }
 }
+
