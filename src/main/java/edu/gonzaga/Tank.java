@@ -12,6 +12,7 @@ public class Tank {
     private int xCord;
     private int yCord;
     private String color;
+    private Boolean moved;
 
     // Dimensions for the tank body and barrel
     private double bodyWidth = 50;
@@ -29,14 +30,14 @@ public class Tank {
         this.body = new Body();
         Rectangle tankShape = new Rectangle(bodyWidth, bodyHeight);
         this.body.addFixture(new BodyFixture(tankShape));
-        //this.body.setMass(); // Set the mass for physics simulation
+        // this.body.setMass(); // Set the mass for physics simulation
         this.body.translate(xCord, yCord);
 
         // Create the barrel with specified dimensions
         this.barrel = new Body();
         Rectangle barrelShape = new Rectangle(barrelWidth, barrelHeight);
         this.barrel.addFixture(new BodyFixture(barrelShape));
-        //this.barrel.setMass();
+        // this.barrel.setMass();
         this.barrel.translate(xCord, yCord + bodyHeight / 2 + barrelHeight / 2); // Position it above the tank
     }
 
@@ -95,7 +96,7 @@ public class Tank {
         this.body.removeAllFixtures();
         Rectangle tankShape = new Rectangle(bodyWidth, bodyHeight);
         this.body.addFixture(new BodyFixture(tankShape));
-       // this.body.setMass();
+        // this.body.setMass();
     }
 
     // Method to recreate the barrel with updated dimensions
@@ -103,7 +104,7 @@ public class Tank {
         this.barrel.removeAllFixtures();
         Rectangle barrelShape = new Rectangle(barrelWidth, barrelHeight);
         this.barrel.addFixture(new BodyFixture(barrelShape));
-        //this.barrel.setMass();
+        // this.barrel.setMass();
     }
 
     // Method to create a revolute joint for the barrel
@@ -134,9 +135,9 @@ public class Tank {
 
     public void setYCord(int yCord) {
         this.yCord = yCord;
-    // This will fire the tank and increase shotcount, uses artillery
     }
 
+    // This will fire the tank and increase shotcount, uses artillery
     public int fire() {
         // returning 0 until artillery is made and can be used
         return 0;
@@ -153,14 +154,14 @@ public class Tank {
     public Body getBody() {
         return body;
     }
-      
+
     public Integer moveLeft() {
         if (this.xCord < 5) {
             this.xCord = 0;
         } else {
             this.xCord -= 5;
         }
-       // moved = true;
+        moved = true;
         return xCord;
     }
 
@@ -170,7 +171,7 @@ public class Tank {
         } else {
             this.xCord += 5;
         }
-       // moved = true;
+        moved = true;
         return xCord;
 
     }
@@ -196,4 +197,3 @@ public class Tank {
         this.health = Math.max(0, this.health - damage);
     }
 }
-
