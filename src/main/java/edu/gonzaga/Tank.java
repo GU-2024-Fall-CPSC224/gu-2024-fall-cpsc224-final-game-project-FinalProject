@@ -134,6 +134,10 @@ public class Tank {
 
     public void setYCord(int yCord) {
         this.yCord = yCord;
+    // This will fire the tank and increase shotcount, uses artillery
+    public int fire() {
+        // returning 0 until artillery is made and can be used
+        return 0;
     }
 
     public String getColor() {
@@ -146,6 +150,27 @@ public class Tank {
 
     public Body getBody() {
         return body;
+    }
+      
+    public Integer moveLeft() {
+        if (this.xCord < 5) {
+            this.xCord = 0;
+        } else {
+            this.xCord -= 5;
+        }
+        moved = true;
+        return xCord;
+    }
+
+    public Integer moveRight() {
+        if (this.xCord > 195) {
+            this.xCord = 200;
+        } else {
+            this.xCord += 5;
+        }
+        moved = true;
+        return xCord;
+
     }
 
     public Body getBarrel() {
