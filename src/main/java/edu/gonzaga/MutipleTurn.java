@@ -14,9 +14,9 @@ public class MutipleTurn {
     private SingleRound singleRound;
     private int flippedCardsCount;
     private JFrame mainWindowFrame;
-    private GUI gui;
+    private JLabel potlabel;
 
-    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards, JFrame mainWindowFrame, GUI gui) {
+    public MutipleTurn(Cards cards, ArrayList<Player> players, SingleRound singleRound, ArrayList<JLabel> riverCards, JFrame mainWindowFrame, GUI gui, JLabel potLabel) {
         this.deck = cards;
         this.players = players;
         this.singleRound = singleRound;
@@ -24,9 +24,9 @@ public class MutipleTurn {
         this.riverCardsSave = new ArrayList<>();
         this.flippedCardsCount = 0;
         this.playTurn = 0;
-        this.gui = gui;
         this.cardBackImage = new CardBackImage("media/card3.png", gui);
         this.mainWindowFrame = mainWindowFrame;
+        this.potlabel = potLabel;
     }
 
     public void updateRound(SingleRound singleRound) {
@@ -234,9 +234,13 @@ public class MutipleTurn {
         for (Player player : players) {
             if (player.getChips() <= 0) {
                 player.setActive(false);
-                player.setName("LOSE");
+                player.setName(player.getName() + " (LOSE)");
                 System.out.println(player.getName() + " is out of the game.");
             }
+        }
+
+        if(getActivePlayersList().size() == 1) {
+            showResult();
         }
 
         int response = JOptionPane.showConfirmDialog(
@@ -249,36 +253,55 @@ public class MutipleTurn {
         if (response == JOptionPane.YES_OPTION) {
             resetForNewRound();
         } else {
-            System.out.println("Game over. Thanks for playing!");
-
-            JDialog exitDialog = new JDialog(mainWindowFrame, "Results", true);
-            exitDialog.setSize(700, 500);
-            exitDialog.setLocationRelativeTo(mainWindowFrame);
-            exitDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-            // Create a layered pane to hold the background and button
-            JLayeredPane layeredPane = new JLayeredPane();
-            layeredPane.setPreferredSize(new Dimension(700, 500));
-
-            // Set the background image
-            JLabel backgroundLabel = new JLabel(new ImageIcon("media/exit.png"));
-            backgroundLabel.setBounds(0, 0, 700, 500);
-
-            // Create the OK button
-            JButton okButton = new JButton("OK");
-            okButton.setBounds(300, 450, 100, 30); // Position the button at the bottom center
-
-            // Add the background and button to the layered pane
-            layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
-            layeredPane.add(okButton, JLayeredPane.PALETTE_LAYER);
-
-            // Add action listener to the OK button
-            okButton.addActionListener(e -> System.exit(0));
-
-            exitDialog.add(layeredPane);
-            exitDialog.pack();
-            exitDialog.setVisible(true);
+            showResult();
         }
+    }
+
+    public void showResult(){
+        System.out.println("Game over. Thanks for playing!");
+
+        JDialog exitDialog = new JDialog(mainWindowFrame, "Results", true);
+        exitDialog.setSize(700, 500);
+        exitDialog.setLocationRelativeTo(mainWindowFrame);
+        exitDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Create a layered pane to hold the background and button
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(700, 500));
+
+        // Set the background image
+        JLabel backgroundLabel = new JLabel(new ImageIcon("media/exit.png"));
+        backgroundLabel.setBounds(0, 0, 700, 500);
+
+        // Create a panel to display player result
+        JPanel resultsPanel = new JPanel();
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+        resultsPanel.setOpaque(false);
+        resultsPanel.setBounds(100, 200, 500, 300);
+
+        for(Player player : players){
+            JLabel playerLabel = new JLabel(player.getName() + ": " + player.getChips() + " chips");
+            playerLabel.setFont(new Font("Serif", Font.BOLD, 18));
+            playerLabel.setForeground(Color.WHITE);
+            playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align the text
+            resultsPanel.add(playerLabel);
+            resultsPanel.add(Box.createVerticalStrut(10));
+        }
+        // Create the OK button
+        JButton okButton = new JButton("OK");
+        okButton.setBounds(300, 450, 100, 30); // Position the button at the bottom center
+
+        // Add the background and button to the layered pane
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(resultsPanel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(okButton, JLayeredPane.PALETTE_LAYER);
+
+        // Add action listener to the OK button
+        okButton.addActionListener(e -> System.exit(0));
+
+        exitDialog.add(layeredPane);
+        exitDialog.pack();
+        exitDialog.setVisible(true);
     }
 
 
@@ -307,12 +330,11 @@ public class MutipleTurn {
             riverCard.repaint();
         }
 
-        singleRound.resetPot();
-
         // Pass the current dealer to startNewRound
-        int newDealer = singleRound.startNewRound(deck, singleRound.getDealer());
+        int newDealer = singleRound.startNewRound(deck);
         singleRound.initializeBlinds(newDealer);
         playTurn = -1;
+        potlabel.setText("Pot: 30");
 
         System.out.println("New round started with next dealer: " + players.get(newDealer).getName() + ", new play turn: " + playTurn);
     }
